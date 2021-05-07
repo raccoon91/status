@@ -1,40 +1,58 @@
-import * as React from "react";
-import { Text, View, StyleSheet } from "react-native";
+import React from "react";
+import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import Icon from "react-native-vector-icons/Feather";
 
-function HomeScreen() {
-  return (
-    <View style={styles.view}>
-      <Text>Home!</Text>
-    </View>
-  );
-}
-
-function SettingsScreen() {
-  return (
-    <View style={styles.view}>
-      <Text>Settings!</Text>
-    </View>
-  );
-}
+import { HomeScreen, StatsScreen, SettingScreen } from "@src/screens";
 
 const Tab = createMaterialTopTabNavigator();
 
-const App = () => {
-  return (
-    <NavigationContainer>
-      <Tab.Navigator tabBarPosition="bottom" tabBarOptions={{ style: styles.tapBar }}>
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Settings" component={SettingsScreen} />
-      </Tab.Navigator>
-    </NavigationContainer>
-  );
-};
-
 const styles = StyleSheet.create({
-  view: { flex: 1, justifyContent: "center", alignItems: "center" },
   tapBar: { margin: 10, borderRadius: 5 },
 });
+
+const tabBarOptions = {
+  style: styles.tapBar,
+  activeTintColor: "black",
+  inactiveTintColor: "darkgray",
+  showIcon: true,
+  showLabel: false,
+  iconStyle: {
+    width: 30,
+    height: 30,
+  },
+  indicatorStyle: {
+    backgroundColor: "black",
+  },
+};
+
+const App = () => (
+  <NavigationContainer>
+    <Tab.Navigator tabBarPosition="bottom" initialRouteName="Home" tabBarOptions={tabBarOptions}>
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          tabBarIcon: ({ color }) => <Icon name="home" color={color} size={26} />,
+        }}
+      />
+      <Tab.Screen
+        name="Stats"
+        component={StatsScreen}
+        options={{
+          tabBarIcon: ({ color }) => <Icon name="bar-chart" color={color} size={26} />,
+        }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={SettingScreen}
+        options={{
+          tabBarIcon: ({ color }) => <Icon name="settings" color={color} size={26} />,
+        }}
+      />
+    </Tab.Navigator>
+  </NavigationContainer>
+);
 
 export default App;
