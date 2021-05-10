@@ -10,11 +10,11 @@ export const DecimalNumber: FC<IDecimalNumberProps> = ({ statusValue }) => {
   const decimal = (statusValue % 1).toFixed(3).split(".")[1];
 
   return (
-    <Box direction="row" align="flex-end">
+    <Box d="row" align="flex-end">
       <Text size="24px" weight="bold">
         {integer}
       </Text>
-      <Text size="16px" margin="0 2px">
+      <Text size="16px" mx="2px">
         .
       </Text>
       <Text size="16px">{decimal}</Text>
