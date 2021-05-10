@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+// import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import Icon from "react-native-vector-icons/Feather";
@@ -8,12 +8,18 @@ import { HomeScreen, StatsScreen, SettingScreen } from "@src/screens";
 
 const Tab = createMaterialTopTabNavigator();
 
-const styles = StyleSheet.create({
-  tapBar: { margin: 10, borderRadius: 5 },
-});
+// const styles = StyleSheet.create({
+//   tapBar: {
+//     position: "absolute",
+//     left: "5%",
+//     bottom: "2%",
+//     width: "90%",
+//     borderRadius: 5,
+//   },
+// });
 
 const tabBarOptions = {
-  style: styles.tapBar,
+  // style: styles.tapBar,
   activeTintColor: "black",
   inactiveTintColor: "darkgray",
   showIcon: true,

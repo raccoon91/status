@@ -1,19 +1,24 @@
 import React from "react";
-import { Box, Text } from "@src/atoms";
+import { Container, Text } from "@src/atoms";
 import { Status } from "@src/molecules";
+import { BottomSheet } from "@src/organisms";
 
 export const HomeScreen = () => {
   return (
-    <Box justify="flex-start">
-      <Text size="36px" weight="bold" margin="30px 0">
+    <Container f="1" justify="flex-start" bgColor="white">
+      <Text size="36px" weight="bold" my="60px">
         Status
       </Text>
 
+      <Status title="Hit Point" value={5.001} />
+
       <Status title="Strength" value={5.001} />
 
-      <Status title="Speed" value={5.001} />
+      <Status title="Agility" value={5.001} />
 
       <Status title="Stamina" value={5.001} />
-    </Box>
+
+      <BottomSheet />
+    </Container>
   );
 };
