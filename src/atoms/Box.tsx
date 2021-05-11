@@ -23,7 +23,7 @@ interface IBoxProps {
   px?: string;
   py?: string;
   border?: string;
-  borderRadius?: string;
+  radius?: string;
   bgColor?: string;
 }
 
@@ -50,6 +50,6 @@ export const Box = styled.View<IBoxProps>`
   ${({ px }) => px && `padding: 0 ${px};`}
   ${({ py }) => py && `padding: ${py} 0;`}
   ${({ border }) => border && `border: ${border};`};
-  ${({ borderRadius }) => borderRadius && `border-radius: ${borderRadius};`};
+  ${({ radius }) => radius && `border-radius: ${radius};`};
   ${({ bgColor }) => bgColor && `background-color: ${bgColor};`}
 `;

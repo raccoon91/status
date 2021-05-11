@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import {
   Dimensions,
   Animated,
@@ -7,7 +7,7 @@ import {
   GestureResponderEvent,
   PanResponderGestureState,
 } from "react-native";
-import { Box, Container, ScrollBox, Text } from "@src/atoms";
+import { Box } from "@src/atoms";
 
 const DEVICE = Dimensions.get("window");
 
@@ -43,38 +43,18 @@ const panGesture = PanResponder.create({
   onPanResponderRelease,
 });
 
-export const BottomSheet = () => {
+interface IBottomSheetProps {
+  children: React.ReactChild;
+}
+
+export const BottomSheet: FC<IBottomSheetProps> = ({ children }) => {
   return (
     <Animated.View style={[styles.animatedView, { bottom: animatedPosition }]} {...panGesture.panHandlers}>
       <Box justify="flex-start" w="100%" h="50px" pt="20px">
         <Box w="40px" h="5px" borderRadius="20px" bgColor="#d2d2d2" />
       </Box>
 
-      <Box w="100%" mb="26px">
-        <Text size="20px" weight="bold">
-          Status Info
-        </Text>
-      </Box>
-
-      <Container f="1">
-        <ScrollBox w="100%" h="100%">
-          <Box w="100%" h="300px" bgColor="red">
-            <Text>1</Text>
-          </Box>
-
-          <Box w="100%" h="300px" bgColor="blue">
-            <Text>2</Text>
-          </Box>
-
-          <Box w="100%" h="300px" bgColor="green">
-            <Text>3</Text>
-          </Box>
-
-          <Box w="100%" h="300px" bgColor="yellow">
-            <Text>4</Text>
-          </Box>
-        </ScrollBox>
-      </Container>
+      {children}
     </Animated.View>
   );
 };
