@@ -2,12 +2,12 @@ import React from "react";
 import { Container, Text } from "@src/atoms";
 import { Status } from "@src/molecules";
 import { BottomSheet } from "@src/organisms";
-import { StatusInfo } from "@src/pages";
+import { StatusInfoPage } from "@src/pages";
 
-export const HomeScreen = () => {
+export const StatusPage = () => {
   return (
     <Container f="1" justify="flex-start" bgColor="white">
-      <Text size="36px" weight="bold" m="60px 0 80px">
+      <Text size="32px" weight="bold" m="40px 0 80px">
         Status
       </Text>
 
@@ -17,7 +17,7 @@ export const HomeScreen = () => {
       <Status title="Stamina" value={5.001} />
 
       <BottomSheet>
-        <StatusInfo />
+        <StatusInfoPage />
       </BottomSheet>
     </Container>
   );

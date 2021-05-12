@@ -1,1 +1,2 @@
-export * from "./StatusInfo";
+export * from "./StatusPage";
+export * from "./StatusInfoPage";

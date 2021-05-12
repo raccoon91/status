@@ -51,7 +51,7 @@ export const BottomSheet: FC<IBottomSheetProps> = ({ children }) => {
   return (
     <Animated.View style={[styles.animatedView, { bottom: animatedPosition }]} {...panGesture.panHandlers}>
       <Box justify="flex-start" w="100%" h="50px" pt="20px">
-        <Box w="40px" h="5px" borderRadius="20px" bgColor="#d2d2d2" />
+        <Box w="40px" h="5px" radius="20px" bgColor="#d2d2d2" />
       </Box>
 
       {children}
