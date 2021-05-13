@@ -1,6 +1,6 @@
 import React, { FC } from "react";
-import { Box } from "@src/atoms";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { Box } from "@src/components/atoms";
 
 interface IAccordionCollapse {
   arccordionKey: number;

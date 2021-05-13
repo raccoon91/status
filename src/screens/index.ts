@@ -1,3 +1,3 @@
-export * from "./StatusScreen";
-export * from "./StatsScreen";
-export * from "./SettingScreen";
+export * from "./Home";
+export * from "./Stats";
+export * from "./Setting";

@@ -7,7 +7,7 @@ import {
   GestureResponderEvent,
   PanResponderGestureState,
 } from "react-native";
-import { Box } from "@src/atoms";
+import { Box } from "@src/components/atoms";
 
 const DEVICE = Dimensions.get("window");
 

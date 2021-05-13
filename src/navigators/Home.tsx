@@ -1,13 +1,13 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { StatusPage } from "@src/pages";
+import { HomeScreen } from "@src/screens";
 
 const Stack = createStackNavigator();
 
-export const StatusScreen = () => {
+export const HomeNavigator = () => {
   return (
     <Stack.Navigator initialRouteName="Status" screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Status" component={StatusPage} />
+      <Stack.Screen name="Status" component={HomeScreen} />
     </Stack.Navigator>
   );
 };

@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Box, Text, DecimalNumber } from "@src/atoms";
+import { Box, Text, DecimalNumber } from "@src/components/atoms";
 
 interface IStatusProps {
   title: string;

@@ -1,8 +1,8 @@
 import React from "react";
-import { Container, ScrollBox, Text } from "@src/atoms";
-import { ArccodionToggle, AccordionHeader, ArccodionCollapse } from "@src/molecules";
+import { Container, ScrollBox, Text } from "@src/components/atoms";
+import { ArccodionToggle, AccordionHeader, ArccodionCollapse } from "@src/components/molecules";
 
-export const StatusInfoPage = () => {
+export const StatusInfo = () => {
   return (
     <Container f="1">
       <Text size="26px" weight="bold" mb="30px">

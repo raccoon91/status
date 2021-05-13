@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import Icon from "react-native-vector-icons/Feather";
-import { Box, Text } from "@src/atoms";
+import { Box, Text } from "@src/components/atoms";
 
 interface IAccordionHeader {
   text: string;

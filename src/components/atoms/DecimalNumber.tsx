@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Box, Text } from "@src/atoms";
+import { Box, Text } from "@src/components/atoms";
 
 interface IDecimalNumberProps {
   statusValue: number;
