@@ -1,6 +1,11 @@
 import styled from "styled-components/native";
 
 interface IContainerProps {
+  position?: string;
+  top?: string;
+  right?: string;
+  bottom?: string;
+  left?: string;
   f?: string;
   d?: string;
   justify?: string;
@@ -18,6 +23,11 @@ interface IContainerProps {
 }
 
 export const Container = styled.SafeAreaView<IContainerProps>`
+  ${({ position }) => position && `position: ${position};`}
+  ${({ top }) => top && `top: ${top};`}
+  ${({ right }) => right && `right: ${right};`}
+  ${({ bottom }) => bottom && `bottom: ${bottom};`}
+  ${({ left }) => left && `left: ${left};`}
   ${({ f }) => f && `flex: ${f};`}
   ${({ d }) => d && `flex-direction: ${d};`}
   justify-content: ${({ justify }) => justify || "center"};

@@ -8,7 +8,7 @@ interface IStatusProps {
 
 export const Status: FC<IStatusProps> = ({ title, value }) => {
   return (
-    <Box d="row" justify="space-between" w="60%" mb="50px">
+    <Box d="row" justify="space-between" w="60%" mb="40px">
       <Text size="24px" weight="bold">
         {title}
       </Text>
