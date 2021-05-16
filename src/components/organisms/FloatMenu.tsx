@@ -1,6 +1,6 @@
 import React, { FC } from "react";
-import Icon from "react-native-vector-icons/Feather";
-import { CircleMenu, Container } from "@src/components/atoms";
+import { Container } from "@src/components/atoms";
+import { FloatMenuMainButton } from "@src/components/molecules";
 import { useNavigation } from "@react-navigation/core";
 
 interface IFloatMenu {
@@ -16,9 +16,7 @@ export const FloatMenu: FC<IFloatMenu> = ({ right, bottom }) => {
 
   return (
     <Container position="absolute" right={right || "0"} bottom={bottom || "0"}>
-      <CircleMenu w="50px" h="50px" bgColor="black" onPress={pressAddStatus}>
-        <Icon name="plus" color="white" size={30} />
-      </CircleMenu>
+      <FloatMenuMainButton bgColor="black" featherIconName="plus" iconColor="white" />
     </Container>
   );
 };

@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ActivityIndicator } from "react-native";
 import { Box, Container, Text } from "@src/components/atoms";
-import { Status, FloatMenu } from "@src/components/molecules";
-import { BottomSheet } from "@src/components/organisms";
+import { Status } from "@src/components/molecules";
+import { FloatMenu, BottomSheet } from "@src/components/organisms";
 import { StatusInfo } from "@src/components/templates";
 
 const initialStatus = [
