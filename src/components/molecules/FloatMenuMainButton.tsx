@@ -1,27 +1,40 @@
-import React, { FC, useRef, useState } from "react";
-import { Animated } from "react-native";
+import React, { FC, useRef } from "react";
+import { Animated, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import { CircleMenu } from "@src/components/atoms";
 
 interface IFloatMenuMainButtonProps {
+  size: string;
   bgColor: string;
   featherIconName: string;
   iconColor: string;
+  iconSize: number;
+  isOpenMenu: boolean;
+  openMenu: () => void;
+  closeMenu: () => void;
 }
-export const FloatMenuMainButton: FC<IFloatMenuMainButtonProps> = ({ bgColor, featherIconName, iconColor }) => {
+export const FloatMenuMainButton: FC<IFloatMenuMainButtonProps> = ({
+  size,
+  bgColor,
+  featherIconName,
+  iconColor,
+  iconSize,
+  isOpenMenu,
+  openMenu,
+  closeMenu,
+}) => {
   const rotateDeg = useRef(new Animated.Value(0)).current;
-  const [isOpenMenu, setIsOpenMenu] = useState(false);
 
-  const pressOpenMenu = () => {
+  const pressMainMenu = () => {
     if (isOpenMenu) {
-      setIsOpenMenu(false);
+      closeMenu();
       Animated.timing(rotateDeg, {
         toValue: 0,
         duration: 200,
         useNativeDriver: true,
       }).start();
     } else {
-      setIsOpenMenu(true);
+      openMenu();
       Animated.timing(rotateDeg, {
         toValue: 1,
         duration: 200,
@@ -40,10 +53,17 @@ export const FloatMenuMainButton: FC<IFloatMenuMainButtonProps> = ({ bgColor, fe
   ];
 
   return (
-    <Animated.View style={{ transform: transformAnimation }}>
-      <CircleMenu w="48px" h="48px" bgColor={bgColor} onPress={pressOpenMenu}>
-        <Icon name={featherIconName} color={iconColor} size={32} />
+    <Animated.View style={[styles.animatedView, { transform: transformAnimation }]}>
+      <CircleMenu w={size} h={size} bgColor={bgColor} onPress={pressMainMenu}>
+        <Icon name={featherIconName} color={iconColor} size={iconSize} />
       </CircleMenu>
     </Animated.View>
   );
 };
+
+const styles = StyleSheet.create({
+  animatedView: {
+    position: "absolute",
+    zIndex: 10,
+  },
+});

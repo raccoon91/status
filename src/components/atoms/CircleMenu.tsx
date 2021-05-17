@@ -1,4 +1,5 @@
 import styled from "styled-components/native";
+import { TouchableHighlight } from "react-native-gesture-handler";
 
 interface ICircleMunuProps {
   w?: string;
@@ -9,7 +10,7 @@ interface ICircleMunuProps {
   color?: string;
 }
 
-export const CircleMenu = styled.TouchableHighlight<ICircleMunuProps>`
+export const CircleMenu = styled(TouchableHighlight)<ICircleMunuProps>`
   align-items: center;
   justify-content: center;
   ${({ w }) => w && `width: ${w};`}

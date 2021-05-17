@@ -13,6 +13,29 @@ const initialStatus = [
   { name: "Stamina", value: 5 },
 ];
 
+const floatMenuOptions = {
+  position: {
+    right: "20px",
+    bottom: "80px",
+  },
+  mainMenu: {
+    color: "black",
+    iconName: "plus",
+  },
+  subMenu: [
+    {
+      color: "gray",
+      iconName: "settings",
+      to: "Update",
+    },
+    {
+      color: "gray",
+      iconName: "edit",
+      to: "Update",
+    },
+  ],
+};
+
 interface IStatus {
   name: string;
   value: number;
@@ -29,6 +52,7 @@ export const HomeScreen = () => {
       setStatusList(parsedStatus);
     } else {
       setStatusList(initialStatus);
+      AsyncStorage.setItem("@status", JSON.stringify(initialStatus));
     }
   };
 
@@ -37,9 +61,9 @@ export const HomeScreen = () => {
   }, []);
 
   return (
-    <Container position="relative" f="1" justify="flex-start" bgColor="white">
-      <Text size="32px" weight="bold" m="40px 0 80px">
-        Status
+    <Container position="relative" f="1" justify="flex-start" bgColor="white" pt="40px">
+      <Text size="28px" weight="bold">
+        STATUS
       </Text>
 
       {statusList.length ? (
@@ -50,7 +74,7 @@ export const HomeScreen = () => {
         </Box>
       )}
 
-      <FloatMenu right="20px" bottom="80px" />
+      <FloatMenu floatMenuOptions={floatMenuOptions} />
 
       <BottomSheet>
         <StatusInfo />

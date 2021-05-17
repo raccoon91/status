@@ -17,6 +17,7 @@ interface IContainerProps {
   mx?: string;
   my?: string;
   p?: string;
+  pt?: string;
   px?: string;
   py?: string;
   bgColor?: string;
@@ -39,6 +40,7 @@ export const Container = styled.SafeAreaView<IContainerProps>`
   ${({ mx }) => mx && `margin: 0 ${mx};`}
   ${({ my }) => my && `margin: ${my} 0;`}
   ${({ p }) => p && `padding: ${p};`}
+  ${({ pt }) => pt && `padding-top: ${pt};`}
   ${({ px }) => px && `padding: 0 ${px};`}
   ${({ py }) => py && `padding: ${py} 0;`}
   ${({ bgColor }) => bgColor && `background-color: ${bgColor};`}
