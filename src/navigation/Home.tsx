@@ -4,7 +4,7 @@ import { HomeScreen, UpdateStatusScreen } from "@src/screens";
 
 const Stack = createStackNavigator();
 
-export const HomeNavigator = () => {
+export const HomeNavigation = () => {
   return (
     <Stack.Navigator initialRouteName="Status" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Status" component={HomeScreen} />

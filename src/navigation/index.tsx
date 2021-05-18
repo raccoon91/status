@@ -3,17 +3,11 @@ import { StyleSheet } from "react-native";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import Icon from "react-native-vector-icons/Feather";
 import { StatsScreen, SettingScreen } from "@src/screens";
-import { HomeNavigator } from "./Home";
+import { HomeNavigation } from "./Home";
 
 const Tab = createMaterialBottomTabNavigator();
 
-const styles = StyleSheet.create({
-  tapBar: {
-    backgroundColor: "white",
-  },
-});
-
-const Navigator = () => (
+const MainNavigation = () => (
   <Tab.Navigator
     initialRouteName="Home"
     labeled={false}
@@ -23,7 +17,7 @@ const Navigator = () => (
   >
     <Tab.Screen
       name="Home"
-      component={HomeNavigator}
+      component={HomeNavigation}
       options={{
         tabBarIcon: ({ color }) => <Icon name="home" color={color} size={22} />,
       }}
@@ -45,4 +39,10 @@ const Navigator = () => (
   </Tab.Navigator>
 );
 
-export default Navigator;
+const styles = StyleSheet.create({
+  tapBar: {
+    backgroundColor: "white",
+  },
+});
+
+export default MainNavigation;

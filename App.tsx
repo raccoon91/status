@@ -1,10 +1,10 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import Navigator from "@src/navigators";
+import MainNavigator from "@src/navigation";
 
 const App = () => (
   <NavigationContainer>
-    <Navigator />
+    <MainNavigator />
   </NavigationContainer>
 );
 
