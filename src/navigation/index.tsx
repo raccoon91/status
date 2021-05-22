@@ -1,26 +1,38 @@
 import React from "react";
-import { StyleSheet } from "react-native";
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/Feather";
 import { StatsScreen, SettingScreen } from "@src/screens";
 import { HomeNavigation } from "./Home";
+import { getFocusedRouteNameFromRoute, RouteProp } from "@react-navigation/native";
 
-const Tab = createMaterialBottomTabNavigator();
+const getVisibility = (route: RouteProp<Record<string, object | undefined>, string>) => {
+  const focusedRouteName = getFocusedRouteNameFromRoute(route);
+
+  if (focusedRouteName === "Update") {
+    return false;
+  }
+
+  return true;
+};
+
+const Tab = createBottomTabNavigator();
 
 const MainNavigation = () => (
   <Tab.Navigator
     initialRouteName="Home"
-    labeled={false}
-    activeColor="black"
-    inactiveColor="darkgray"
-    barStyle={styles.tapBar}
+    tabBarOptions={{
+      showLabel: false,
+      activeTintColor: "black",
+      inactiveTintColor: "gray",
+    }}
   >
     <Tab.Screen
       name="Home"
       component={HomeNavigation}
-      options={{
+      options={({ route }) => ({
         tabBarIcon: ({ color }) => <Icon name="home" color={color} size={22} />,
-      }}
+        tabBarVisible: getVisibility(route),
+      })}
     />
     <Tab.Screen
       name="Stats"
@@ -38,11 +50,5 @@ const MainNavigation = () => (
     />
   </Tab.Navigator>
 );
-
-const styles = StyleSheet.create({
-  tapBar: {
-    backgroundColor: "white",
-  },
-});
 
 export default MainNavigation;
