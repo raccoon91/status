@@ -41,7 +41,7 @@ interface IStatus {
   value: number;
 }
 
-export const HomeScreen = () => {
+export const StatusScreen = () => {
   const [statusList, setStatusList] = useState<IStatus[]>([]);
 
   const getStatusList = async () => {

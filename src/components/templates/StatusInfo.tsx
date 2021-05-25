@@ -11,28 +11,28 @@ export const StatusInfo = () => {
 
       <ScrollBox w="100%" p="20px 40px">
         <ArccodionToggle>
-          <ArccodionCollapse arccordionKey={1} header={<AccordionHeader text="Hit Point" />}>
+          <ArccodionCollapse arccordionKey={1} header={<AccordionHeader title="Hit Point" />}>
             <Text size="16px" mb="5px">
               push up
             </Text>
             <Text size="16px">bench press</Text>
           </ArccodionCollapse>
 
-          <ArccodionCollapse arccordionKey={2} header={<AccordionHeader text="Strength" />}>
+          <ArccodionCollapse arccordionKey={2} header={<AccordionHeader title="Strength" />}>
             <Text size="16px" mb="5px">
               push up
             </Text>
             <Text size="16px">bench press</Text>
           </ArccodionCollapse>
 
-          <ArccodionCollapse arccordionKey={3} header={<AccordionHeader text="Agility" />}>
+          <ArccodionCollapse arccordionKey={3} header={<AccordionHeader title="Agility" />}>
             <Text size="16px" mb="5px">
               push up
             </Text>
             <Text size="16px">bench press</Text>
           </ArccodionCollapse>
 
-          <ArccodionCollapse arccordionKey={4} header={<AccordionHeader text="Stamina" />}>
+          <ArccodionCollapse arccordionKey={4} header={<AccordionHeader title="Stamina" />}>
             <Text size="16px" mb="5px">
               push up
             </Text>

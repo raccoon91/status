@@ -1,4 +1,4 @@
-export * from "./Home";
+export * from "./Status";
 export * from "./Stats";
 export * from "./Setting";
 export * from "./UpdateStatus";

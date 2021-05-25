@@ -1,6 +1,5 @@
 import React, { FC } from "react";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { Box } from "@src/components/atoms";
+import { Box, OpacityBox } from "@src/components/atoms";
 
 interface IAccordionCollapse {
   arccordionKey: number;
@@ -25,12 +24,15 @@ export const ArccodionCollapse: FC<IAccordionCollapse> = ({
 
   return (
     <>
-      <TouchableOpacity onPress={handleChangeActvieKey}>{header}</TouchableOpacity>
+      <OpacityBox mb="10px" onPress={handleChangeActvieKey}>
+        {header}
+      </OpacityBox>
       <Box
         align="flex-start"
+        display={arccordionKey === activeKey ? "flex" : "none"}
         h={arccordionKey === activeKey ? "auto" : "0"}
-        my={arccordionKey === activeKey ? "10px" : "5px"}
-        p={arccordionKey === activeKey ? "10px 20px" : null}
+        mb={arccordionKey === activeKey ? "10px" : "0"}
+        p={arccordionKey === activeKey ? "10px" : null}
       >
         {children}
       </Box>
