@@ -16,8 +16,7 @@ export const CircleMenu = styled(TouchableHighlight)<ICircleMunuProps>`
   ${({ w }) => w && `width: ${w};`}
   ${({ h }) => h && `height: ${h};`}
   ${({ b }) => b && `border: ${b};`}
-  ${({ r }) => r && `border-radius: ${r};`}
+  border-radius: ${({ r }) => r || "100px"};
   ${({ bgColor }) => bgColor && `background-color: ${bgColor};`}
   ${({ color }) => color && `color: ${color};`}
-  border-radius: 100px;
 `;

@@ -4,3 +4,7 @@ export * from "./Box";
 export * from "./Text";
 export * from "./DecimalNumber";
 export * from "./CircleMenu";
+export * from "./HighlightBox";
+export * from "./Button";
+export * from "./OpacityBox";
+export * from "./Input";
