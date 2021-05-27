@@ -10,7 +10,7 @@ const Stack = createStackNavigator();
 export const HomeNavigation = () => {
   const navigation = useNavigation();
 
-  const pressGoStatus = () => {
+  const handlePressGoStatus = () => {
     navigation.navigate("Status");
   };
 
@@ -30,7 +30,7 @@ export const HomeNavigation = () => {
           },
           headerTitleAlign: "center",
           headerLeft: () => (
-            <HighlightBox px="10px" onPress={pressGoStatus}>
+            <HighlightBox px="10px" onPress={handlePressGoStatus}>
               <Icon name="chevron-left" color="white" size={36} />
             </HighlightBox>
           ),

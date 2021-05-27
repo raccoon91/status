@@ -29,7 +29,7 @@ export const UpdateStatusScreen = () => {
     setContentValue("");
   };
 
-  const submitSelectedContent = () => {
+  const handleSubmitSelectedContent = () => {
     const name = selectedContent?.name;
     const value = Number(contentValue);
 
@@ -65,7 +65,7 @@ export const UpdateStatusScreen = () => {
                     value={contentValue}
                     onChange={handleChangeContentValue}
                     onBlur={clearSelectedContent}
-                    onSubmitEditing={submitSelectedContent}
+                    onSubmitEditing={handleSubmitSelectedContent}
                   />
                 </Box>
               ) : (

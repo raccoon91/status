@@ -30,15 +30,15 @@ export const FloatMenu: FC<IFloatMenu> = ({ floatMenuOptions: { position, mainMe
   const navigation = useNavigation();
   const [isOpenMenu, setIsOpenMenu] = useState(false);
 
-  const openMenu = () => {
+  const handleOpenMenu = () => {
     setIsOpenMenu(true);
   };
 
-  const closeMenu = () => {
+  const handleCloseMenu = () => {
     setIsOpenMenu(false);
   };
 
-  const pressSubMenu = (to: string) => () => {
+  const handlePressSubMenu = (to: string) => () => {
     navigation.navigate(to);
   };
 
@@ -51,8 +51,8 @@ export const FloatMenu: FC<IFloatMenu> = ({ floatMenuOptions: { position, mainMe
         iconColor={mainMenu.iconColor || "white"}
         iconSize={mainMenu.iconSize || 32}
         isOpenMenu={isOpenMenu}
-        openMenu={openMenu}
-        closeMenu={closeMenu}
+        openMenu={handleOpenMenu}
+        closeMenu={handleCloseMenu}
       />
       {subMenu &&
         subMenu.length !== 0 &&
@@ -66,7 +66,7 @@ export const FloatMenu: FC<IFloatMenu> = ({ floatMenuOptions: { position, mainMe
             iconSize={sub.iconSize || 20}
             iconColor={sub.iconColor || "white"}
             isOpenMenu={isOpenMenu}
-            pressSubMenu={pressSubMenu(sub.to)}
+            pressSubMenu={handlePressSubMenu(sub.to)}
           />
         ))}
     </Container>

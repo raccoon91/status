@@ -25,7 +25,7 @@ export const FloatMenuMainButton: FC<IFloatMenuMainButtonProps> = ({
 }) => {
   const rotateDeg = useRef(new Animated.Value(0)).current;
 
-  const pressMainMenu = () => {
+  const handlePressMainMenu = () => {
     if (isOpenMenu) {
       closeMenu();
       Animated.timing(rotateDeg, {
@@ -54,7 +54,7 @@ export const FloatMenuMainButton: FC<IFloatMenuMainButtonProps> = ({
 
   return (
     <Animated.View style={[styles.animatedView, { transform: transformAnimation }]}>
-      <CircleMenu w={size} h={size} bgColor={bgColor} onPress={pressMainMenu}>
+      <CircleMenu w={size} h={size} bgColor={bgColor} onPress={handlePressMainMenu}>
         <Icon name={featherIconName} color={iconColor} size={iconSize} />
       </CircleMenu>
     </Animated.View>
