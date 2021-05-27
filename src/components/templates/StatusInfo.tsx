@@ -1,8 +1,11 @@
 import React from "react";
+import { useAppSelector } from "@src/hooks";
 import { Container, ScrollBox, Text } from "@src/components/atoms";
 import { ArccodionToggle, AccordionHeader, ArccodionCollapse } from "@src/components/molecules";
 
 export const StatusInfo = () => {
+  const { statusInfoList } = useAppSelector((state) => state.status);
+
   return (
     <Container f="1">
       <Text size="26px" weight="bold" mb="30px">
@@ -11,33 +14,21 @@ export const StatusInfo = () => {
 
       <ScrollBox w="100%" p="20px 40px">
         <ArccodionToggle>
-          <ArccodionCollapse arccordionKey={1} header={<AccordionHeader title="Hit Point" />}>
-            <Text size="16px" mb="5px">
-              push up
-            </Text>
-            <Text size="16px">bench press</Text>
-          </ArccodionCollapse>
-
-          <ArccodionCollapse arccordionKey={2} header={<AccordionHeader title="Strength" />}>
-            <Text size="16px" mb="5px">
-              push up
-            </Text>
-            <Text size="16px">bench press</Text>
-          </ArccodionCollapse>
-
-          <ArccodionCollapse arccordionKey={3} header={<AccordionHeader title="Agility" />}>
-            <Text size="16px" mb="5px">
-              push up
-            </Text>
-            <Text size="16px">bench press</Text>
-          </ArccodionCollapse>
-
-          <ArccodionCollapse arccordionKey={4} header={<AccordionHeader title="Stamina" />}>
-            <Text size="16px" mb="5px">
-              push up
-            </Text>
-            <Text size="16px">bench press</Text>
-          </ArccodionCollapse>
+          {statusInfoList.map((statusInfo, index) => (
+            <ArccodionCollapse
+              key={`ac-${index}`}
+              arccordionKey={index + 1}
+              header={<AccordionHeader title={statusInfo.title} />}
+            >
+              <>
+                {statusInfo.contents.map((content) => (
+                  <Text key={`${statusInfo.title}-${content.name}`} size="16px" mb="5px">
+                    {content.name}
+                  </Text>
+                ))}
+              </>
+            </ArccodionCollapse>
+          ))}
         </ArccodionToggle>
       </ScrollBox>
     </Container>

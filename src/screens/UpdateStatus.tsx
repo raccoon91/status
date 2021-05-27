@@ -1,86 +1,86 @@
 import React, { useState } from "react";
 import Icon from "react-native-vector-icons/Feather";
+import { useAppSelector, useAppDispatch } from "@src/hooks";
+import { NativeSyntheticEvent, TextInputChangeEventData } from "react-native";
 import { Container, ScrollBox, Box, Text, Button, Input } from "@src/components/atoms";
 import { ArccodionToggle, AccordionHeader, ArccodionCollapse } from "@src/components/molecules";
-
-const initialUpdate = [
-  {
-    name: "Hit Point",
-    exersise: [
-      { name: "Cycle", point: 1 },
-      { name: "Treadmill", point: 1 },
-    ],
-  },
-  {
-    name: "Strength",
-    exersise: [
-      { name: "PushUp", point: 1 },
-      { name: "SitUp", point: 1 },
-      { name: "PullUp", point: 2 },
-    ],
-  },
-  {
-    name: "Agility",
-    exersise: [
-      { name: "Cycle", point: 1 },
-      { name: "Treadmill", point: 1 },
-    ],
-  },
-  {
-    name: "Stamina",
-    exersise: [
-      { name: "Cycle", point: 1 },
-      { name: "Treadmill", point: 1 },
-    ],
-  },
-];
+import { updateStatus } from "@src/store/statusSlice";
 
 export const UpdateStatusScreen = () => {
-  const [selectedExercise, setSelectedExercise] = useState<{ index: number; name: string } | null>(null);
+  const dispatch = useAppDispatch();
+  const [contentValue, setContentValue] = useState("");
+  const [selectedContent, setSelectedContent] = useState<{ index: number; name: string } | null>(null);
+  const { statusInfoList } = useAppSelector((state) => state.status);
 
-  const pressEercise = (index: number, name: string) => () => {
-    setSelectedExercise({ index, name });
+  const handlePressContent = (index: number, name: string) => () => {
+    setSelectedContent({ index, name });
   };
 
-  const clearSelectedExercise = () => {
-    setSelectedExercise(null);
+  const handleChangeContentValue = (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
+    const value = e.nativeEvent.text;
+
+    if (value) {
+      setContentValue(value);
+    }
+  };
+
+  const clearSelectedContent = () => {
+    setSelectedContent(null);
+    setContentValue("");
+  };
+
+  const submitSelectedContent = () => {
+    const name = selectedContent?.name;
+    const value = Number(contentValue);
+
+    if (name) {
+      dispatch(updateStatus({ name, value }));
+    }
+
+    clearSelectedContent();
   };
 
   return (
     <Container f="1" py="30px" bgColor="white">
       <ScrollBox w="100%" p="20px 40px">
         <ArccodionToggle>
-          {initialUpdate.map((update, updateIndex) => (
+          {statusInfoList.map((statusInfo, infoIndex) => (
             <ArccodionCollapse
-              key={`update-${updateIndex}`}
-              arccordionKey={updateIndex + 1}
+              key={`info-${infoIndex}`}
+              arccordionKey={infoIndex + 1}
               header={
-                <AccordionHeader title={update.name} headerRight={<Icon name="user-plus" color="black" size={24} />} />
+                <AccordionHeader
+                  title={statusInfo.title}
+                  headerRight={<Icon name="user-plus" color="black" size={24} />}
+                />
               }
             >
-              {selectedExercise && selectedExercise.index === updateIndex ? (
+              {selectedContent && selectedContent.index === infoIndex ? (
                 <Box d="row">
                   <Input
+                    keyboardType="numeric"
                     w="100%"
                     p="8px 16px"
                     r="5px"
-                    onBlur={clearSelectedExercise}
-                    onSubmitEditing={() => console.log("submit")}
+                    value={contentValue}
+                    onChange={handleChangeContentValue}
+                    onBlur={clearSelectedContent}
+                    onSubmitEditing={submitSelectedContent}
                   />
                 </Box>
               ) : (
                 <Box d="row">
-                  {update.exersise.length !== 0 ? (
-                    update.exersise.map((exercise, exerciseIndex) => (
+                  {statusInfo.contents.length !== 0 ? (
+                    statusInfo.contents.map((content, contentIndex) => (
                       <Button
-                        key={`${exercise.name}-${exerciseIndex}`}
+                        key={`${statusInfo.title}-${contentIndex}`}
                         mx="10px"
                         p="8px 16px"
                         b="2px solid black"
                         r="5px"
-                        onPress={pressEercise(updateIndex, exercise.name)}
+                        onPress={handlePressContent(infoIndex, content.name)}
                       >
-                        <Text weight="bold">{exercise.name}</Text>
+                        <Text weight="bold">{content.name}</Text>
                       </Button>
                     ))
                   ) : (
