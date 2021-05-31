@@ -1,54 +1,50 @@
 import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Icon from "react-native-vector-icons/Feather";
-import { StatsScreen, SettingScreen } from "@src/screens";
-import { HomeNavigation } from "./Home";
-import { getFocusedRouteNameFromRoute, RouteProp } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { getFocusedRouteNameFromRoute, RouteProp } from "@react-navigation/core";
+import { UpdateStatusScreen } from "@src/screens";
+import { MainNavigation } from "./Main";
 
-const getVisibility = (route: RouteProp<Record<string, object | undefined>, string>) => {
-  const focusedRouteName = getFocusedRouteNameFromRoute(route);
+const getTitleName = (route: RouteProp<Record<string, object | undefined>, string>) => {
+  const name = getFocusedRouteNameFromRoute(route);
 
-  if (focusedRouteName === "Update") {
-    return false;
-  }
-
-  return true;
+  return name || "Status";
 };
 
-const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
-const MainNavigation = () => (
-  <Tab.Navigator
-    initialRouteName="Home"
-    tabBarOptions={{
-      showLabel: false,
-      activeTintColor: "black",
-      inactiveTintColor: "gray",
-    }}
-  >
-    <Tab.Screen
-      name="Home"
-      component={HomeNavigation}
-      options={({ route }) => ({
-        tabBarIcon: ({ color }) => <Icon name="home" color={color} size={22} />,
-        tabBarVisible: getVisibility(route),
-      })}
-    />
-    <Tab.Screen
-      name="Stats"
-      component={StatsScreen}
-      options={{
-        tabBarIcon: ({ color }) => <Icon name="bar-chart" color={color} size={22} />,
-      }}
-    />
-    <Tab.Screen
-      name="Settings"
-      component={SettingScreen}
-      options={{
-        tabBarIcon: ({ color }) => <Icon name="settings" color={color} size={22} />,
-      }}
-    />
-  </Tab.Navigator>
-);
-
-export default MainNavigation;
+export const Navigations = () => {
+  return (
+    <Stack.Navigator initialRouteName="Main">
+      <Stack.Screen
+        name="Main"
+        options={({ route }) => ({
+          title: getTitleName(route),
+          headerStyle: {
+            borderBottomWidth: 1,
+            borderBottomColor: "#e2e2e2",
+          },
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+          headerTitleAlign: "left",
+        })}
+        component={MainNavigation}
+      />
+      <Stack.Screen
+        name="Update"
+        options={{
+          title: "Update",
+          headerStyle: {
+            backgroundColor: "black",
+          },
+          headerTintColor: "white",
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+          headerTitleAlign: "left",
+        }}
+        component={UpdateStatusScreen}
+      />
+    </Stack.Navigator>
+  );
+};

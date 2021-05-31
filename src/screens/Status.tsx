@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { ActivityIndicator } from "react-native";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
 import { fetchStatus } from "@src/store/statusSlice";
-import { Box, Container, Text } from "@src/components/atoms";
+import { Box, Container } from "@src/components/atoms";
 import { Status } from "@src/components/molecules";
 import { FloatMenu, BottomSheet } from "@src/components/organisms";
 import { StatusInfo } from "@src/components/templates";
@@ -27,11 +27,7 @@ export const StatusScreen = () => {
   }, [fetching, dispatch]);
 
   return (
-    <Container position="relative" f="1" justify="flex-start" bgColor="white" pt="40px">
-      <Text size="28px" weight="bold">
-        STATUS
-      </Text>
-
+    <Container position="relative" f="1" justify="flex-start" bgColor="white">
       {!loading ? (
         statusList.map((status) => <Status key={status.name} title={status.name} value={status.value} />)
       ) : (
