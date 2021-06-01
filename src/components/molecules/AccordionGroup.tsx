@@ -1,10 +1,10 @@
 import React, { FC, useState } from "react";
 
-interface IAccordionToggle {
+interface IAccordionGroup {
   children: React.ReactElement[];
 }
 
-export const ArccodionToggle: FC<IAccordionToggle> = ({ children }) => {
+export const ArccodionGroup: FC<IAccordionGroup> = ({ children }) => {
   const [activeKey, setActiveKey] = useState<number | null>(null);
 
   const changeActvieKey = (selectedActiveKey: number) => {

@@ -3,14 +3,14 @@ import Icon from "react-native-vector-icons/Feather";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
 import { NativeSyntheticEvent, TextInputChangeEventData } from "react-native";
 import { Container, ScrollBox, Box, Text, Button, Input } from "@src/components/atoms";
-import { ArccodionToggle, AccordionHeader, ArccodionCollapse } from "@src/components/molecules";
+import { ArccodionGroup, Arccodion } from "@src/components/molecules";
 import { updateStatus } from "@src/store/statusSlice";
 
 export const UpdateStatusScreen = () => {
   const dispatch = useAppDispatch();
+  const { statusInfoList } = useAppSelector((state) => state.status);
   const [contentValue, setContentValue] = useState("");
   const [selectedContent, setSelectedContent] = useState<{ index: number; name: string } | null>(null);
-  const { statusInfoList } = useAppSelector((state) => state.status);
 
   const handlePressContent = (index: number, name: string) => () => {
     setSelectedContent({ index, name });
@@ -43,25 +43,22 @@ export const UpdateStatusScreen = () => {
   return (
     <Container f="1" py="30px" bgColor="white">
       <ScrollBox w="100%" p="20px 40px">
-        <ArccodionToggle>
+        <ArccodionGroup>
           {statusInfoList.map((statusInfo, infoIndex) => (
-            <ArccodionCollapse
+            <Arccodion
               key={`info-${infoIndex}`}
               arccordionKey={infoIndex + 1}
-              header={
-                <AccordionHeader
-                  title={statusInfo.title}
-                  headerRight={<Icon name="user-plus" color="black" size={24} />}
-                />
-              }
+              title={statusInfo.title}
+              right={<Icon name="user-plus" color="black" size={24} />}
+              initColor="gray"
+              activeColor="black"
             >
               {selectedContent && selectedContent.index === infoIndex ? (
                 <Box d="row">
                   <Input
+                    autoFocus
                     keyboardType="numeric"
-                    w="100%"
                     p="8px 16px"
-                    r="5px"
                     value={contentValue}
                     onChange={handleChangeContentValue}
                     onBlur={clearSelectedContent}
@@ -76,8 +73,6 @@ export const UpdateStatusScreen = () => {
                         key={`${statusInfo.title}-${contentIndex}`}
                         mx="10px"
                         p="8px 16px"
-                        b="2px solid black"
-                        r="5px"
                         onPress={handlePressContent(infoIndex, content.name)}
                       >
                         <Text weight="bold">{content.name}</Text>
@@ -88,9 +83,9 @@ export const UpdateStatusScreen = () => {
                   )}
                 </Box>
               )}
-            </ArccodionCollapse>
+            </Arccodion>
           ))}
-        </ArccodionToggle>
+        </ArccodionGroup>
       </ScrollBox>
     </Container>
   );

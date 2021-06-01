@@ -19,7 +19,7 @@ interface IInputProps {
 }
 
 export const Input = styled(TextInput)<IInputProps>`
-  ${({ w }) => w && `width: ${w};`}
+  width: ${({ w }) => w || "100%"};
   ${({ h }) => h && `height: ${h};`}
   ${({ m }) => m && `margin: ${m};`}
   ${({ mt }) => mt && `margin-top: ${mt};`}
@@ -31,6 +31,6 @@ export const Input = styled(TextInput)<IInputProps>`
   ${({ pb }) => pb && `padding-bottom: ${pb};`}
   ${({ px }) => px && `padding: 0 ${px};`}
   ${({ py }) => py && `padding: ${py} 0;`}
-  border: ${({ b }) => b || "1px solid black"};
-  ${({ r }) => r && `border-radius: ${r};`}
+  border: ${({ b }) => b || "1px solid gray"};
+  border-radius: ${({ r }) => r || "3px"};
 `;

@@ -1,7 +1,8 @@
 import React from "react";
+import Icon from "react-native-vector-icons/Entypo";
 import { useAppSelector } from "@src/hooks";
-import { Container, ScrollBox, Text } from "@src/components/atoms";
-import { ArccodionToggle, AccordionHeader, ArccodionCollapse } from "@src/components/molecules";
+import { Box, Container, ScrollBox, Text } from "@src/components/atoms";
+import { ArccodionGroup, Arccodion } from "@src/components/molecules";
 
 export const StatusInfo = () => {
   const { statusInfoList } = useAppSelector((state) => state.status);
@@ -13,23 +14,26 @@ export const StatusInfo = () => {
       </Text>
 
       <ScrollBox w="100%" p="20px 40px">
-        <ArccodionToggle>
+        <ArccodionGroup>
           {statusInfoList.map((statusInfo, index) => (
-            <ArccodionCollapse
+            <Arccodion
               key={`ac-${index}`}
               arccordionKey={index + 1}
-              header={<AccordionHeader title={statusInfo.title} />}
+              title={statusInfo.title}
+              initColor="gray"
+              activeColor="black"
             >
-              <>
-                {statusInfo.contents.map((content) => (
-                  <Text key={`${statusInfo.title}-${content.name}`} size="16px" mb="5px">
+              {statusInfo.contents.map((content) => (
+                <Box key={`${statusInfo.title}-${content.name}`} d="row" p="8px 16px">
+                  <Icon name="dot-single" color="black" size={28} />
+                  <Text size="16px" px="4px">
                     {content.name}
                   </Text>
-                ))}
-              </>
-            </ArccodionCollapse>
+                </Box>
+              ))}
+            </Arccodion>
           ))}
-        </ArccodionToggle>
+        </ArccodionGroup>
       </ScrollBox>
     </Container>
   );

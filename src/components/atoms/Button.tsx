@@ -35,8 +35,8 @@ export const Button = styled(TouchableOpacity)<IButtonProps>`
   ${({ pb }) => pb && `padding-bottom: ${pb};`}
   ${({ px }) => px && `padding: 0 ${px};`}
   ${({ py }) => py && `padding: ${py} 0;`}
-  ${({ b }) => b && `border: ${b};`}
-  ${({ r }) => r && `border-radius: ${r};`}
+  border: 1px solid black;
+  border-radius: ${({ r }) => r || "3px"};
   ${({ bgColor }) => bgColor && `background-color: ${bgColor};`}
   ${({ color }) => color && `color: ${color};`}
 `;
