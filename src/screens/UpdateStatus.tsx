@@ -10,18 +10,18 @@ export const UpdateStatusScreen = () => {
   const dispatch = useAppDispatch();
   const { statusInfoList } = useAppSelector((state) => state.status);
   const [contentValue, setContentValue] = useState("");
-  const [selectedContent, setSelectedContent] = useState<{ index: number; name: string } | null>(null);
+  const [selectedContent, setSelectedContent] = useState<{ title: string; name: string } | null>(null);
 
-  const handlePressContent = (index: number, name: string) => () => {
-    setSelectedContent({ index, name });
+  const handlePressContent = (title: string, name: string) => () => {
+    if (title === selectedContent?.title && name === selectedContent?.name) {
+      setSelectedContent(null);
+    } else {
+      setSelectedContent({ title, name });
+    }
   };
 
   const handleChangeContentValue = (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
-    const value = e.nativeEvent.text;
-
-    if (value) {
-      setContentValue(value);
-    }
+    setContentValue(e.nativeEvent.text);
   };
 
   const clearSelectedContent = () => {
@@ -33,7 +33,7 @@ export const UpdateStatusScreen = () => {
     const name = selectedContent?.name;
     const value = Number(contentValue);
 
-    if (name) {
+    if (name && value) {
       dispatch(updateStatus({ name, value }));
     }
 
@@ -53,36 +53,38 @@ export const UpdateStatusScreen = () => {
               initColor="gray"
               activeColor="black"
             >
-              {selectedContent && selectedContent.index === infoIndex ? (
-                <Box d="row">
+              <Box d="row">
+                {statusInfo.contents.length !== 0 ? (
+                  statusInfo.contents.map((contentName, contentIndex) => (
+                    <Button
+                      key={`${statusInfo.title}-${contentIndex}`}
+                      mx="10px"
+                      p="8px 16px"
+                      selected={
+                        selectedContent &&
+                        selectedContent.title === statusInfo.title &&
+                        selectedContent.name === contentName
+                      }
+                      title={contentName}
+                      onPress={handlePressContent(statusInfo.title, contentName)}
+                    />
+                  ))
+                ) : (
+                  <Text>Coming Soon</Text>
+                )}
+              </Box>
+              {selectedContent ? (
+                <Box d="row" p="8px 8px 0">
                   <Input
                     autoFocus
                     keyboardType="numeric"
                     p="8px 16px"
                     value={contentValue}
                     onChange={handleChangeContentValue}
-                    onBlur={clearSelectedContent}
                     onSubmitEditing={handleSubmitSelectedContent}
                   />
                 </Box>
-              ) : (
-                <Box d="row">
-                  {statusInfo.contents.length !== 0 ? (
-                    statusInfo.contents.map((content, contentIndex) => (
-                      <Button
-                        key={`${statusInfo.title}-${contentIndex}`}
-                        mx="10px"
-                        p="8px 16px"
-                        onPress={handlePressContent(infoIndex, content.name)}
-                      >
-                        <Text weight="bold">{content.name}</Text>
-                      </Button>
-                    ))
-                  ) : (
-                    <Text>Coming Soon</Text>
-                  )}
-                </Box>
-              )}
+              ) : null}
             </Arccodion>
           ))}
         </ArccodionGroup>

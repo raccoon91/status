@@ -23,11 +23,11 @@ export const StatusInfo = () => {
               initColor="gray"
               activeColor="black"
             >
-              {statusInfo.contents.map((content) => (
-                <Box key={`${statusInfo.title}-${content.name}`} d="row" p="8px 16px">
+              {statusInfo.contents.map((contentName) => (
+                <Box key={`${statusInfo.title}-${contentName}`} d="row" p="8px 16px">
                   <Icon name="dot-single" color="black" size={28} />
                   <Text size="16px" px="4px">
-                    {content.name}
+                    {contentName}
                   </Text>
                 </Box>
               ))}

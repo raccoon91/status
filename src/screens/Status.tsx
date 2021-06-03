@@ -29,7 +29,7 @@ export const StatusScreen = () => {
   return (
     <Container position="relative" f="1" justify="flex-start" bgColor="white">
       {!loading ? (
-        statusList.map((status) => <Status key={status.name} title={status.name} value={status.value} />)
+        statusList.map((status) => <Status key={status.title} title={status.title} value={status.value} />)
       ) : (
         <Box mt="120px">
           <ActivityIndicator size="large" color="black" />
