@@ -4,6 +4,8 @@ interface IOpacityBoxProps {
   direction?: string;
   align?: string;
   justify?: string;
+  w?: string;
+  h?: string;
   m?: string | null;
   mt?: string | null;
   mb?: string | null;
@@ -14,13 +16,18 @@ interface IOpacityBoxProps {
   pb?: string | null;
   px?: string | null;
   py?: string | null;
+  border?: string;
+  radius?: string;
   bgColor?: string;
+  color?: string;
 }
 
 export const OpacityBox = styled.TouchableOpacity<IOpacityBoxProps>`
   flex-direction: ${({ direction }) => direction || "row"};
   justify-content: ${({ justify }) => justify || "center"};
   align-items: ${({ align }) => align || "center"};
+  ${({ w }) => w && `width: ${w};`}
+  ${({ h }) => h && `height: ${h};`}
   ${({ m }) => m && `margin: ${m};`}
   ${({ mt }) => mt && `margin-top: ${mt};`}
   ${({ mb }) => mb && `margin-bottom: ${mb};`}
@@ -31,5 +38,7 @@ export const OpacityBox = styled.TouchableOpacity<IOpacityBoxProps>`
   ${({ pb }) => pb && `padding-bottom: ${pb};`}
   ${({ px }) => px && `padding: 0 ${px};`}
   ${({ py }) => py && `padding: ${py} 0;`}
-  background-color: ${({ bgColor }) => bgColor || "#e2e2e2"};
+  ${({ border }) => border && `border: ${border};`}
+  border-radius: ${({ radius }) => radius || "3px"};
+  background-color: ${({ bgColor }) => bgColor || "#f8f8f8"};
 `;
