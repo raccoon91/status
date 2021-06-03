@@ -1,13 +1,13 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { initialStatusList, exercises, initialUpdateList, initialStatusInfoList } from "@src/config";
+import { initialStatusList, exercises, mapStatusWithExercise } from "@src/config";
 
 interface IState {
   fetching: boolean;
   loading: boolean;
   statusList: IStatus[];
   exercises: { [key: string]: IExercise };
-  updateList: IStatus[];
+  updateList: { [key: string]: IUpdate };
   statusInfoList: IStatusInfo[];
 }
 
@@ -16,8 +16,11 @@ const initialState: IState = {
   loading: false,
   statusList: [],
   exercises,
-  updateList: initialUpdateList,
-  statusInfoList: initialStatusInfoList,
+  updateList: {},
+  statusInfoList: initialStatusList.map((status) => ({
+    title: status.title,
+    contents: mapStatusWithExercise[status.title],
+  })),
 };
 
 export const fetchStatus = createAsyncThunk<IStatus[]>("status/fetchStatus", async () => {
@@ -35,16 +38,21 @@ export const statusSlice = createSlice({
   name: "status",
   initialState,
   reducers: {
-    updateStatus: (state, action: PayloadAction<{ name: string; value: number }>) => {
-      const { name, value } = action.payload;
+    updateStatus: (state, action: PayloadAction<{ title: string; exercise: string }>) => {
+      const { title, exercise } = action.payload;
 
-      console.log(name, value);
+      if (state.updateList?.[title]?.exercise === exercise) {
+        delete state.updateList[title];
+      } else {
+        state.updateList[title] = { title, exercise, value: "" };
+      }
+    },
+    updateExercise: (state, action: PayloadAction<{ title: string; value: string }>) => {
+      const { title, value } = action.payload;
 
-      // state.statusList.forEach((status) => {
-      //   if (status.name === name) {
-      //     status.value = value;
-      //   }
-      // });
+      if (state.updateList?.[title]) {
+        state.updateList[title].value = value;
+      }
     },
   },
   extraReducers: (builder) => {
@@ -59,6 +67,6 @@ export const statusSlice = createSlice({
   },
 });
 
-export const { updateStatus } = statusSlice.actions;
+export const { updateStatus, updateExercise } = statusSlice.actions;
 
 export default statusSlice.reducer;

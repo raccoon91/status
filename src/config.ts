@@ -12,28 +12,9 @@ export const exercises = {
   cycle: { point: 1, rate: 1, unit: "km" },
 };
 
-export const initialUpdateList = [
-  { title: "Hit Point", value: 0 },
-  { title: "Strength", value: 0 },
-  { title: "Agility", value: 0 },
-  { title: "Stamina", value: 0 },
-];
-
-export const initialStatusInfoList = [
-  {
-    title: "Hit Point",
-    contents: ["push up", "sit up"],
-  },
-  {
-    title: "Strength",
-    contents: ["push up", "sit up"],
-  },
-  {
-    title: "Agility",
-    contents: ["treadmill", "cycle"],
-  },
-  {
-    title: "Stamina",
-    contents: ["treadmill", "cycle"],
-  },
-];
+export const mapStatusWithExercise: { [key: string]: string[] } = {
+  "Hit Point": ["push up", "sit up"],
+  Strength: ["push up", "sit up"],
+  Agility: ["treadmill", "cycle"],
+  Stamina: ["treadmill", "cycle"],
+};

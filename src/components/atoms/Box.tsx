@@ -9,6 +9,7 @@ interface IBoxProps {
   left?: string;
   f?: string;
   d?: string;
+  wrap?: string;
   justify?: string;
   align?: string;
   w?: string;
@@ -39,6 +40,7 @@ export const Box = styled.View<IBoxProps>`
   ${({ d }) => d && `flex-direction: ${d};`}
   justify-content: ${({ justify }) => justify || "center"};
   align-items: ${({ align }) => align || "center"};
+  ${({ wrap }) => wrap && `flex-wrap: ${wrap};`}
   ${({ w }) => w && `width: ${w};`}
   ${({ h }) => h && `height: ${h};`}
   ${({ m }) => m && `margin: ${m};`}
