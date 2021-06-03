@@ -1,15 +1,17 @@
 interface IStatus {
-  name: string;
+  title: string;
   value: number;
 }
 
-interface IStatusInfoContent {
-  name: string;
+interface IExercise {
+  name?: string;
   description?: string;
   point?: number;
+  rate?: number;
+  count?: string;
 }
 
 interface IStatusInfo {
   title: string;
-  contents: IStatusInfoContent[];
+  contents: string[];
 }
