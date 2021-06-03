@@ -10,7 +10,7 @@ interface IAccordion {
   initColor?: string;
   activeColor?: string;
   header?: React.ReactElement;
-  children: React.ReactElement | React.ReactElement[];
+  children: React.ReactElement | React.ReactElement[] | Element | null;
   changeActvieKey?: (selectedActiveKey: number) => void;
 }
 
@@ -32,7 +32,7 @@ export const Arccodion: FC<IAccordion> = ({
 
   return (
     <>
-      <OpacityBox justify="space-between" mb="8px" bgColor="#e8e8e8" onPress={handleChangeActvieKey}>
+      <OpacityBox justify="space-between" mb="8px" bgColor="#f8f8f8" onPress={handleChangeActvieKey}>
         {title && (
           <Text
             size="18px"
@@ -42,7 +42,11 @@ export const Arccodion: FC<IAccordion> = ({
             {title}
           </Text>
         )}
-        {right ? right : <Icon name="chevron-down" color="black" size={28} />}
+        {right ? (
+          right
+        ) : (
+          <Icon name={arccordionKey === activeKey ? "chevron-up" : "chevron-down"} color="black" size={28} />
+        )}
       </OpacityBox>
       <Box display={arccordionKey === activeKey ? "flex" : "none"} align="flex-start" mb="8px">
         {children}
