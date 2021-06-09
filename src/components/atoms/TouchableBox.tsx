@@ -1,24 +1,14 @@
 import styled from "styled-components/native";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
-interface IScrollBoxProps {
-  f?: string;
-  w?: string;
-  h?: string;
-  m?: string;
-  mt?: string;
-  mb?: string;
-  mx?: string;
-  my?: string;
-  p?: string;
-  pt?: string;
-  pb?: string;
-  px?: string;
-  py?: string;
+interface ITouchableBoxProps extends IFlex, IDimension, IMargin, IPadding, IBorder {
   bgColor?: string;
+  color?: string;
 }
 
-export const ScrollBox = styled.ScrollView<IScrollBoxProps>`
-  ${({ f }) => f && `flex: ${f};`}
+export const TouchableBox = styled(TouchableWithoutFeedback)<ITouchableBoxProps>`
+  align-items: ${({ align }) => align || "center"};
+  justify-content: ${({ justify }) => justify || "center"};
   ${({ w }) => w && `width: ${w};`}
   ${({ h }) => h && `height: ${h};`}
   ${({ m }) => m && `margin: ${m};`}
@@ -30,6 +20,8 @@ export const ScrollBox = styled.ScrollView<IScrollBoxProps>`
   ${({ pt }) => pt && `padding-top: ${pt};`}
   ${({ pb }) => pb && `padding-bottom: ${pb};`}
   ${({ px }) => px && `padding: 0 ${px};`}
-  ${({ py }) => py && `padding: ${py} 0;`}\
+  ${({ py }) => py && `padding: ${py} 0;`}
+  ${({ border }) => border && `border: ${border};`}
+  border-radius: ${({ radius }) => radius || "3px"};
   ${({ bgColor }) => bgColor && `background-color: ${bgColor};`}
 `;

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
-import { NativeSyntheticEvent, TextInputChangeEventData } from "react-native";
+import { Dimensions, NativeSyntheticEvent, TextInputChangeEventData } from "react-native";
 import { Container, ScrollBox, Box, Text, Button, Input } from "@src/components/atoms";
 import { updateStatus, updateExercise } from "@src/store/statusSlice";
 import { mapStatusWithExercise } from "@src/config";
+
+const appWidth = Dimensions.get("window").width;
 
 export const UpdateStatusScreen = () => {
   const dispatch = useAppDispatch();
@@ -33,66 +35,70 @@ export const UpdateStatusScreen = () => {
   };
 
   return (
-    <Container f="1" bgColor="white">
-      <ScrollBox w="100%" p="20px 40px">
-        <Text mb="10px">Status</Text>
-        <Box d="row" wrap="wrap" justify="flex-start" mb="30px">
-          {statusList.map((status) => (
-            <Button
-              key={`b-${status.title}`}
-              title={status.title}
-              m="0 8px 8px"
-              p="8px 10px"
-              border="none"
-              radius="10px"
-              bgColor="#e8e8e8"
-              activeBgColor="black"
-              selected={status.title === selectedStatus}
-              onPress={handleSelectStatus(status.title)}
-            />
-          ))}
+    <Container position="relative" f="1" w="100%" bgColor="white">
+      <ScrollBox f="1" w="100%" p="20px 40px" mb="70px">
+        <Box d="row" justify="flex-start" m="20px 0 30px">
+          <Text size="20px" weight="bold" w="100px">
+            Status
+          </Text>
+          <Text size="20px" weight="bold" w="90px">
+            Exercise
+          </Text>
+          <Text size="20px" weight="bold" m="0 0 0 20px">
+            Amount
+          </Text>
         </Box>
+
+        {statusList.map((status) => (
+          <Box key={`u-${status.title}`} d="row" justify="flex-start" mb="20px">
+            <Text w="100px" size="16px" weight="bold">
+              {status.title}
+            </Text>
+
+            {updateList?.[status.title]?.exercise ? (
+              <Button
+                w="90px"
+                h="40px"
+                size="16px"
+                active={true}
+                title={updateList?.[status.title]?.exercise}
+                onPress={handleSelectStatus(status.title)}
+              />
+            ) : (
+              <Button w="90px" h="40px" title="select" onPress={handleSelectStatus(status.title)} />
+            )}
+
+            <Box f="1" m="0 0 0 20px">
+              <Input keyboardType="numeric" h="40px" onChange={handleChangeExerciseValue(status.title)} />
+            </Box>
+          </Box>
+        ))}
 
         {selectedStatus ? (
           <>
-            <Text mb="10px">Exercise</Text>
-            <Box d="row" wrap="wrap" justify="flex-start" mb="30px">
+            <Text size="20px" weight="bold" my="20px">
+              {selectedStatus} Exercise
+            </Text>
+            <Box d="row" wrap="wrap" justify="flex-start">
               {mapStatusWithExercise[selectedStatus].map((exercise) => (
                 <Button
                   key={`e-${selectedStatus}-${exercise}`}
                   title={exercise}
-                  m="0 8px 8px"
-                  p="8px 10px"
-                  border="none"
-                  radius="10px"
-                  bgColor="#e8e8e8"
-                  activeBgColor="black"
-                  selected={exercise === updateList?.[selectedStatus]?.exercise}
+                  m="0 8px 12px"
+                  p="8px"
+                  radius="5px"
+                  active={exercise === updateList?.[selectedStatus]?.exercise}
                   onPress={handleSelectExercise(selectedStatus, exercise)}
                 />
               ))}
             </Box>
           </>
         ) : null}
-
-        {Object.values(updateList).map((update) => (
-          <Box key={`u-${update.title}`} d="row" justify="flex-start" mb="10px">
-            <Text w="100px">{update.title}</Text>
-            <Text w="120px">{update.exercise}</Text>
-
-            <Box f="1">
-              <Input
-                keyboardType="numeric"
-                h="40px"
-                value={update.value}
-                onChange={handleChangeExerciseValue(update.title)}
-              />
-            </Box>
-
-            <Text m="0 0 0 auto">{update.value}</Text>
-          </Box>
-        ))}
       </ScrollBox>
+
+      <Box position="absolute" left="0" bottom="0" w="100%" h="60px" p="8px">
+        <Button w={`${appWidth - 16}px`} h="100%" size="18px" weight="bold" title="SAVE" />
+      </Box>
     </Container>
   );
 };

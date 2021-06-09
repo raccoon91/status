@@ -8,3 +8,4 @@ export * from "./HighlightBox";
 export * from "./Button";
 export * from "./OpacityBox";
 export * from "./Input";
+export * from "./TouchableBox";
