@@ -1,22 +1,7 @@
 import styled from "styled-components/native";
 import { TextInput } from "react-native-gesture-handler";
 
-interface IInputProps {
-  w?: string;
-  h?: string;
-  m?: string | null;
-  mt?: string | null;
-  mb?: string | null;
-  mx?: string | null;
-  my?: string | null;
-  p?: string | null;
-  pt?: string | null;
-  pb?: string | null;
-  px?: string | null;
-  py?: string | null;
-  b?: string;
-  r?: string;
-}
+interface IInputProps extends IDimension, IMargin, IPadding, IBorder {}
 
 export const Input = styled(TextInput)<IInputProps>`
   width: ${({ w }) => w || "100%"};
@@ -31,6 +16,6 @@ export const Input = styled(TextInput)<IInputProps>`
   ${({ pb }) => pb && `padding-bottom: ${pb};`}
   ${({ px }) => px && `padding: 0 ${px};`}
   ${({ py }) => py && `padding: ${py} 0;`}
-  border: ${({ b }) => b || "1px solid gray"};
-  border-radius: ${({ r }) => r || "3px"};
+  border: ${({ border }) => border || "1px solid gray"};
+  border-radius: ${({ radius }) => radius || "3px"};
 `;

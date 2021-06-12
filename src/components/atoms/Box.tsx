@@ -1,31 +1,7 @@
 import styled from "styled-components/native";
 
-interface IBoxProps {
+interface IBoxProps extends IPosition, IFlex, IDimension, IMargin, IPadding, IBorder {
   display?: string;
-  position?: string;
-  top?: string;
-  right?: string;
-  bottom?: string;
-  left?: string;
-  f?: string;
-  d?: string;
-  wrap?: string;
-  justify?: string;
-  align?: string;
-  w?: string;
-  h?: string;
-  m?: string | null;
-  mt?: string | null;
-  mb?: string | null;
-  mx?: string | null;
-  my?: string | null;
-  p?: string | null;
-  pt?: string | null;
-  pb?: string | null;
-  px?: string | null;
-  py?: string | null;
-  border?: string;
-  radius?: string;
   bgColor?: string;
 }
 

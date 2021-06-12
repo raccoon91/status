@@ -1,23 +1,10 @@
 import styled from "styled-components/native";
 
-interface ITextProps {
-  w?: string;
-  h?: string;
-  m?: string;
-  mt?: string | null;
-  mb?: string;
-  mx?: string;
-  my?: string;
-  p?: string;
-  pt?: string | null;
-  pb?: string | null;
-  px?: string;
-  py?: string;
+interface ITextProps extends IDimension, IMargin, IPadding, IBorder {
   color?: string;
   size?: string;
   weight?: string;
   align?: string;
-  border?: string;
 }
 
 export const Text = styled.Text<ITextProps>`

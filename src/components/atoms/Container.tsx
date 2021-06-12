@@ -1,6 +1,6 @@
 import styled from "styled-components/native";
 
-interface IContainerProps {
+interface IContainerProps extends IPosition, IFlex, IDimension, IMargin, IPadding {
   position?: string;
   top?: string;
   right?: string;

@@ -1,11 +1,7 @@
 import styled from "styled-components/native";
 import { TouchableHighlight } from "react-native-gesture-handler";
 
-interface IHighlightBoxProps {
-  p?: string;
-  px?: string;
-  py?: string;
-}
+interface IHighlightBoxProps extends IPadding {}
 
 export const HighlightBox = styled(TouchableHighlight)<IHighlightBoxProps>`
   ${({ p }) => p && `padding: ${p};`}

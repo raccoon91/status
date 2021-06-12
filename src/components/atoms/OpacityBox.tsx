@@ -1,29 +1,12 @@
 import styled from "styled-components/native";
 
-interface IOpacityBoxProps {
-  direction?: string;
-  align?: string;
-  justify?: string;
-  w?: string;
-  h?: string;
-  m?: string | null;
-  mt?: string | null;
-  mb?: string | null;
-  mx?: string | null;
-  my?: string | null;
-  p?: string | null;
-  pt?: string | null;
-  pb?: string | null;
-  px?: string | null;
-  py?: string | null;
-  border?: string;
-  radius?: string;
+interface IOpacityBoxProps extends IFlex, IDimension, IMargin, IPadding, IBorder {
   bgColor?: string;
   color?: string;
 }
 
 export const OpacityBox = styled.TouchableOpacity<IOpacityBoxProps>`
-  flex-direction: ${({ direction }) => direction || "row"};
+  flex-direction: ${({ d }) => d || "row"};
   justify-content: ${({ justify }) => justify || "center"};
   align-items: ${({ align }) => align || "center"};
   ${({ w }) => w && `width: ${w};`}

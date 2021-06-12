@@ -1,19 +1,6 @@
 import styled from "styled-components/native";
 
-interface IScrollBoxProps {
-  f?: string;
-  w?: string;
-  h?: string;
-  m?: string;
-  mt?: string;
-  mb?: string;
-  mx?: string;
-  my?: string;
-  p?: string;
-  pt?: string;
-  pb?: string;
-  px?: string;
-  py?: string;
+interface IScrollBoxProps extends IFlex, IDimension, IMargin, IPadding {
   bgColor?: string;
 }
 
