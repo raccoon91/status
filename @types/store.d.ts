@@ -12,9 +12,10 @@ interface IUpdate {
 interface IExercise {
   name?: string;
   description?: string;
-  point?: number;
-  rate?: number;
+  point: number;
+  rate: number;
   count?: string;
+  unit: string;
 }
 
 interface IStatusInfo {

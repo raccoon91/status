@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import { useNavigation } from "@react-navigation/core";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
+import { fetchUpdate } from "@src/store/statusSlice";
 import { Dimensions, NativeSyntheticEvent, TextInputChangeEventData } from "react-native";
 import { Container, ScrollBox, Box, Text, Button, Input } from "@src/components/atoms";
 import { updateStatus, updateExercise } from "@src/store/statusSlice";
@@ -8,8 +10,9 @@ import { mapStatusWithExercise } from "@src/config";
 const appWidth = Dimensions.get("window").width;
 
 export const UpdateStatusScreen = () => {
+  const navigation = useNavigation();
   const dispatch = useAppDispatch();
-  const { statusList, updateList } = useAppSelector((state) => state.status);
+  const { statusList, updateList, saveStatus } = useAppSelector((state) => state.status);
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
 
   const handleSelectStatus = (title: string) => () => {
@@ -29,9 +32,14 @@ export const UpdateStatusScreen = () => {
   const handleChangeExerciseValue = (title: string) => (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
     const value = e.nativeEvent.text;
 
-    if (title && value) {
+    if (title) {
       dispatch(updateExercise({ title, value }));
     }
+  };
+
+  const handleSaveUpdate = async () => {
+    dispatch(fetchUpdate());
+    navigation.navigate("Main");
   };
 
   return (
@@ -56,21 +64,22 @@ export const UpdateStatusScreen = () => {
             </Text>
 
             {updateList?.[status.title]?.exercise ? (
-              <Button
-                w="90px"
-                h="40px"
-                size="16px"
-                active={true}
-                title={updateList?.[status.title]?.exercise}
-                onPress={handleSelectStatus(status.title)}
-              />
+              <>
+                <Button
+                  w="90px"
+                  h="40px"
+                  size="16px"
+                  active={true}
+                  title={updateList?.[status.title]?.exercise}
+                  onPress={handleSelectStatus(status.title)}
+                />
+                <Box f="1" m="0 0 0 20px">
+                  <Input keyboardType="numeric" h="40px" px="8px" onChange={handleChangeExerciseValue(status.title)} />
+                </Box>
+              </>
             ) : (
               <Button w="90px" h="40px" title="select" onPress={handleSelectStatus(status.title)} />
             )}
-
-            <Box f="1" m="0 0 0 20px">
-              <Input keyboardType="numeric" h="40px" onChange={handleChangeExerciseValue(status.title)} />
-            </Box>
           </Box>
         ))}
 
@@ -97,7 +106,15 @@ export const UpdateStatusScreen = () => {
       </ScrollBox>
 
       <Box position="absolute" left="0" bottom="0" w="100%" h="60px" p="8px">
-        <Button w={`${appWidth - 16}px`} h="100%" size="18px" weight="bold" title="SAVE" />
+        <Button
+          title="SAVE"
+          size="18px"
+          weight="bold"
+          w={`${appWidth - 16}px`}
+          h="100%"
+          active={saveStatus}
+          onPress={handleSaveUpdate}
+        />
       </Box>
     </Container>
   );

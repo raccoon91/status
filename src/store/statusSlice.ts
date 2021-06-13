@@ -1,13 +1,13 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { initialStatusList, exercises, mapStatusWithExercise } from "@src/config";
+import { initialStatusList, mapStatusWithExercise, exercises } from "@src/config";
 
 interface IState {
   fetching: boolean;
   loading: boolean;
   statusList: IStatus[];
-  exercises: { [key: string]: IExercise };
   updateList: { [key: string]: IUpdate };
+  saveStatus: boolean;
   statusInfoList: IStatusInfo[];
 }
 
@@ -15,8 +15,8 @@ const initialState: IState = {
   fetching: false,
   loading: false,
   statusList: [],
-  exercises,
   updateList: {},
+  saveStatus: false,
   statusInfoList: initialStatusList.map((status) => ({
     title: status.title,
     contents: mapStatusWithExercise[status.title],
@@ -24,14 +24,40 @@ const initialState: IState = {
 };
 
 export const fetchStatus = createAsyncThunk<IStatus[]>("status/fetchStatus", async () => {
-  const statusValues = await AsyncStorage.getItem("@status");
+  const storageStatusList = await AsyncStorage.getItem("@status");
 
-  if (statusValues != null) {
-    return JSON.parse(statusValues);
+  if (storageStatusList != null) {
+    return JSON.parse(storageStatusList);
   } else {
     AsyncStorage.setItem("@status", JSON.stringify(initialStatusList));
     return initialStatusList;
   }
+});
+
+export const fetchUpdate = createAsyncThunk("status/fetchUpdate", async (_, { getState }) => {
+  const state = getState() as { status: IState };
+  const { statusList, updateList } = state.status;
+
+  const newSatusList = statusList.map((status) => {
+    const { title, value } = status;
+    const update = updateList[title];
+
+    if (update) {
+      const rate = exercises[update.exercise].rate;
+      const updatePoint = Number(update.value) * rate;
+
+      return {
+        title,
+        value: value + updatePoint,
+      };
+    } else {
+      return status;
+    }
+  });
+
+  await AsyncStorage.setItem("@status", JSON.stringify(newSatusList));
+
+  return newSatusList;
 });
 
 export const statusSlice = createSlice({
@@ -53,6 +79,12 @@ export const statusSlice = createSlice({
       if (state.updateList?.[title]) {
         state.updateList[title].value = value;
       }
+
+      if (Object.values(state.updateList).some((update) => update.value)) {
+        state.saveStatus = true;
+      } else {
+        state.saveStatus = false;
+      }
     },
   },
   extraReducers: (builder) => {
@@ -61,6 +93,14 @@ export const statusSlice = createSlice({
       state.fetching = true;
     });
     builder.addCase(fetchStatus.fulfilled, (state, action) => {
+      state.statusList = action.payload;
+      state.loading = false;
+    });
+    builder.addCase(fetchUpdate.pending, (state) => {
+      state.loading = true;
+      state.fetching = true;
+    });
+    builder.addCase(fetchUpdate.fulfilled, (state, action) => {
       state.statusList = action.payload;
       state.loading = false;
     });

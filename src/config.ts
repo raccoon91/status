@@ -5,11 +5,11 @@ export const initialStatusList = [
   { title: "Stamina", value: 5 },
 ];
 
-export const exercises = {
-  "push up": { point: 1, rate: 0.1, unit: "count" },
-  "sit up": { point: 1, rate: 0.1, unit: "count" },
-  treadmill: { point: 1, rate: 1, unit: "km" },
-  cycle: { point: 1, rate: 1, unit: "km" },
+export const exercises: { [key: string]: IExercise } = {
+  "push up": { point: 1, rate: 0.01, unit: "count" },
+  "sit up": { point: 1, rate: 0.01, unit: "count" },
+  treadmill: { point: 1, rate: 0.1, unit: "km" },
+  cycle: { point: 1, rate: 0.1, unit: "km" },
 };
 
 export const mapStatusWithExercise: { [key: string]: string[] } = {
