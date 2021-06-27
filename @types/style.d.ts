@@ -16,7 +16,11 @@ interface IFlex {
 
 interface IDimension {
   w?: string;
+  maxWidth?: string;
+  minWidth?: string;
   h?: string;
+  maxHeight?: string;
+  minHeight?: string;
 }
 
 interface IPadding {

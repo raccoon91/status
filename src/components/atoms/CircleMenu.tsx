@@ -1,11 +1,8 @@
 import styled from "styled-components/native";
+import { styledDimension } from "./styled";
 import { TouchableHighlight } from "react-native-gesture-handler";
 
 interface ICircleMunuProps extends IDimension, IBorder {
-  w?: string;
-  h?: string;
-  border?: string;
-  radius?: string;
   bgColor?: string;
   color?: string;
 }
@@ -13,8 +10,7 @@ interface ICircleMunuProps extends IDimension, IBorder {
 export const CircleMenu = styled(TouchableHighlight)<ICircleMunuProps>`
   align-items: center;
   justify-content: center;
-  ${({ w }) => w && `width: ${w};`}
-  ${({ h }) => h && `height: ${h};`}
+  ${styledDimension}
   ${({ border }) => border && `border: ${border};`}
   border-radius: ${({ radius }) => radius || "100px"};
   ${({ bgColor }) => bgColor && `background-color: ${bgColor};`}
