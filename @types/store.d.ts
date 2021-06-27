@@ -4,8 +4,7 @@ interface IStatus {
 }
 
 interface IUpdate {
-  title: string;
-  exercise: string;
+  name: string;
   value: string;
 }
 
@@ -16,6 +15,7 @@ interface IExercise {
   rate: number;
   count?: string;
   unit: string;
+  status?: string[];
 }
 
 interface IStatusInfo {

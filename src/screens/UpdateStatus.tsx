@@ -1,33 +1,17 @@
 import React, { useState } from "react";
-import { useNavigation } from "@react-navigation/core";
+// import { useNavigation } from "@react-navigation/core";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
-import { fetchUpdate } from "@src/store/statusSlice";
 import { Dimensions, NativeSyntheticEvent, TextInputChangeEventData } from "react-native";
 import { Container, ScrollBox, Box, Text, Button, Input } from "@src/components/atoms";
-import { updateStatus, updateExercise } from "@src/store/statusSlice";
-import { mapStatusWithExercise } from "@src/config";
+import { selectExercise, updateExercise } from "@src/store/statusSlice";
 
 const appWidth = Dimensions.get("window").width;
 
 export const UpdateStatusScreen = () => {
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
   const dispatch = useAppDispatch();
-  const { statusList, updateList, saveStatus } = useAppSelector((state) => state.status);
-  const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
-
-  const handleSelectStatus = (title: string) => () => {
-    if (title === selectedStatus) {
-      setSelectedStatus(null);
-    } else {
-      setSelectedStatus(title);
-    }
-  };
-
-  const handleSelectExercise = (title: string, exercise: string) => () => {
-    if (title && exercise) {
-      dispatch(updateStatus({ title, exercise }));
-    }
-  };
+  const { updateList, exerciseList, saveStatus } = useAppSelector((state) => state.status);
+  const [toggleExercises, setToggleExercises] = useState(false);
 
   const handleChangeExerciseValue = (title: string) => (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
     const value = e.nativeEvent.text;
@@ -37,71 +21,60 @@ export const UpdateStatusScreen = () => {
     }
   };
 
+  const handleOpenExercises = () => {
+    setToggleExercises(true);
+  };
+
+  const handleSelectExercise = (exercise: string) => () => {
+    dispatch(selectExercise({ name: exercise }));
+    setToggleExercises(false);
+  };
+
   const handleSaveUpdate = async () => {
-    dispatch(fetchUpdate());
-    navigation.navigate("Main");
+    // dispatch(fetchUpdate());
+    // navigation.navigate("Main");
   };
 
   return (
     <Container position="relative" f="1" w="100%" bgColor="white">
       <ScrollBox f="1" w="100%" p="20px 40px" mb="70px">
-        <Box d="row" justify="flex-start" m="20px 0 30px">
-          <Text size="20px" weight="bold" w="100px">
-            Status
-          </Text>
-          <Text size="20px" weight="bold" w="90px">
-            Exercise
-          </Text>
-          <Text size="20px" weight="bold" m="0 0 0 20px">
-            Amount
-          </Text>
-        </Box>
+        <Text size="20px" weight="bold" w="90px">
+          Exercise
+        </Text>
 
-        {statusList.map((status) => (
-          <Box key={`u-${status.title}`} d="row" justify="flex-start" mb="20px">
-            <Text w="100px" size="16px" weight="bold">
-              {status.title}
+        {Object.keys(updateList).map((exercise) => (
+          <Box key={`s-${updateList[exercise].name}`} d="row" justify="space-between" m="20px 0 0">
+            <Text size="16px" weight="bold">
+              {updateList[exercise].name}
             </Text>
-
-            {updateList?.[status.title]?.exercise ? (
-              <>
-                <Button
-                  w="90px"
-                  h="40px"
-                  size="16px"
-                  active={true}
-                  title={updateList?.[status.title]?.exercise}
-                  onPress={handleSelectStatus(status.title)}
-                />
-                <Box f="1" m="0 0 0 20px">
-                  <Input keyboardType="numeric" h="40px" px="8px" onChange={handleChangeExerciseValue(status.title)} />
-                </Box>
-              </>
-            ) : (
-              <Button w="90px" h="40px" title="select" onPress={handleSelectStatus(status.title)} />
-            )}
+            <Input
+              keyboardType="numeric"
+              w="120px"
+              h="40px"
+              px="8px"
+              onChange={handleChangeExerciseValue(updateList[exercise].name)}
+            />
           </Box>
         ))}
 
-        {selectedStatus ? (
-          <>
-            <Text size="20px" weight="bold" my="20px">
-              {selectedStatus} Exercise
-            </Text>
-            <Box d="row" wrap="wrap" justify="flex-start">
-              {mapStatusWithExercise[selectedStatus].map((exercise) => (
-                <Button
-                  key={`e-${selectedStatus}-${exercise}`}
-                  title={exercise}
-                  m="0 8px 12px"
-                  p="8px"
-                  radius="5px"
-                  active={exercise === updateList?.[selectedStatus]?.exercise}
-                  onPress={handleSelectExercise(selectedStatus, exercise)}
-                />
-              ))}
-            </Box>
-          </>
+        {exerciseList.length > 0 && Object.keys(updateList).length < 5 ? (
+          <Button title="+" w="100%" h="40px" m="30px 0 0" onPress={handleOpenExercises} />
+        ) : null}
+
+        {toggleExercises ? (
+          <Box d="row" wrap="wrap" justify="flex-start" m="30px 0 0">
+            {exerciseList.map((exercise) => (
+              <Button
+                key={`b-${exercise}`}
+                title={exercise}
+                m="0 8px 12px"
+                p="8px"
+                radius="5px"
+                align="right"
+                onPress={handleSelectExercise(exercise)}
+              />
+            ))}
+          </Box>
         ) : null}
       </ScrollBox>
 
