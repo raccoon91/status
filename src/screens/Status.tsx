@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { ActivityIndicator } from "react-native";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
-import { fetchStatus } from "@src/store/statusSlice";
+import { getStatusList } from "@src/store/statusSlice";
 import { Box, Container } from "@src/components/atoms";
 import { Status } from "@src/components/molecules";
 import { FloatMenu, BottomSheet } from "@src/components/organisms";
@@ -11,8 +11,8 @@ const floatMenuOptions = {
   position: { right: "20px", bottom: "80px" },
   mainMenu: { color: "black", iconName: "plus" },
   subMenu: [
-    { color: "gray", iconName: "settings", to: "Update" },
     { color: "gray", iconName: "edit", to: "Update" },
+    { color: "gray", iconName: "settings", to: "Update" },
   ],
 };
 
@@ -22,7 +22,7 @@ export const StatusScreen = () => {
 
   useEffect(() => {
     if (!fetching) {
-      dispatch(fetchStatus());
+      dispatch(getStatusList());
     }
   }, [fetching, dispatch]);
 

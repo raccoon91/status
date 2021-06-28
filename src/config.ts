@@ -36,7 +36,7 @@ export const exercises: { [key: string]: IExercise } = {
   },
 };
 
-export const exerciseList = Object.keys(exercises);
+export const exerciseData = Object.keys(exercises);
 
 const statusWithExerciseData: { [key: string]: string[] } = {};
 

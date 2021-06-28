@@ -3,7 +3,7 @@ import { TouchableBox } from "./TouchableBox";
 import { Text } from "./Text";
 
 interface IButtonProps extends IFlex, IDimension, IMargin, IPadding, IBorder {
-  title: string;
+  title: string | React.ReactElement;
   size?: string;
   weight?: string;
   bgColor?: string;

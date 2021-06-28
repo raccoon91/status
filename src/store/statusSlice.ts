@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { initialStatusList, exerciseList, mapStatusWithExercise } from "@src/config";
+import { initialStatusList, exerciseData, mapStatusWithExercise } from "@src/config";
 
 interface IState {
   fetching: boolean;
@@ -17,7 +17,7 @@ const initialState: IState = {
   loading: false,
   statusList: [],
   updateList: {},
-  exerciseList,
+  exerciseList: exerciseData,
   saveStatus: false,
   statusInfoList: initialStatusList.map((status) => ({
     title: status.title,
@@ -25,7 +25,7 @@ const initialState: IState = {
   })),
 };
 
-export const fetchStatus = createAsyncThunk<IStatus[]>("status/fetchStatus", async () => {
+export const getStatusList = createAsyncThunk<IStatus[]>("status/getStatusList", async () => {
   const storageStatusList = await AsyncStorage.getItem("@status");
 
   if (storageStatusList != null) {
@@ -36,10 +36,33 @@ export const fetchStatus = createAsyncThunk<IStatus[]>("status/fetchStatus", asy
   }
 });
 
-// export const fetchUpdate = createAsyncThunk("status/fetchUpdate", async (_, { getState }) => {
-//   const state = getState() as { status: IState };
-//   const { statusList, updateList } = state.status;
-// });
+export const getUpdateList = createAsyncThunk<{ updateList: { [key: string]: IUpdate }; exerciseList: string[] }>(
+  "status/getUpdateList",
+  async () => {
+    const storageUpdateList = await AsyncStorage.getItem("@update");
+
+    if (storageUpdateList != null) {
+      const updateList = JSON.parse(storageUpdateList);
+
+      return { updateList, exerciseList: exerciseData.filter((exercise) => !updateList[exercise]) };
+    } else {
+      return { updateList: {}, exerciseList: [] };
+    }
+  },
+);
+
+export const postUpdateList = createAsyncThunk("status/postUpdateList", async (_, { getState }) => {
+  const state = getState() as { status: IState };
+  const { updateList } = state.status;
+
+  const savedUpdatedList: { [key: string]: IUpdate } = {};
+
+  Object.values(updateList).forEach((update) => {
+    savedUpdatedList[update.name] = { name: update.name, value: "" };
+  });
+
+  AsyncStorage.setItem("@update", JSON.stringify(savedUpdatedList));
+});
 
 export const statusSlice = createSlice({
   name: "status",
@@ -49,13 +72,19 @@ export const statusSlice = createSlice({
       const { name } = action.payload;
 
       state.updateList[name] = { name, value: "" };
-      state.exerciseList = state.exerciseList.filter((exercise) => exercise !== name);
+      state.exerciseList = exerciseData.filter((exercise) => !state.updateList[exercise]);
     },
-    updateExercise: (state, action: PayloadAction<{ title: string; value: string }>) => {
-      const { title, value } = action.payload;
+    removeExercise: (state, action: PayloadAction<{ name: string }>) => {
+      const { name } = action.payload;
 
-      if (state.updateList?.[title]) {
-        state.updateList[title].value = value;
+      delete state.updateList[name];
+      state.exerciseList = exerciseData.filter((exercise) => !state.updateList[exercise]);
+    },
+    updateExercise: (state, action: PayloadAction<{ name: string; value: string }>) => {
+      const { name, value } = action.payload;
+
+      if (state.updateList?.[name]) {
+        state.updateList[name].value = value;
       }
 
       if (Object.values(state.updateList).some((update) => update.value)) {
@@ -66,17 +95,28 @@ export const statusSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchStatus.pending, (state) => {
+    builder.addCase(getStatusList.pending, (state) => {
       state.loading = true;
       state.fetching = true;
     });
-    builder.addCase(fetchStatus.fulfilled, (state, action) => {
+    builder.addCase(getStatusList.fulfilled, (state, action) => {
       state.statusList = action.payload;
+      state.loading = false;
+    });
+    builder.addCase(getUpdateList.pending, (state) => {
+      state.loading = true;
+      state.fetching = true;
+    });
+    builder.addCase(getUpdateList.fulfilled, (state, action) => {
+      const { updateList, exerciseList } = action.payload;
+
+      state.updateList = updateList;
+      state.exerciseList = exerciseList;
       state.loading = false;
     });
   },
 });
 
-export const { selectExercise, updateExercise } = statusSlice.actions;
+export const { selectExercise, removeExercise, updateExercise } = statusSlice.actions;
 
 export default statusSlice.reducer;
