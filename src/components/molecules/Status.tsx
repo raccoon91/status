@@ -2,15 +2,15 @@ import React, { FC } from "react";
 import { Box, Text, DecimalNumber } from "@src/components/atoms";
 
 interface IStatusProps {
-  title: string;
+  name: string;
   value: number;
 }
 
-export const Status: FC<IStatusProps> = ({ title, value }) => {
+export const Status: FC<IStatusProps> = ({ name, value }) => {
   return (
     <Box d="row" justify="space-between" w="60%" mt="36px">
       <Text size="24px" weight="bold">
-        {title}
+        {name}
       </Text>
 
       <DecimalNumber statusValue={value} />

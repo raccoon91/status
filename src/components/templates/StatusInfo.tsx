@@ -5,7 +5,7 @@ import { Box, Container, ScrollBox, Text } from "@src/components/atoms";
 import { ArccodionGroup, Arccodion } from "@src/components/molecules";
 
 export const StatusInfo = () => {
-  const { statusInfoList } = useAppSelector((state) => state.status);
+  const { statusInfo } = useAppSelector((state) => state.status);
 
   return (
     <Container f="1">
@@ -15,19 +15,19 @@ export const StatusInfo = () => {
 
       <ScrollBox w="100%" p="20px 40px">
         <ArccodionGroup>
-          {statusInfoList.map((statusInfo, index) => (
+          {statusInfo.map((statInfo, index) => (
             <Arccodion
-              key={`ac-${index}`}
+              key={`si-${statInfo.name}`}
               arccordionKey={index + 1}
-              title={statusInfo.title}
+              title={statInfo.name}
               initColor="gray"
               activeColor="black"
             >
-              {statusInfo.contents.map((contentName) => (
-                <Box key={`${statusInfo.title}-${contentName}`} d="row" p="8px 16px">
+              {statInfo.exercises.map((exercise) => (
+                <Box key={`ei-${statInfo.name}-${exercise}`} d="row" p="8px 16px">
                   <Icon name="dot-single" color="black" size={28} />
                   <Text size="16px" px="4px">
-                    {contentName}
+                    {exercise}
                   </Text>
                 </Box>
               ))}

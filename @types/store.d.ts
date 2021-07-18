@@ -1,24 +1,22 @@
-interface IStatus {
-  title: string;
+interface IExercise {
+  name: string;
+  description?: string;
+  point: number;
+  rate: number;
+  unit: string;
+  status: string[];
+}
+interface IStatValues {
+  name: string;
   value: number;
 }
 
-interface IUpdate {
+interface IExerciseValues {
   name: string;
   value: string;
 }
 
-interface IExercise {
-  name?: string;
-  description?: string;
-  point: number;
-  rate: number;
-  count?: string;
-  unit: string;
-  status?: string[];
-}
-
-interface IStatusInfo {
-  title: string;
-  contents: string[];
+interface IStatInfoValues {
+  name: string;
+  exercises: string[];
 }

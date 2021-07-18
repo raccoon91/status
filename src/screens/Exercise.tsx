@@ -4,19 +4,19 @@ import { useNavigation } from "@react-navigation/core";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
 import { Dimensions, NativeSyntheticEvent, TextInputChangeEventData } from "react-native";
 import { Container, ScrollBox, Box, TouchableBox, Text, Button, Input } from "@src/components/atoms";
-import { selectExercise, removeExercise, updateExercise, getUpdateList, postUpdateList } from "@src/store/statusSlice";
-import { exercises } from "@src/config";
+import { selectExercise, removeExercise, updateExercise, getExercises, postExercies } from "@src/store/slices/exercise";
+import { EXERCISES } from "@src/configs";
 
 const appWidth = Dimensions.get("window").width;
 
-export const UpdateStatusScreen = () => {
+export const ExerciseScreen = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
-  const { updateList, exerciseList, saveStatus } = useAppSelector((state) => state.status);
+  const { exercises, exerciseNames, saveExercise } = useAppSelector((state) => state.exercise);
   const [toggleExercises, setToggleExercises] = useState(false);
 
   useEffect(() => {
-    dispatch(getUpdateList());
+    dispatch(getExercises());
   }, [dispatch]);
 
   const handleRemoveExercise = (exercise: string) => () => {
@@ -45,31 +45,27 @@ export const UpdateStatusScreen = () => {
   };
 
   const handleSaveUpdate = async () => {
-    dispatch(postUpdateList());
+    dispatch(postExercies());
     navigation.navigate("Main");
   };
 
   return (
     <Container position="relative" f="1" w="100%" bgColor="white">
       <ScrollBox f="1" w="100%" p="20px 40px" mb="70px">
-        <Text size="20px" weight="bold" w="90px">
-          Exercise
-        </Text>
-
-        {Object.keys(updateList).map((exercise) => (
-          <Box key={`s-${updateList[exercise].name}`} d="row" justify="flex-start" m="20px 0 0">
+        {Object.values(exercises).map((exercise) => (
+          <Box key={`e-${exercise.name}`} d="row" justify="flex-start" m="20px 0 0">
             <TouchableBox
               w="30px"
               h="30px"
               m="0 16px 0 0"
               border="1px solid black"
               radius="5px"
-              onPress={handleRemoveExercise(exercise)}
+              onPress={handleRemoveExercise(exercise.name)}
             >
               <Icon name="minus" color="black" size={24} />
             </TouchableBox>
             <Text size="16px" weight="bold">
-              {updateList[exercise].name}
+              {exercise.name}
             </Text>
             <Input
               keyboardType="numeric"
@@ -77,17 +73,17 @@ export const UpdateStatusScreen = () => {
               h="40px"
               px="8px"
               m="0 0 0 auto"
-              onChange={handleChangeExerciseValue(updateList[exercise].name)}
+              onChange={handleChangeExerciseValue(exercise.name)}
             />
-            {exercises?.[exercise]?.unit ? (
+            {EXERCISES?.[exercise.name]?.unit ? (
               <Text w="36px" m="10px 0 0 4px">
-                {exercises[exercise].unit}
+                {EXERCISES[exercise.name].unit}
               </Text>
             ) : null}
           </Box>
         ))}
 
-        {exerciseList.length > 0 && Object.keys(updateList).length < 5 ? (
+        {exerciseNames.length > 0 && Object.keys(exercises).length < 5 ? (
           toggleExercises ? (
             <Button
               w="100%"
@@ -111,7 +107,7 @@ export const UpdateStatusScreen = () => {
 
         {toggleExercises ? (
           <Box d="row" wrap="wrap" justify="flex-start" m="30px 0 0">
-            {exerciseList.map((exercise) => (
+            {exerciseNames.map((exercise) => (
               <Button
                 key={`b-${exercise}`}
                 title={exercise}
@@ -125,18 +121,18 @@ export const UpdateStatusScreen = () => {
           </Box>
         ) : null}
 
-        {saveStatus ? (
+        {saveExercise ? (
           <Box align="flex-start" m="30px 0 0">
             <Text size="20px" weight="bold">
               Status
             </Text>
 
-            {Object.values(updateList).map((update) => {
-              if (update.value) {
+            {Object.values(exercises).map((exercise) => {
+              if (exercise.value) {
                 return (
-                  <Box key={`s-${update.name}`} d="row" justify="space-between">
-                    <Text>{exercises[update.name].status}</Text>
-                    <Text>{Number(update.value) * exercises[update.name].rate}</Text>
+                  <Box key={`s-${exercise.name}`} d="row" justify="space-between">
+                    <Text>{EXERCISES[exercise.name].status}</Text>
+                    <Text>{Number(exercise.value) * EXERCISES[exercise.name].rate}</Text>
                   </Box>
                 );
               }
@@ -154,7 +150,7 @@ export const UpdateStatusScreen = () => {
           weight="bold"
           w={`${appWidth - 16}px`}
           h="100%"
-          active={saveStatus}
+          active={saveExercise}
           onPress={handleSaveUpdate}
         />
       </Box>

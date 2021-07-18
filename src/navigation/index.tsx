@@ -1,7 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { getFocusedRouteNameFromRoute, RouteProp } from "@react-navigation/core";
-import { UpdateStatusScreen } from "@src/screens";
+import { ExerciseScreen } from "@src/screens";
 import { MainNavigation } from "./Main";
 
 const getTitleName = (route: RouteProp<Record<string, object | undefined>, string>) => {
@@ -31,9 +31,9 @@ export const Navigations = () => {
         component={MainNavigation}
       />
       <Stack.Screen
-        name="Update"
+        name="Exercise"
         options={{
-          title: "Update",
+          title: "Exercise",
           headerStyle: {
             backgroundColor: "black",
           },
@@ -43,7 +43,7 @@ export const Navigations = () => {
           },
           headerTitleAlign: "left",
         }}
-        component={UpdateStatusScreen}
+        component={ExerciseScreen}
       />
     </Stack.Navigator>
   );
