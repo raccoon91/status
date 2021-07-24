@@ -1,14 +1,16 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { EXERCISE_NAMES } from "@src/configs";
+import { postStatus } from "./status";
+import { EXERCISES, EXERCISE_NAMES } from "@src/configs";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { IRootState } from "./index";
 
 export interface IExerciseState {
   fetching: boolean;
   loading: boolean;
-  exercises: { [key in string]: IExerciseValues };
+  exercises: { [key: string]: IExerciseValues };
   exerciseNames: string[];
+  updateStatus: { [name: string]: { name: string; value: number } };
   saveExercise: boolean;
 }
 
@@ -17,11 +19,12 @@ const initialExerciseState: IExerciseState = {
   loading: false,
   exercises: {},
   exerciseNames: EXERCISE_NAMES,
+  updateStatus: {},
   saveExercise: false,
 };
 
 export const getExercises = createAsyncThunk<{
-  exercises: { [key in string]: IExerciseValues };
+  exercises: { [key: string]: IExerciseValues };
   exerciseNames: string[];
 }>("exercise/getExercises", async () => {
   const storageExercises = await AsyncStorage.getItem("@exercise");
@@ -35,17 +38,25 @@ export const getExercises = createAsyncThunk<{
   }
 });
 
-export const postExercies = createAsyncThunk("exercise/postExercies", async (_, { getState }) => {
+export const postExercies = createAsyncThunk("exercise/postExercies", async (_, { getState, dispatch }) => {
   const state = getState() as IRootState;
-  const { exercises } = state.exercise;
+  const { exercises, updateStatus } = state.exercise;
+  const { status } = state.status;
 
-  const savedExercises: { [key in string]: IExerciseValues } = {};
+  const savedExercises: { [key: string]: IExerciseValues } = {};
 
   Object.values(exercises).forEach((exercise) => {
     savedExercises[exercise.name] = { name: exercise.name, value: "" };
   });
 
   AsyncStorage.setItem("@exercise", JSON.stringify(savedExercises));
+
+  const newStatus = status.map((targetStatus) => ({
+    name: targetStatus.name,
+    value: targetStatus.value + updateStatus[targetStatus.name].value,
+  }));
+
+  dispatch(postStatus(newStatus));
 });
 
 export const exercise = createSlice({
@@ -54,8 +65,9 @@ export const exercise = createSlice({
   reducers: {
     selectExercise: (state, action: PayloadAction<{ name: string }>) => {
       const { name } = action.payload;
+      const selectedExercise = EXERCISES[name];
 
-      state.exercises[name] = { name, value: "" };
+      state.exercises[name] = { name, value: "", unit: selectedExercise.unit };
       state.exerciseNames = EXERCISE_NAMES.filter((exerciseName) => !state.exercises[exerciseName]);
     },
     removeExercise: (state, action: PayloadAction<{ name: string }>) => {
@@ -64,7 +76,7 @@ export const exercise = createSlice({
       delete state.exercises[name];
       state.exerciseNames = EXERCISE_NAMES.filter((exerciseName) => !state.exercises[exerciseName]);
     },
-    updateExercise: (state, action: PayloadAction<{ name: string; value: string }>) => {
+    changeExercise: (state, action: PayloadAction<{ name: string; value: string }>) => {
       const { name, value } = action.payload;
 
       if (state.exercises?.[name]) {
@@ -76,6 +88,25 @@ export const exercise = createSlice({
       } else {
         state.saveExercise = false;
       }
+    },
+    calculateUpdateStatus: (state) => {
+      const newUpdateStatus: { [name: string]: { name: string; value: number } } = {};
+
+      Object.values(state.exercises).forEach((savedExercise) => {
+        const exerciseStatus = EXERCISES?.[savedExercise.name]?.status || [];
+
+        if (exerciseStatus.length > 0) {
+          exerciseStatus.forEach((status) => {
+            if (newUpdateStatus?.[status.name]) {
+              newUpdateStatus[status.name].value += Number(savedExercise.value) * status.rate;
+            } else {
+              newUpdateStatus[status.name] = { name: status.name, value: Number(savedExercise.value) * status.rate };
+            }
+          });
+        }
+      });
+
+      state.updateStatus = newUpdateStatus;
     },
   },
   extraReducers: (builder) => {
@@ -94,6 +125,6 @@ export const exercise = createSlice({
   },
 });
 
-export const { selectExercise, removeExercise, updateExercise } = exercise.actions;
+export const { selectExercise, removeExercise, changeExercise, calculateUpdateStatus } = exercise.actions;
 
 export default exercise.reducer;

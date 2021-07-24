@@ -5,49 +5,53 @@ const INITIAL_STATUS: { name: string; value: number }[] = [
   { name: "Stamina", value: 5 },
 ];
 
-const EXERCISES: { [key in string]: IExercise } = {
+const EXERCISES: { [key: string]: IExercise } = {
   "push up": {
     name: "push up",
-    point: 1,
-    rate: 0.01,
     unit: "count",
-    status: ["Hit Point", "Strength"],
+    status: [
+      { name: "Hit Point", point: 1, rate: 0.01 },
+      { name: "Strength", point: 1, rate: 0.01 },
+    ],
   },
   "sit up": {
     name: "sit up",
-    point: 1,
-    rate: 0.01,
     unit: "count",
-    status: ["Hit Point", "Strength"],
+    status: [
+      { name: "Hit Point", point: 1, rate: 0.01 },
+      { name: "Strength", point: 1, rate: 0.01 },
+    ],
   },
-  treadmill: {
-    name: "treadmill",
-    point: 1,
-    rate: 0.1,
+  running: {
+    name: "running",
     unit: "km",
-    status: ["Agility", "Stamina"],
+    status: [
+      { name: "Agility", point: 1, rate: 0.01 },
+      { name: "Stamina", point: 1, rate: 0.01 },
+    ],
   },
   cycle: {
     name: "cycle",
-    point: 1,
-    rate: 0.1,
     unit: "km",
-    status: ["Agility", "Stamina"],
+    status: [
+      { name: "Agility", point: 1, rate: 0.01 },
+      { name: "Stamina", point: 1, rate: 0.01 },
+    ],
   },
 };
 
 const EXERCISE_NAMES = Object.keys(EXERCISES) as string[];
 
-const MAP_STATUS_WITH_EXERCISE: { [key in string]: string[] } = {};
+const MAP_STATUS_WITH_EXERCISE: { [key: string]: string[] } = {};
 
-EXERCISE_NAMES.forEach((key) => {
-  const exercise = EXERCISES[key];
+EXERCISE_NAMES.forEach((exerciseName) => {
+  const exercise = EXERCISES[exerciseName];
 
   exercise?.status?.forEach((status) => {
-    if (MAP_STATUS_WITH_EXERCISE[status]) {
-      MAP_STATUS_WITH_EXERCISE[status]?.push(exercise.name);
+    if (MAP_STATUS_WITH_EXERCISE[status.name]) {
+      MAP_STATUS_WITH_EXERCISE[status.name]?.push(exercise.name);
     } else {
-      MAP_STATUS_WITH_EXERCISE[status] = [exercise.name];
+      MAP_STATUS_WITH_EXERCISE[status.name] = [exercise.name];
     }
   });
 });

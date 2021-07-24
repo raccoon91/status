@@ -30,19 +30,35 @@ export const getStatus = createAsyncThunk<IStatValues[]>("status/getStatus", asy
   }
 });
 
+export const postStatus = createAsyncThunk("status/postStatus", async (newStatus: IStatValues[]) => {
+  if (newStatus && newStatus.length > 0) {
+    AsyncStorage.setItem("@status", JSON.stringify(newStatus));
+  }
+
+  return newStatus;
+});
+
 export const status = createSlice({
   name: "status",
   initialState: initialStatusState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(getStatus.pending, (state) => {
-      state.loading = true;
-      state.fetching = true;
-    });
-    builder.addCase(getStatus.fulfilled, (state, action) => {
-      state.status = action.payload;
-      state.loading = false;
-    });
+    builder
+      .addCase(getStatus.pending, (state) => {
+        state.loading = true;
+        state.fetching = true;
+      })
+      .addCase(getStatus.fulfilled, (state, action) => {
+        state.status = action.payload;
+        state.loading = false;
+      })
+      .addCase(postStatus.fulfilled, (state, action) => {
+        const newStatus = action.payload;
+
+        if (newStatus) {
+          state.status = newStatus;
+        }
+      });
   },
 });
 

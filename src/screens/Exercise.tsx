@@ -4,15 +4,21 @@ import { useNavigation } from "@react-navigation/core";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
 import { Dimensions, NativeSyntheticEvent, TextInputChangeEventData } from "react-native";
 import { Container, ScrollBox, Box, TouchableBox, Text, Button, Input } from "@src/components/atoms";
-import { selectExercise, removeExercise, updateExercise, getExercises, postExercies } from "@src/store/slices/exercise";
-import { EXERCISES } from "@src/configs";
+import {
+  selectExercise,
+  removeExercise,
+  changeExercise,
+  calculateUpdateStatus,
+  getExercises,
+  postExercies,
+} from "@src/store/slices/exercise";
 
 const appWidth = Dimensions.get("window").width;
 
 export const ExerciseScreen = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
-  const { exercises, exerciseNames, saveExercise } = useAppSelector((state) => state.exercise);
+  const { exercises, exerciseNames, updateStatus, saveExercise } = useAppSelector((state) => state.exercise);
   const [toggleExercises, setToggleExercises] = useState(false);
 
   useEffect(() => {
@@ -21,14 +27,14 @@ export const ExerciseScreen = () => {
 
   const handleRemoveExercise = (exercise: string) => () => {
     dispatch(removeExercise({ name: exercise }));
+    dispatch(calculateUpdateStatus());
   };
 
   const handleChangeExerciseValue = (name: string) => (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
     const value = e.nativeEvent.text;
 
-    if (name) {
-      dispatch(updateExercise({ name, value }));
-    }
+    dispatch(changeExercise({ name, value }));
+    dispatch(calculateUpdateStatus());
   };
 
   const handleOpenExercises = () => {
@@ -51,9 +57,9 @@ export const ExerciseScreen = () => {
 
   return (
     <Container position="relative" f="1" w="100%" bgColor="white">
-      <ScrollBox f="1" w="100%" p="20px 40px" mb="70px">
+      <ScrollBox f="1" w="100%" p="20px 40px" mb="60px">
         {Object.values(exercises).map((exercise) => (
-          <Box key={`e-${exercise.name}`} d="row" justify="flex-start" m="20px 0 0">
+          <Box key={`e-${exercise.name}`} d="row" justify="flex-start" m="16px 0 0">
             <TouchableBox
               w="30px"
               h="30px"
@@ -75,11 +81,9 @@ export const ExerciseScreen = () => {
               m="0 0 0 auto"
               onChange={handleChangeExerciseValue(exercise.name)}
             />
-            {EXERCISES?.[exercise.name]?.unit ? (
-              <Text w="36px" m="10px 0 0 4px">
-                {EXERCISES[exercise.name].unit}
-              </Text>
-            ) : null}
+            <Text w="36px" m="10px 0 0 4px">
+              {exercise?.unit || ""}
+            </Text>
           </Box>
         ))}
 
@@ -121,24 +125,20 @@ export const ExerciseScreen = () => {
           </Box>
         ) : null}
 
-        {saveExercise ? (
+        {Object.keys(updateStatus)?.length > 0 ? (
           <Box align="flex-start" m="30px 0 0">
-            <Text size="20px" weight="bold">
+            <Text size="20px" weight="bold" mb="10px">
               Status
             </Text>
 
-            {Object.values(exercises).map((exercise) => {
-              if (exercise.value) {
-                return (
-                  <Box key={`s-${exercise.name}`} d="row" justify="space-between">
-                    <Text>{EXERCISES[exercise.name].status}</Text>
-                    <Text>{Number(exercise.value) * EXERCISES[exercise.name].rate}</Text>
-                  </Box>
-                );
-              }
-
-              return null;
-            })}
+            {Object.values(updateStatus).map((status) => (
+              <Box key={`s-${status.name}`} d="row" justify="space-between" mt="6px">
+                <Text size="16px" w="80px">
+                  {status.name}
+                </Text>
+                <Text size="16px">{status.value}</Text>
+              </Box>
+            ))}
           </Box>
         ) : null}
       </ScrollBox>

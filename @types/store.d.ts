@@ -1,10 +1,8 @@
 interface IExercise {
   name: string;
   description?: string;
-  point: number;
-  rate: number;
   unit: string;
-  status: string[];
+  status: { name: string; point: number; rate: number }[];
 }
 interface IStatValues {
   name: string;
@@ -14,6 +12,7 @@ interface IStatValues {
 interface IExerciseValues {
   name: string;
   value: string;
+  unit?: string;
 }
 
 interface IStatInfoValues {
