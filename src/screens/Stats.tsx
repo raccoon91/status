@@ -1,15 +1,36 @@
-import React from "react";
-import { Text, View, StyleSheet } from "react-native";
+import React, { useEffect } from "react";
+import { useAppSelector, useAppDispatch } from "@src/hooks";
+import { getStats } from "@src/store/slices/stats";
+import { Container, Box, Text } from "@src/components/atoms";
 
 export const StatsScreen = () => {
+  const dispatch = useAppDispatch();
+
+  const { fetching, stats } = useAppSelector((state) => state.stats);
+
+  useEffect(() => {
+    if (!fetching) {
+      dispatch(getStats());
+    }
+  }, [fetching, dispatch]);
+
   return (
-    <View style={styles.view}>
-      <Text style={styles.title}>Stats</Text>
-    </View>
+    <Container f="1" justify="flex-start" w="100%" p="30px 20px" bgColor="white">
+      {stats?.length > 0
+        ? stats.map((stat, statIndex) => (
+            <Box key={`s-${statIndex}`}>
+              <Text>{stat.updated}</Text>
+              {stat?.status?.length > 0
+                ? stat.status.map((item, statusIndex) => (
+                    <Box key={`s-${statIndex}-${statusIndex}`} d="row">
+                      <Text>{item.name}</Text>
+                      <Text>{item.value}</Text>
+                    </Box>
+                  ))
+                : null}
+            </Box>
+          ))
+        : null}
+    </Container>
   );
 };
-
-const styles = StyleSheet.create({
-  view: { flex: 1, justifyContent: "flex-start", alignItems: "center" },
-  title: { fontSize: 26, fontWeight: "bold", marginVertical: 30 },
-});

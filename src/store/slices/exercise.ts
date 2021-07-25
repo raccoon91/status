@@ -1,13 +1,16 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { postStatus } from "./status";
+import { postStats } from "./stats";
 import { EXERCISES, EXERCISE_NAMES } from "@src/configs";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { IRootState } from "./index";
+import dayjs from "dayjs";
 
 export interface IExerciseState {
   fetching: boolean;
   loading: boolean;
+  updated: string;
   exercises: { [key: string]: IExerciseValues };
   exerciseNames: string[];
   updateStatus: { [name: string]: { name: string; value: number } };
@@ -17,6 +20,7 @@ export interface IExerciseState {
 const initialExerciseState: IExerciseState = {
   fetching: false,
   loading: false,
+  updated: "",
   exercises: {},
   exerciseNames: EXERCISE_NAMES,
   updateStatus: {},
@@ -26,15 +30,16 @@ const initialExerciseState: IExerciseState = {
 export const getExercises = createAsyncThunk<{
   exercises: { [key: string]: IExerciseValues };
   exerciseNames: string[];
+  updated: string;
 }>("exercise/getExercises", async () => {
   const storageExercises = await AsyncStorage.getItem("@exercise");
 
   if (storageExercises != null) {
-    const exercises = JSON.parse(storageExercises);
+    const { exercises, updated } = JSON.parse(storageExercises);
 
-    return { exercises, exerciseNames: EXERCISE_NAMES.filter((exercise) => !exercises[exercise]) };
+    return { exercises, exerciseNames: EXERCISE_NAMES.filter((exercise) => !exercises[exercise]), updated };
   } else {
-    return { exercises: {}, exerciseNames: EXERCISE_NAMES };
+    return { exercises: {}, exerciseNames: EXERCISE_NAMES, updated: "" };
   }
 });
 
@@ -43,19 +48,21 @@ export const postExercies = createAsyncThunk("exercise/postExercies", async (_, 
   const { exercises, updateStatus } = state.exercise;
   const { status } = state.status;
 
-  const savedExercises: { [key: string]: IExerciseValues } = {};
+  const storageExercises: { [key: string]: IExerciseValues } = {};
+  const updated = dayjs().format("YYYY-MM-DD HH:mm");
 
   Object.values(exercises).forEach((exercise) => {
-    savedExercises[exercise.name] = { name: exercise.name, value: "" };
+    storageExercises[exercise.name] = { name: exercise.name, value: "" };
   });
 
-  AsyncStorage.setItem("@exercise", JSON.stringify(savedExercises));
+  await AsyncStorage.setItem("@exercise", JSON.stringify({ exercises: storageExercises, updated }));
 
   const newStatus = status.map((targetStatus) => ({
     name: targetStatus.name,
     value: targetStatus.value + updateStatus[targetStatus.name].value,
   }));
 
+  dispatch(postStats({ status: Object.values(updateStatus), updated }));
   dispatch(postStatus(newStatus));
 });
 
@@ -116,10 +123,11 @@ export const exercise = createSlice({
         state.fetching = true;
       })
       .addCase(getExercises.fulfilled, (state, action) => {
-        const { exercises, exerciseNames } = action.payload;
+        const { exercises, exerciseNames, updated } = action.payload;
 
         state.exercises = exercises;
         state.exerciseNames = exerciseNames;
+        state.updated = updated;
         state.loading = false;
       });
   },
