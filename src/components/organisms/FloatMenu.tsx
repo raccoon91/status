@@ -39,6 +39,7 @@ export const FloatMenu: FC<IFloatMenu> = ({ floatMenuOptions: { position, mainMe
   };
 
   const handlePressSubMenu = (to: string) => () => {
+    setIsOpenMenu(false);
     navigation.navigate(to);
   };
 

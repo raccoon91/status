@@ -1,4 +1,4 @@
-import React, { FC, useRef } from "react";
+import React, { FC, useRef, useEffect } from "react";
 import { Animated, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import { CircleMenu } from "@src/components/atoms";
@@ -25,21 +25,29 @@ export const FloatMenuMainButton: FC<IFloatMenuMainButtonProps> = ({
 }) => {
   const rotateDeg = useRef(new Animated.Value(0)).current;
 
+  useEffect(() => {
+    if (rotateDeg) {
+      if (isOpenMenu) {
+        Animated.timing(rotateDeg, {
+          toValue: 1,
+          duration: 200,
+          useNativeDriver: true,
+        }).start();
+      } else {
+        Animated.timing(rotateDeg, {
+          toValue: 0,
+          duration: 200,
+          useNativeDriver: true,
+        }).start();
+      }
+    }
+  }, [isOpenMenu, rotateDeg]);
+
   const handlePressMainMenu = () => {
     if (isOpenMenu) {
       closeMenu();
-      Animated.timing(rotateDeg, {
-        toValue: 0,
-        duration: 200,
-        useNativeDriver: true,
-      }).start();
     } else {
       openMenu();
-      Animated.timing(rotateDeg, {
-        toValue: 1,
-        duration: 200,
-        useNativeDriver: true,
-      }).start();
     }
   };
 
