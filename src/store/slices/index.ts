@@ -5,9 +5,8 @@ import stats, { IStatsState } from "./stats";
 
 export interface IRejectValue {
   rejectValue: {
-    name: string;
-    message?: string;
-    type?: string;
+    type: string;
+    message: string;
   };
 }
 

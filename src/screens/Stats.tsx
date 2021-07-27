@@ -5,7 +5,6 @@ import { Container, Box, Text } from "@src/components/atoms";
 
 export const StatsScreen = () => {
   const dispatch = useAppDispatch();
-
   const { fetching, stats } = useAppSelector((state) => state.stats);
 
   useEffect(() => {

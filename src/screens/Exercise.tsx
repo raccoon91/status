@@ -9,6 +9,7 @@ import {
   removeExercise,
   changeExercise,
   calculateUpdateStatus,
+  clearExerciseState,
   getExercises,
   postExercies,
 } from "@src/store/slices/exercise";
@@ -18,12 +19,26 @@ const appWidth = Dimensions.get("window").width;
 export const ExerciseScreen = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
-  const { exercises, exerciseNames, updateStatus, saveExercise } = useAppSelector((state) => state.exercise);
+  const { isFetch, isUpdate, exercises, exerciseNames, updateStatus, enableUpdate } = useAppSelector(
+    (state) => state.exercise,
+  );
   const [toggleExercises, setToggleExercises] = useState(false);
 
   useEffect(() => {
-    dispatch(getExercises());
-  }, [dispatch]);
+    if (isUpdate) {
+      navigation.navigate("Main");
+
+      return () => {
+        dispatch(clearExerciseState());
+      };
+    }
+  }, [isUpdate, navigation, dispatch]);
+
+  useEffect(() => {
+    if (!isFetch) {
+      dispatch(getExercises());
+    }
+  }, [isFetch, dispatch]);
 
   const handleRemoveExercise = (exercise: string) => () => {
     dispatch(removeExercise({ name: exercise }));
@@ -51,8 +66,9 @@ export const ExerciseScreen = () => {
   };
 
   const handleSaveUpdate = async () => {
-    dispatch(postExercies());
-    navigation.navigate("Main");
+    if (enableUpdate) {
+      dispatch(postExercies());
+    }
   };
 
   return (
@@ -79,6 +95,7 @@ export const ExerciseScreen = () => {
               h="40px"
               px="8px"
               m="0 0 0 auto"
+              value={exercise.value}
               onChange={handleChangeExerciseValue(exercise.name)}
             />
             <Text w="36px" m="10px 0 0 4px">
@@ -150,7 +167,7 @@ export const ExerciseScreen = () => {
           weight="bold"
           w={`${appWidth - 16}px`}
           h="100%"
-          active={saveExercise}
+          active={enableUpdate}
           onPress={handleSaveUpdate}
         />
       </Box>
