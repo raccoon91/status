@@ -4,27 +4,57 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export interface IStatsState {
   fetching: boolean;
   loading: boolean;
-  stats: { status: { name: string; value: number }[]; updated: string }[];
+  stats: { name: string; value: number }[];
+  statsData: {
+    labels: string[];
+    legend: string[];
+    data: number[][];
+    barColors: string[];
+  };
 }
 
 const initialStatsState: IStatsState = {
   fetching: false,
   loading: false,
   stats: [],
+  statsData: {
+    labels: [],
+    legend: ["L1", "L2", "L3"],
+    data: [],
+    barColors: ["#7b7b7b", "#9d9d9d", "#c4c4c4", "#d9d9d9", "#e9e9e9", "#f5f5f5"],
+  },
 };
 
-export const getStats = createAsyncThunk<{ status: { name: string; value: number }[]; updated: string }[]>(
-  "stats/getStats",
-  async () => {
-    const storageStats = await AsyncStorage.getItem("@stats");
+export const getStats = createAsyncThunk<{
+  stats?: number[][];
+  labels?: string[];
+  parsedStats?: { status: { name: string; value: number }[]; updated: string };
+}>("stats/getStats", async () => {
+  const storageStats = await AsyncStorage.getItem("@stats");
 
-    if (storageStats != null) {
-      return JSON.parse(storageStats);
-    }
+  if (storageStats != null) {
+    const parsedStats = JSON.parse(storageStats);
 
-    return [];
-  },
-);
+    const labels: string[] = [];
+    const stats: number[][] = [];
+
+    parsedStats.forEach((items: { status: { name: string; value: number }[]; updated: string }) => {
+      labels.push(items.updated.split(" ")[0]);
+
+      const data: number[] = [];
+
+      items.status.forEach((item) => {
+        data.push(item.value);
+      });
+
+      stats.push(data);
+    });
+
+    return { stats, labels, parsedStats };
+  }
+
+  return {};
+});
 
 export const postStats = createAsyncThunk(
   "stats/postStats",
@@ -52,7 +82,14 @@ export const stats = createSlice({
         state.fetching = true;
       })
       .addCase(getStats.fulfilled, (state, action) => {
-        state.stats = action.payload;
+        const { stats: data, labels, parsedStats } = action.payload;
+
+        if (data && labels && parsedStats) {
+          state.statsData.labels = labels;
+          state.statsData.data = data;
+          state.stats = parsedStats.status;
+        }
+
         state.loading = false;
       })
       .addCase(postStats.fulfilled, (state, action) => {

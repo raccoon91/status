@@ -1,11 +1,15 @@
 import React, { useEffect } from "react";
+import { Dimensions } from "react-native";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
 import { getStats } from "@src/store/slices/stats";
-import { Container, Box, Text } from "@src/components/atoms";
+import { Container } from "@src/components/atoms";
+import { StackedBarChart } from "react-native-chart-kit";
+
+const appWidth = Dimensions.get("window").width;
 
 export const StatsScreen = () => {
   const dispatch = useAppDispatch();
-  const { fetching, stats } = useAppSelector((state) => state.stats);
+  const { fetching, statsData } = useAppSelector((state) => state.stats);
 
   useEffect(() => {
     if (!fetching) {
@@ -13,23 +17,20 @@ export const StatsScreen = () => {
     }
   }, [fetching, dispatch]);
 
+  const chartConfig = {
+    backgroundGradientFrom: "#fff",
+    backgroundGradientTo: "#fff",
+    color: () => "#000",
+    barPercentage: 0.5,
+    propsForBackgroundLines: {
+      strokeWidth: 1,
+      stroke: "gray",
+    },
+  };
+
   return (
     <Container f="1" justify="flex-start" w="100%" p="30px 20px" bgColor="white">
-      {stats?.length > 0
-        ? stats.map((stat, statIndex) => (
-            <Box key={`s-${statIndex}`}>
-              <Text>{stat.updated}</Text>
-              {stat?.status?.length > 0
-                ? stat.status.map((item, statusIndex) => (
-                    <Box key={`s-${statIndex}-${statusIndex}`} d="row">
-                      <Text>{item.name}</Text>
-                      <Text>{item.value}</Text>
-                    </Box>
-                  ))
-                : null}
-            </Box>
-          ))
-        : null}
+      <StackedBarChart data={statsData} width={appWidth} height={220} hideLegend={false} chartConfig={chartConfig} />
     </Container>
   );
 };
