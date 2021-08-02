@@ -10,7 +10,6 @@ interface IStatValues {
 }
 
 interface IExerciseValues {
-  name: string;
   value: string;
   unit?: string;
 }

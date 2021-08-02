@@ -74,20 +74,20 @@ export const ExerciseScreen = () => {
   return (
     <Container position="relative" f="1" w="100%" bgColor="white">
       <ScrollBox f="1" w="100%" p="20px 40px" mb="60px">
-        {Object.values(exercises).map((exercise) => (
-          <Box key={`e-${exercise.name}`} d="row" justify="flex-start" m="16px 0 0">
+        {Object.keys(exercises).map((exerciseName) => (
+          <Box key={`e-${exerciseName}`} d="row" justify="flex-start" m="16px 0 0">
             <TouchableBox
               w="30px"
               h="30px"
               m="0 16px 0 0"
               border="1px solid black"
               radius="5px"
-              onPress={handleRemoveExercise(exercise.name)}
+              onPress={handleRemoveExercise(exerciseName)}
             >
               <Icon name="minus" color="black" size={24} />
             </TouchableBox>
             <Text size="16px" weight="bold">
-              {exercise.name}
+              {exerciseName}
             </Text>
             <Input
               keyboardType="numeric"
@@ -95,11 +95,11 @@ export const ExerciseScreen = () => {
               h="40px"
               px="8px"
               m="0 0 0 auto"
-              value={exercise.value}
-              onChange={handleChangeExerciseValue(exercise.name)}
+              value={exercises[exerciseName].value}
+              onChange={handleChangeExerciseValue(exerciseName)}
             />
             <Text w="36px" m="10px 0 0 4px">
-              {exercise?.unit || ""}
+              {exercises?.[exerciseName]?.unit || ""}
             </Text>
           </Box>
         ))}

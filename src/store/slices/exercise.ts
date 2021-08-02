@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { EXERCISES, EXERCISE_NAMES } from "@src/configs";
 import Toast from "react-native-toast-message";
+import dayjs from "dayjs";
 import { postStatus } from "./status";
 import { postStats } from "./stats";
+import { EXERCISES, EXERCISE_NAMES } from "@src/configs";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { IRootState, IRejectValue } from "./index";
-import dayjs from "dayjs";
 
 export interface IExerciseState {
   isFetch: boolean;
@@ -46,7 +46,7 @@ export const getExercises = createAsyncThunk<{
   }
 });
 
-export const postExercies = createAsyncThunk<void, void, IRejectValue>(
+export const postExercies = createAsyncThunk<{ updated: string }, void, IRejectValue>(
   "exercise/postExercies",
   async (_, { getState, rejectWithValue, dispatch }) => {
     const state = getState() as IRootState;
@@ -66,8 +66,8 @@ export const postExercies = createAsyncThunk<void, void, IRejectValue>(
 
     const storageExercises: { [key: string]: IExerciseValues } = {};
 
-    Object.values(exercises).forEach((exercise) => {
-      storageExercises[exercise.name] = { name: exercise.name, value: "" };
+    Object.keys(exercises).forEach((exerciseName) => {
+      storageExercises[exerciseName] = { value: "" };
     });
 
     await AsyncStorage.setItem("@exercise", JSON.stringify({ exercises: storageExercises, updated }));
@@ -79,6 +79,7 @@ export const postExercies = createAsyncThunk<void, void, IRejectValue>(
 
     dispatch(postStats({ status: Object.values(updateStatus), updated }));
     dispatch(postStatus(newStatus));
+    return { updated };
   },
 );
 
@@ -90,7 +91,7 @@ export const exercise = createSlice({
       const { name } = action.payload;
       const selectedExercise = EXERCISES[name];
 
-      state.exercises[name] = { name, value: "", unit: selectedExercise.unit };
+      state.exercises[name] = { value: "", unit: selectedExercise.unit };
       state.exerciseNames = EXERCISE_NAMES.filter((exerciseName) => !state.exercises[exerciseName]);
     },
     removeExercise: (state, action: PayloadAction<{ name: string }>) => {
@@ -115,15 +116,24 @@ export const exercise = createSlice({
     calculateUpdateStatus: (state) => {
       const newUpdateStatus: { [name: string]: { name: string; value: number } } = {};
 
-      Object.values(state.exercises).forEach((savedExercise) => {
-        const exerciseStatus = EXERCISES?.[savedExercise.name]?.status || [];
+      Object.keys(state.exercises).forEach((exerciseName) => {
+        const exerciseStatus = EXERCISES?.[exerciseName]?.status || [];
 
         if (exerciseStatus.length > 0) {
           exerciseStatus.forEach((status) => {
+            const updateValue = Number(state.exercises[exerciseName].value) * status.rate;
+
             if (newUpdateStatus?.[status.name]) {
-              newUpdateStatus[status.name].value += Number(savedExercise.value) * status.rate;
+              newUpdateStatus[status.name].value += updateValue;
             } else {
-              newUpdateStatus[status.name] = { name: status.name, value: Number(savedExercise.value) * status.rate };
+              newUpdateStatus[status.name] = {
+                name: status.name,
+                value: updateValue,
+              };
+            }
+
+            if (newUpdateStatus[status.name].value <= 0) {
+              delete newUpdateStatus[status.name];
             }
           });
         }
@@ -136,7 +146,7 @@ export const exercise = createSlice({
       const newExercises: { [key: string]: IExerciseValues } = {};
 
       state.exerciseNames.forEach((name) => {
-        newExercises[name] = { name, value: "" };
+        newExercises[name] = { value: "" };
       });
 
       state.exercises = newExercises;
@@ -156,11 +166,14 @@ export const exercise = createSlice({
         state.updated = updated;
         state.isLoad = false;
       })
-      .addCase(postExercies.fulfilled, (state) => {
+      .addCase(postExercies.fulfilled, (state, action) => {
+        const { updated } = action.payload;
+
         state.isUpdate = true;
+        state.updated = updated;
         state.updateStatus = {};
       })
-      .addCase(postExercies.rejected, (state, action) => {
+      .addCase(postExercies.rejected, (_, action) => {
         if (action?.payload) {
           const { type, message } = action.payload;
 
