@@ -38,8 +38,8 @@ export const postStatus = createAsyncThunk("status/postStatus", async (newStatus
   return newStatus;
 });
 
-export const status = createSlice({
-  name: "status",
+export const statusSlice = createSlice({
+  name: "statusSlice",
   initialState: initialStatusState,
   reducers: {},
   extraReducers: (builder) => {
@@ -62,4 +62,4 @@ export const status = createSlice({
   },
 });
 
-export default status.reducer;
+export default statusSlice.reducer;

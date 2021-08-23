@@ -58,7 +58,6 @@ export const postExercies = createAsyncThunk<{ updated: string }, void, IRejectV
       if (!dayjs(lastUpdated).isBefore(dayjs(updated), "day")) {
         return rejectWithValue({ type: "info", message: "you can update status after a day" });
       }
-
       if (!dayjs(lastUpdated).isBefore(dayjs(updated).subtract(6, "hour"))) {
         return rejectWithValue({ type: "info", message: "you can update status after six hour" });
       }
@@ -83,8 +82,8 @@ export const postExercies = createAsyncThunk<{ updated: string }, void, IRejectV
   },
 );
 
-export const exercise = createSlice({
-  name: "exercise",
+export const exerciseSlice = createSlice({
+  name: "exerciseSlice",
   initialState: initialExerciseState,
   reducers: {
     selectExercise: (state, action: PayloadAction<{ name: string }>) => {
@@ -186,6 +185,6 @@ export const exercise = createSlice({
 });
 
 export const { selectExercise, removeExercise, changeExercise, calculateUpdateStatus, clearExerciseState } =
-  exercise.actions;
+  exerciseSlice.actions;
 
-export default exercise.reducer;
+export default exerciseSlice.reducer;

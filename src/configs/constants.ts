@@ -1,3 +1,10 @@
+const STATUS_COLORS: { [key: string]: string } = {
+  "Hit Point": "#e9e9e9",
+  Strength: "#d9d9d9",
+  Agility: "#c4c4c4",
+  Stamina: "#9d9d9d",
+};
+
 const INITIAL_STATUS: { name: string; value: number }[] = [
   { name: "Hit Point", value: 5 },
   { name: "Strength", value: 5 },
@@ -56,4 +63,4 @@ EXERCISE_NAMES.forEach((exerciseName) => {
   });
 });
 
-export { INITIAL_STATUS, EXERCISES, EXERCISE_NAMES, MAP_STATUS_WITH_EXERCISE };
+export { STATUS_COLORS, INITIAL_STATUS, EXERCISES, EXERCISE_NAMES, MAP_STATUS_WITH_EXERCISE };

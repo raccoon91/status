@@ -1,78 +1,93 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import dayjs from "dayjs";
+import { STATUS_COLORS } from "@src/configs";
 
+interface IStat {
+  status: { name: string; value: number }[];
+  updated: string;
+}
+
+interface IChartData {
+  label: string;
+  data: number[];
+  backgroundColor: string;
+  barThickness?: number;
+  borderRadius?: number;
+}
 export interface IStatsState {
   fetching: boolean;
   loading: boolean;
-  stats: { name: string; value: number }[];
   statsData: {
     labels: string[];
-    legend: string[];
-    data: number[][];
-    barColors: string[];
-  };
+    datasets: IChartData[];
+  } | null;
 }
 
 const initialStatsState: IStatsState = {
   fetching: false,
   loading: false,
-  stats: [],
-  statsData: {
-    labels: [],
-    legend: ["L1", "L2", "L3"],
-    data: [],
-    barColors: ["#7b7b7b", "#9d9d9d", "#c4c4c4", "#d9d9d9", "#e9e9e9", "#f5f5f5"],
-  },
+  statsData: null,
 };
 
-export const getStats = createAsyncThunk<{
-  stats?: number[][];
-  labels?: string[];
-  parsedStats?: { status: { name: string; value: number }[]; updated: string };
-}>("stats/getStats", async () => {
+export const getStats = createAsyncThunk<IStat[]>("stats/getStats", async () => {
   const storageStats = await AsyncStorage.getItem("@stats");
 
   if (storageStats != null) {
-    const parsedStats = JSON.parse(storageStats);
-
-    const labels: string[] = [];
-    const stats: number[][] = [];
-
-    parsedStats.forEach((items: { status: { name: string; value: number }[]; updated: string }) => {
-      labels.push(items.updated.split(" ")[0]);
-
-      const data: number[] = [];
-
-      items.status.forEach((item) => {
-        data.push(item.value);
-      });
-
-      stats.push(data);
-    });
-
-    return { stats, labels, parsedStats };
+    return JSON.parse(storageStats);
   }
 
-  return {};
+  return null;
 });
 
-export const postStats = createAsyncThunk(
-  "stats/postStats",
-  async ({ status, updated }: { status: { name: string; value: number }[]; updated: string }) => {
-    const storageStats = await AsyncStorage.getItem("@stats");
-    const stats = storageStats ? JSON.parse(storageStats) : [];
+export const postStats = createAsyncThunk<IStat[], IStat>("stats/postStats", async ({ status, updated }) => {
+  const storageStats = await AsyncStorage.getItem("@stats");
+  const newStats = storageStats ? JSON.parse(storageStats) : [];
 
-    const newStat = { status, updated };
-    stats.push(newStat);
+  const newStat = { status, updated };
+  newStats.push(newStat);
 
-    AsyncStorage.setItem("@stats", JSON.stringify(stats));
+  AsyncStorage.setItem("@stats", JSON.stringify(newStats));
 
-    return stats;
-  },
-);
+  return newStats;
+});
 
-export const stats = createSlice({
-  name: "stats",
+const setStatsData = (state: IStatsState, stats: IStat[]) => {
+  if (stats) {
+    const labels: string[] = [];
+    const statData: { [key: string]: IChartData } = {};
+
+    stats.forEach((stat) => {
+      labels.push(dayjs(stat.updated).format("MM-DD"));
+
+      stat.status.forEach((item) => {
+        if (!statData[item.name]) {
+          statData[item.name] = {
+            label: item.name,
+            data: [],
+            backgroundColor: STATUS_COLORS[item.name],
+            borderRadius: 10,
+            barThickness: 6,
+          };
+        }
+
+        if (item.value) {
+          statData[item.name].data.push(item.value);
+        } else {
+          statData[item.name].data.push(0);
+        }
+      });
+    });
+
+    state.statsData = {
+      labels,
+      datasets: Object.values(statData),
+    };
+  }
+};
+
+export const statsSlice = createSlice({
+  name: "statsSlice",
   initialState: initialStatsState,
   reducers: {},
   extraReducers: (builder) => {
@@ -82,24 +97,18 @@ export const stats = createSlice({
         state.fetching = true;
       })
       .addCase(getStats.fulfilled, (state, action) => {
-        const { stats: data, labels, parsedStats } = action.payload;
+        const storageStats = action.payload;
 
-        if (data && labels && parsedStats) {
-          state.statsData.labels = labels;
-          state.statsData.data = data;
-          state.stats = parsedStats.status;
-        }
+        setStatsData(state, storageStats);
 
         state.loading = false;
       })
       .addCase(postStats.fulfilled, (state, action) => {
         const newStats = action.payload;
 
-        if (newStats) {
-          state.stats = newStats;
-        }
+        setStatsData(state, newStats);
       });
   },
 });
 
-export default stats.reducer;
+export default statsSlice.reducer;
