@@ -1,29 +1,29 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Dimensions } from "react-native";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
-import { getStats } from "@src/store/slices/stats";
+import { getStatistics } from "@src/store/slices/statistics";
 import { Container } from "@src/components/atoms";
 import { StackBarChart, SetChartData } from "@src/charts/StackBarChart";
 
 const appWidth = Dimensions.get("window").width;
 
-export const StatsScreen = () => {
+export const StatisticsScreen = () => {
   const dispatch = useAppDispatch();
   const [isLoad, setIsLoad] = useState(false);
   const chartDataRef = useRef<SetChartData>(null);
-  const { fetching, statsData } = useAppSelector((state) => state.stats);
+  const { isFetch, statisticsData } = useAppSelector((state) => state.statistics);
 
   useEffect(() => {
-    if (!fetching) {
-      dispatch(getStats());
+    if (!isFetch) {
+      dispatch(getStatistics());
     }
-  }, [fetching, dispatch]);
+  }, [isFetch, dispatch]);
 
   useEffect(() => {
-    if (isLoad && statsData && chartDataRef.current) {
-      chartDataRef.current.setData(statsData.labels, statsData.datasets);
+    if (isLoad && statisticsData && chartDataRef.current) {
+      chartDataRef.current.setData(statisticsData.labels, statisticsData.datasets);
     }
-  }, [isLoad, statsData, chartDataRef]);
+  }, [isLoad, statisticsData, chartDataRef]);
 
   const chartLoadEnd = () => {
     setIsLoad(true);

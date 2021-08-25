@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { ActivityIndicator } from "react-native";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
-import { getStatus } from "@src/store/slices/status";
+import { getUser } from "@src/store/slices/main";
 import { Box, Container } from "@src/components/atoms";
 import { Status } from "@src/components/molecules";
 import { FloatMenu, BottomSheet } from "@src/components/organisms";
@@ -16,19 +16,19 @@ const floatMenuOptions = {
   ],
 };
 
-export const StatusScreen = () => {
+export const MainScreen = () => {
   const dispatch = useAppDispatch();
-  const { status, fetching, loading } = useAppSelector((state) => state.status);
+  const { status, isFetch, isLoad } = useAppSelector((state) => state.main);
 
   useEffect(() => {
-    if (!fetching) {
-      dispatch(getStatus());
+    if (!isFetch) {
+      dispatch(getUser());
     }
-  }, [fetching, dispatch]);
+  }, [isFetch, dispatch]);
 
   return (
     <Container position="relative" f="1" justify="flex-start" bgColor="white">
-      {!loading ? (
+      {!isLoad ? (
         status.map((stat) => <Status key={stat.name} name={stat.name} value={stat.value} />)
       ) : (
         <Box mt="120px">

@@ -1,3 +1,52 @@
+// // Exercise Example
+// const exercises = {
+//   lastExercises: [
+//     {
+//       "push up": {
+//         value: 10,
+//         unit: "count",
+//       },
+//     },
+//     {
+//       cycle: {
+//         value: 10,
+//         unit: "km",
+//       },
+//     },
+//   ],
+//   lastUpdated: "2021-08-20 10:00",
+// };
+
+// // Stats Example
+// const statistics = [
+//   {
+//     status: [
+//       {
+//         name: "Hit Point",
+//         value: 5,
+//       },
+//       {
+//         name: "Strength",
+//         value: 5,
+//       },
+//     ],
+//     updated: "2021-08-20 10:00",
+//   },
+//   {
+//     status: [
+//       {
+//         name: "Hit Point",
+//         value: 5,
+//       },
+//       {
+//         name: "Strength",
+//         value: 5,
+//       },
+//     ],
+//     updated: "2021-08-20 10:00",
+//   },
+// ];
+
 const STATUS_COLORS: { [key: string]: string } = {
   "Hit Point": "#e9e9e9",
   Strength: "#d9d9d9",
@@ -5,14 +54,29 @@ const STATUS_COLORS: { [key: string]: string } = {
   Stamina: "#9d9d9d",
 };
 
-const INITIAL_STATUS: { name: string; value: number }[] = [
+const STATUS_INDEX: { [key: string]: number } = {
+  "Hit Point": 0,
+  Strength: 1,
+  Agility: 2,
+  Stamina: 3,
+};
+
+const STATUS: IStatus[] = [
   { name: "Hit Point", value: 5 },
   { name: "Strength", value: 5 },
   { name: "Agility", value: 5 },
   { name: "Stamina", value: 5 },
 ];
 
-const EXERCISES: { [key: string]: IExercise } = {
+const USER = {
+  name: "",
+  level: 1,
+  experience: 0,
+  requiredExperience: 0,
+  status: STATUS,
+};
+
+const EXERCISES: { [key: string]: IExerciseConstant } = {
   "push up": {
     name: "push up",
     unit: "count",
@@ -63,4 +127,9 @@ EXERCISE_NAMES.forEach((exerciseName) => {
   });
 });
 
-export { STATUS_COLORS, INITIAL_STATUS, EXERCISES, EXERCISE_NAMES, MAP_STATUS_WITH_EXERCISE };
+const STATUS_INFO: IStatusInfo[] = STATUS.map((status) => ({
+  name: status.name,
+  exercises: MAP_STATUS_WITH_EXERCISE[status.name] || [],
+}));
+
+export { STATUS_INDEX, STATUS_COLORS, USER, EXERCISES, EXERCISE_NAMES, STATUS_INFO };

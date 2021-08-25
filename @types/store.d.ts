@@ -1,20 +1,25 @@
-interface IExercise {
+interface IExerciseConstant {
   name: string;
   description?: string;
   unit: string;
   status: { name: string; point: number; rate: number }[];
 }
-interface IStatValues {
+interface IStatus {
   name: string;
   value: number;
 }
 
-interface IExerciseValues {
+interface IStatusInfo {
+  name: string;
+  exercises: string[];
+}
+
+interface IExercise {
   value: string;
   unit?: string;
 }
 
-interface IStatInfoValues {
-  name: string;
-  exercises: string[];
+interface IStatistics {
+  status: IStatus[];
+  updated: string;
 }

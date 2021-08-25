@@ -5,7 +5,7 @@ import { Box, Container, ScrollBox, Text } from "@src/components/atoms";
 import { ArccodionGroup, Arccodion } from "@src/components/molecules";
 
 export const StatusInfo = () => {
-  const { statusInfo } = useAppSelector((state) => state.status);
+  const { statusInfo } = useAppSelector((state) => state.main);
 
   return (
     <Container f="1">

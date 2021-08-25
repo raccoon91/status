@@ -7,7 +7,7 @@ const config = {
   data: { labels: [], dataset: [] },
   options: {
     responsive: true,
-    plugins: { title: { display: true, text: "Chart.js Bar Chart - Stacked" } },
+    plugins: { title: { display: true, text: "Exercise Statistics" } },
     scales: { x: { stacked: true }, y: { stacked: true, ticks: { maxTicksLimit: 6 } } },
   },
 };

@@ -1,7 +1,7 @@
 import { combineReducers, AnyAction } from "@reduxjs/toolkit";
-import status, { IStatusState } from "./status";
+import main, { IMainState } from "./main";
 import exercise, { IExerciseState } from "./exercise";
-import stats, { IStatsState } from "./stats";
+import statistics, { IStatisticsState } from "./statistics";
 
 export interface IRejectValue {
   rejectValue: {
@@ -11,16 +11,16 @@ export interface IRejectValue {
 }
 
 export interface IRootState {
-  status: IStatusState;
+  main: IMainState;
   exercise: IExerciseState;
-  stats: IStatsState;
+  statistics: IStatisticsState;
 }
 
 const rootReducer = (state: IRootState | undefined, action: AnyAction) => {
   const combineReducer = combineReducers({
-    status,
+    main,
     exercise,
-    stats,
+    statistics,
   });
 
   return combineReducer(state, action);

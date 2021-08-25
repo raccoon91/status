@@ -142,18 +142,18 @@ export const ExerciseScreen = () => {
           </Box>
         ) : null}
 
-        {Object.keys(updateStatus)?.length > 0 ? (
+        {updateStatus?.length > 0 ? (
           <Box align="flex-start" m="30px 0 0">
             <Text size="20px" weight="bold" mb="10px">
               Status
             </Text>
 
-            {Object.values(updateStatus).map((status) => (
-              <Box key={`s-${status.name}`} d="row" justify="space-between" mt="6px">
+            {updateStatus.map((stat) => (
+              <Box key={`s-${stat.name}`} d="row" justify="space-between" mt="6px">
                 <Text size="16px" w="80px">
-                  {status.name}
+                  {stat.name}
                 </Text>
-                <Text size="16px">{status.value}</Text>
+                <Text size="16px">{stat.value}</Text>
               </Box>
             ))}
           </Box>
