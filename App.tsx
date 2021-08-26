@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import SplashScreen from "react-native-splash-screen";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { Navigations } from "@src/navigation";
@@ -12,14 +13,14 @@ const App = () => {
   }, []);
 
   return (
-    <>
+    <SafeAreaProvider>
       <Provider store={store}>
         <NavigationContainer>
           <Navigations />
         </NavigationContainer>
       </Provider>
       <Toast ref={(ref) => Toast.setRef(ref)} />
-    </>
+    </SafeAreaProvider>
   );
 };
 
