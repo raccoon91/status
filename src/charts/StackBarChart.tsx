@@ -7,8 +7,14 @@ const config = {
   data: { labels: [], dataset: [] },
   options: {
     responsive: true,
-    plugins: { title: { display: true, text: "Exercise Statistics" } },
-    scales: { x: { stacked: true }, y: { stacked: true, ticks: { maxTicksLimit: 6 } } },
+    plugins: {
+      title: { display: true, text: "Status Statistics" },
+      legend: { position: "bottom", align: "start", labels: { boxWidth: 14 } },
+    },
+    scales: {
+      x: { stacked: true },
+      y: { stacked: true, ticks: { maxTicksLimit: 6 } },
+    },
   },
 };
 
@@ -25,7 +31,7 @@ interface IStackBarChartProps {
 }
 
 export interface SetChartData {
-  setData: (labels: string[], datasets: IStackBarChartData[]) => void;
+  setChartData: (labels: string[], datasets: IStackBarChartData[]) => void;
 }
 
 export const StackBarChart = forwardRef<SetChartData, IStackBarChartProps>(({ width, height, chartLoadEnd }, ref) => {
@@ -33,10 +39,10 @@ export const StackBarChart = forwardRef<SetChartData, IStackBarChartProps>(({ wi
   const source = Platform.OS === "ios" ? require("./chart.html") : { uri: "file:///android_asset/chart.html" };
 
   useImperativeHandle(ref, () => ({
-    setData,
+    setChartData,
   }));
 
-  const addChart = (chartConfig = config, canvasWidth: number, canvasHeight: number) => {
+  const renderChart = (chartConfig = config, canvasWidth: number, canvasHeight: number) => {
     if (webviewRef.current) {
       webviewRef.current.injectJavaScript(`
         const canvasEl = document.createElement("canvas");
@@ -48,7 +54,7 @@ export const StackBarChart = forwardRef<SetChartData, IStackBarChartProps>(({ wi
     }
   };
 
-  const setData = (labels: string[], datasets: IStackBarChartData[]) => {
+  const setChartData = (labels: string[], datasets: IStackBarChartData[]) => {
     if (webviewRef.current) {
       if (labels) {
         webviewRef.current.injectJavaScript(`window.barChart.config.data.labels = ${JSON.stringify(labels)};`);
@@ -63,7 +69,7 @@ export const StackBarChart = forwardRef<SetChartData, IStackBarChartProps>(({ wi
   };
 
   const handleLoadEnd = () => {
-    addChart(config, width, height);
+    renderChart(config, width, height);
     chartLoadEnd();
   };
 
