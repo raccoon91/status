@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Icon from "react-native-vector-icons/Feather";
 import { useNavigation } from "@react-navigation/core";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
-import { Dimensions, NativeSyntheticEvent, TextInputChangeEventData } from "react-native";
+import { Dimensions } from "react-native";
 import { Container, ScrollBox, Box, TouchableBox, Text, Button, Input } from "@src/components/atoms";
 import {
   selectExercise,
@@ -13,13 +13,14 @@ import {
   getExercises,
   postExercies,
 } from "@src/store/slices/exercise";
+import type { NativeSyntheticEvent, TextInputChangeEventData } from "react-native";
 
 const appWidth = Dimensions.get("window").width;
 
 export const ExerciseScreen = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
-  const { isFetch, isUpdate, exercises, exerciseNames, updateStatus, enableUpdate } = useAppSelector(
+  const { isFetch, isLoad, isUpdate, exercises, exerciseNames, updateStatus, enableUpdate } = useAppSelector(
     (state) => state.exercise,
   );
   const [toggleExercises, setToggleExercises] = useState(false);
@@ -72,7 +73,7 @@ export const ExerciseScreen = () => {
   };
 
   return (
-    <Container position="relative" f="1" w="100%" bgColor="white">
+    <Container isLoad={isLoad} position="relative" f="1" w="100%" bgColor="white" barTheme="white">
       <ScrollBox f="1" w="100%" p="20px 40px" mb="60px">
         {Object.keys(exercises).map((exerciseName) => (
           <Box key={`e-${exerciseName}`} d="row" justify="flex-start" m="16px 0 0">
