@@ -2,11 +2,13 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { USER, STATUS_INFO } from "@src/configs";
 import type { IRootState } from "./index";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
 export interface IMainState {
   isFetch: boolean;
   isLoad: boolean;
   name: string;
+  newName: string;
   level: number;
   experience: number;
   requiredExperience: number;
@@ -18,6 +20,7 @@ const initialMainState: IMainState = {
   isFetch: false,
   isLoad: false,
   name: "",
+  newName: "",
   level: 1,
   experience: 0,
   requiredExperience: 0,
@@ -34,6 +37,17 @@ export const getUser = createAsyncThunk<typeof USER>("main/getUser", async () =>
     AsyncStorage.setItem("@user", JSON.stringify(USER));
     return USER;
   }
+});
+
+export const postUser = createAsyncThunk<typeof USER, string>("main/postUser", async (newName: string) => {
+  const storageUser = await AsyncStorage.getItem("@user");
+  const user: typeof USER = storageUser ? JSON.parse(storageUser) : USER;
+
+  user.name = newName;
+
+  AsyncStorage.setItem("@user", JSON.stringify(user));
+
+  return user;
 });
 
 export const postStatus = createAsyncThunk("main/postStatus", async (newStatus: IStatus[], { getState }) => {
@@ -59,7 +73,13 @@ export const postStatus = createAsyncThunk("main/postStatus", async (newStatus: 
 export const mainSlice = createSlice({
   name: "mainSlice",
   initialState: initialMainState,
-  reducers: {},
+  reducers: {
+    changeUserName: (state, action: PayloadAction<{ value: string }>) => {
+      const { value } = action.payload;
+
+      state.newName = value;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getUser.pending, (state) => {
@@ -76,6 +96,12 @@ export const mainSlice = createSlice({
         state.requiredExperience = requiredExperience;
         state.status = status;
       })
+      .addCase(postUser.fulfilled, (state, action) => {
+        const { name } = action.payload;
+
+        state.name = name;
+        state.newName = "";
+      })
       .addCase(postStatus.fulfilled, (state, action) => {
         const newStatus = action.payload;
 
@@ -85,5 +111,7 @@ export const mainSlice = createSlice({
       });
   },
 });
+
+export const { changeUserName } = mainSlice.actions;
 
 export default mainSlice.reducer;
