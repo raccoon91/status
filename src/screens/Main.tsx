@@ -37,11 +37,13 @@ export const MainScreen = () => {
     <Container isLoad={isLoad} position="relative" f="1" justify="flex-start" bgColor="white" pt="40px">
       <Box w="70%">
         <Box d="row" justify="space-between" w="100%" mb="10px">
-          <Box bgColor="black" p="4px 12px 6px" radius="5px">
-            <Text color="white" size="20px" weight="bold">
-              {name}
-            </Text>
-          </Box>
+          {name.length > 0 && (
+            <Box bgColor="black" p="4px 12px 6px" radius="5px">
+              <Text color="white" size="20px" weight="bold">
+                {name}
+              </Text>
+            </Box>
+          )}
 
           <Text size="20px" weight="bold">
             Lv. {level}

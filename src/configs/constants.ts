@@ -1,3 +1,7 @@
+const CHANNEL_ID = "STATUS_CHANNEL";
+
+const SCHEDULE_TIME = 19;
+
 const STATUS_COLORS: { [key: string]: string } = {
   "Hit Point": "#e9e9e9",
   Strength: "#d9d9d9",
@@ -83,4 +87,4 @@ const STATUS_INFO: IStatusInfo[] = STATUS.map((status) => ({
   exercises: MAP_STATUS_WITH_EXERCISE[status.name] || [],
 }));
 
-export { STATUS_INDEX, STATUS_COLORS, USER, EXERCISES, EXERCISE_NAMES, STATUS_INFO };
+export { CHANNEL_ID, SCHEDULE_TIME, STATUS_COLORS, STATUS_INDEX, USER, EXERCISES, EXERCISE_NAMES, STATUS_INFO };
