@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { Dimensions } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import { useNavigation } from "@react-navigation/core";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
-import { Dimensions } from "react-native";
 import { Container, ScrollBox, Box, TouchableBox, Text, Button, Input } from "@src/components/atoms";
 import {
   selectExercise,
@@ -74,7 +74,7 @@ export const ExerciseScreen = () => {
 
   return (
     <Container isLoad={isLoad} position="relative" f="1" w="100%" bgColor="white" barTheme="white">
-      <ScrollBox f="1" w="100%" p="20px 40px" mb="60px">
+      <ScrollBox f="1" w="100%" p="20px 40px 60px">
         {Object.keys(exercises).map((exerciseName) => (
           <Box key={`e-${exerciseName}`} d="row" justify="flex-start" m="16px 0 0">
             <TouchableBox

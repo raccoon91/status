@@ -1,7 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { getFocusedRouteNameFromRoute, RouteProp } from "@react-navigation/core";
-import { UserScreen, ExerciseScreen } from "@src/screens";
+import { UserScreen, ExerciseScreen, ProfileScreen, AlarmScreen, VersionScreen } from "@src/screens";
 import { MainNavigation } from "./Main";
 
 const getTitleName = (route: RouteProp<Record<string, object | undefined>, string>) => {
@@ -59,6 +59,51 @@ export const Navigations = () => {
           headerTitleAlign: "left",
         }}
         component={ExerciseScreen}
+      />
+      <Stack.Screen
+        name="Profile"
+        options={{
+          title: "Profile",
+          headerStyle: {
+            borderBottomWidth: 1,
+            borderBottomColor: "#e2e2e2",
+          },
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+          headerTitleAlign: "left",
+        }}
+        component={ProfileScreen}
+      />
+      <Stack.Screen
+        name="Alarm"
+        options={{
+          title: "Alarm",
+          headerStyle: {
+            borderBottomWidth: 1,
+            borderBottomColor: "#e2e2e2",
+          },
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+          headerTitleAlign: "left",
+        }}
+        component={AlarmScreen}
+      />
+      <Stack.Screen
+        name="Version"
+        options={{
+          title: "Version",
+          headerStyle: {
+            borderBottomWidth: 1,
+            borderBottomColor: "#e2e2e2",
+          },
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+          headerTitleAlign: "left",
+        }}
+        component={VersionScreen}
       />
     </Stack.Navigator>
   );
