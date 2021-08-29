@@ -1,6 +1,30 @@
 const CHANNEL_ID = "STATUS_CHANNEL";
 
+const SCHEDULE_ALARM = "ON";
+
+const SCHEDULE_WEEKS = [1, 2, 3, 4, 5];
+
 const SCHEDULE_TIME = 19;
+
+const WEEKS_NUMBER_TO_STRING: { [key: number]: string } = {
+  0: "SU",
+  1: "MO",
+  2: "TU",
+  3: "WE",
+  4: "TH",
+  5: "FI",
+  6: "SA",
+};
+
+const WEEKS_STRING_TO_NUMBER: { [key: string]: number } = {
+  SU: 0,
+  MO: 1,
+  TU: 2,
+  WE: 3,
+  TH: 4,
+  FI: 5,
+  SA: 6,
+};
 
 const STATUS_COLORS: { [key: string]: string } = {
   "Hit Point": "#e9e9e9",
@@ -87,4 +111,17 @@ const STATUS_INFO: IStatusInfo[] = STATUS.map((status) => ({
   exercises: MAP_STATUS_WITH_EXERCISE[status.name] || [],
 }));
 
-export { CHANNEL_ID, SCHEDULE_TIME, STATUS_COLORS, STATUS_INDEX, USER, EXERCISES, EXERCISE_NAMES, STATUS_INFO };
+export {
+  CHANNEL_ID,
+  SCHEDULE_ALARM,
+  SCHEDULE_WEEKS,
+  SCHEDULE_TIME,
+  WEEKS_NUMBER_TO_STRING,
+  WEEKS_STRING_TO_NUMBER,
+  STATUS_COLORS,
+  STATUS_INDEX,
+  USER,
+  EXERCISES,
+  EXERCISE_NAMES,
+  STATUS_INFO,
+};

@@ -2,7 +2,7 @@ import { AppState, Platform, PushNotificationIOS } from "react-native";
 import PushNotification from "react-native-push-notification";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import dayjs from "dayjs";
-import { CHANNEL_ID, SCHEDULE_TIME } from "src/configs";
+import { CHANNEL_ID, SCHEDULE_ALARM, SCHEDULE_WEEKS, SCHEDULE_TIME } from "src/configs";
 
 const handleAppStateChange = (nextAppState: string) => {
   if (nextAppState === "active") {
@@ -10,16 +10,52 @@ const handleAppStateChange = (nextAppState: string) => {
   }
 };
 
-const getScheduleTime = async () => {
-  const storageTime = await AsyncStorage.getItem("@time");
+const getScheduleDates = async () => {
+  const storageAlarm = await AsyncStorage.getItem("@notificationAlarm");
+  let alarm: string;
+
+  if (storageAlarm) {
+    alarm = storageAlarm;
+  } else {
+    alarm = SCHEDULE_ALARM;
+  }
+
+  if (alarm === "OFF") {
+    return [];
+  }
+
+  const storageWeeks = await AsyncStorage.getItem("@notificationWeeks");
+  const storageTime = await AsyncStorage.getItem("@notificationTime");
+  let weeks: number[];
+  let time: number;
+
+  if (storageWeeks) {
+    weeks = JSON.parse(storageWeeks);
+  } else {
+    AsyncStorage.setItem("@notificationWeeks", JSON.stringify(SCHEDULE_WEEKS));
+
+    weeks = SCHEDULE_WEEKS;
+  }
 
   if (storageTime) {
-    return Number(storageTime);
+    time = Number(storageTime);
   } else {
-    AsyncStorage.setItem("@time", String(SCHEDULE_TIME));
+    AsyncStorage.setItem("@notificationTime", String(SCHEDULE_TIME));
 
-    return SCHEDULE_TIME;
+    time = SCHEDULE_TIME;
   }
+
+  const dayOfWeeks = dayjs().day();
+
+  return weeks.map((week) => {
+    let scheduleDate = dayjs().hour(time).minute(0).second(0).millisecond(0);
+
+    if (week <= dayOfWeeks) {
+      scheduleDate = scheduleDate.add(1, "day");
+    }
+
+    return scheduleDate.day(week).toDate();
+  });
 };
 
 const checkOrCreateChannel = () => {
@@ -36,38 +72,51 @@ const checkOrCreateChannel = () => {
   });
 };
 
-const registerLocalNotification = async () => {
+const getNotificationList = () => {
+  PushNotification.getScheduledLocalNotifications((notifications) => {
+    console.log("=========== Notifications ===========");
+    console.log("\n", "count", notifications.length);
+    notifications.forEach((notification) => {
+      console.log("\n", notification);
+    });
+  });
+};
+
+export const registerLocalNotification = async () => {
   PushNotification.setApplicationIconBadgeNumber(0);
   PushNotification.cancelAllLocalNotifications();
 
   checkOrCreateChannel();
 
-  const schduleTime = await getScheduleTime();
-  const notificationDate = dayjs().add(1, "day").hour(schduleTime).minute(0).second(0).toDate();
+  const scheduleDates = await getScheduleDates();
 
-  PushNotification.localNotificationSchedule({
-    channelId: CHANNEL_ID,
+  scheduleDates.forEach((scheduleDate) => {
+    PushNotification.localNotificationSchedule({
+      channelId: CHANNEL_ID,
 
-    /* Android Only Properties */
-    priority: "high",
-    visibility: "public",
-    importance: "high",
+      /* Android Only Properties */
+      priority: "high",
+      visibility: "public",
+      importance: "high",
 
-    /* iOS and Android properties */
-    title: "Update Your Status",
-    message: "TEST",
-    playSound: false,
-    number: 1,
-    // actions: ["OK"],
+      /* iOS and Android properties */
+      title: "Update Your Status",
+      message: "TEST",
+      playSound: false,
+      number: 1,
+      // actions: ["OK"],
 
-    // for production
-    repeatType: "day",
-    date: notificationDate,
-
-    // test to trigger each miniute
-    // repeatType: "minute",
-    // date: dayjs().add(1, "minute").second(0).toDate(),
+      date: scheduleDate,
+    });
   });
+
+  getNotificationList();
+};
+
+export const unregisterLocalNotification = () => {
+  PushNotification.cancelAllLocalNotifications();
+
+  getNotificationList();
 };
 
 export const initNotification = () => {
