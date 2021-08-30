@@ -20,9 +20,8 @@ const appWidth = Dimensions.get("window").width;
 export const ExerciseScreen = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
-  const { isFetch, isLoad, isUpdate, exercises, exerciseNames, updateStatus, enableUpdate } = useAppSelector(
-    (state) => state.exercise,
-  );
+  const { isFetch, isLoad, isUpdate, exercises, exerciseNames, displayUpdateStatus, updateStatus, enableUpdate } =
+    useAppSelector((state) => state.exercise);
   const [toggleExercises, setToggleExercises] = useState(false);
 
   useEffect(() => {
@@ -63,7 +62,6 @@ export const ExerciseScreen = () => {
 
   const handleSelectExercise = (exercise: string) => () => {
     dispatch(selectExercise({ name: exercise }));
-    handleCloseExercises();
   };
 
   const handleSaveUpdate = async () => {
@@ -111,8 +109,8 @@ export const ExerciseScreen = () => {
               w="100%"
               h="40px"
               m="30px 0 0"
-              bgColor="black"
-              title={<Icon name="x" color="white" size={28} />}
+              bgColor="#e8e8e8"
+              title={<Icon name="x" color="black" size={28} />}
               onPress={handleCloseExercises}
             />
           ) : (
@@ -128,13 +126,13 @@ export const ExerciseScreen = () => {
         ) : null}
 
         {toggleExercises ? (
-          <Box d="row" wrap="wrap" justify="flex-start" m="30px 0 0">
+          <Box d="row" wrap="wrap" justify="flex-start" m="20px 0 0">
             {exerciseNames.map((exercise) => (
               <Button
                 key={`b-${exercise}`}
                 title={exercise}
                 align="flex-end"
-                m="0 8px 12px"
+                m="0 16px 16px 0"
                 p="8px"
                 radius="5px"
                 onPress={handleSelectExercise(exercise)}
@@ -143,7 +141,7 @@ export const ExerciseScreen = () => {
           </Box>
         ) : null}
 
-        {updateStatus?.length > 0 ? (
+        {displayUpdateStatus ? (
           <Box align="flex-start" m="30px 0 0">
             <Text size="20px" weight="bold" mb="10px">
               Status

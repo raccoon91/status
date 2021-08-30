@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Dimensions, Switch } from "react-native";
+import { useNavigation } from "@react-navigation/core";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-toast-message";
 import { Container, ScrollBox, Box, OpacityBox, Text, Input, Button } from "src/components/atoms";
@@ -35,6 +36,7 @@ const getStorageWeeksAndTime = async () => {
 };
 
 export const AlarmScreen = () => {
+  const navigation = useNavigation();
   const [isEnabled, setIsEnabled] = useState(true);
   const [weeks, setWeeks] = useState<{ text: string; selected: boolean }[]>([]);
   const [time, setTime] = useState("");
@@ -102,14 +104,20 @@ export const AlarmScreen = () => {
       await AsyncStorage.setItem("@notificationAlarm", "OFF");
 
       unregisterLocalNotification();
+
+      navigation.navigate("Main");
     } else {
       const parsedWeeks: number[] = [];
       let parsedTime = Number(time);
 
       if (timePeriod === "AM" && (parsedTime < 0 || parsedTime > 11)) {
         Toast.show({ type: "info", text1: "Error", text2: "AM range should be 0 ~ 11" });
+
+        return;
       } else if (timePeriod === "PM" && (parsedTime < 1 || parsedTime > 11)) {
         Toast.show({ type: "info", text1: "Error", text2: "PM range should be 1 ~ 11" });
+
+        return;
       }
 
       weeks.forEach((week) => {
@@ -128,7 +136,9 @@ export const AlarmScreen = () => {
 
       await AsyncStorage.setItem("@notificationWeeks", JSON.stringify(parsedWeeks));
 
-      registerLocalNotification();
+      await registerLocalNotification();
+
+      navigation.navigate("Main");
     }
   };
 

@@ -20,8 +20,12 @@ export const StatisticsScreen = () => {
   }, [isFetch, dispatch]);
 
   useEffect(() => {
-    if (isChartMount && statisticsData && chartDataRef.current) {
+    if (isChartMount && !!statisticsData && !!chartDataRef?.current?.setChartData) {
       chartDataRef.current.setChartData(statisticsData.labels, statisticsData.datasets);
+
+      return () => {
+        setIsChartMount(false);
+      };
     }
   }, [isChartMount, statisticsData, chartDataRef]);
 

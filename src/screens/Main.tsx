@@ -12,7 +12,7 @@ const floatMenuOptions = {
   mainMenu: { color: "black", iconName: "plus" },
   subMenu: [
     { color: "gray", iconName: "user-plus", to: "Exercise" },
-    { color: "gray", iconName: "settings", to: "Exercise" },
+    { color: "gray", iconName: "bell", to: "Alarm" },
   ],
 };
 

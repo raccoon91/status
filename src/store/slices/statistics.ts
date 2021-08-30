@@ -29,7 +29,9 @@ export const getStatistics = createAsyncThunk<IStatistics[]>("statistics/getStat
   const storageStatistics = await AsyncStorage.getItem("@statistics");
 
   if (storageStatistics != null) {
-    return JSON.parse(storageStatistics);
+    const parsedStatistics = JSON.parse(storageStatistics);
+
+    return parsedStatistics.slice(-7);
   }
 
   return null;
@@ -46,7 +48,7 @@ export const postStatistics = createAsyncThunk<IStatistics[], IStatistics>(
 
     AsyncStorage.setItem("@statistics", JSON.stringify(newStatistics));
 
-    return newStatistics;
+    return newStatistics.slice(-7);
   },
 );
 
@@ -64,8 +66,8 @@ const setStatisticsData = (state: IStatisticsState, statisticsData: IStatistics[
             label: item.name,
             data: [],
             backgroundColor: STATUS_COLORS[item.name],
-            borderRadius: 10,
-            barThickness: 6,
+            borderRadius: 4,
+            barThickness: 10,
           };
         }
 
