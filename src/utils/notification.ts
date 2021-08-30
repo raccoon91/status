@@ -45,16 +45,16 @@ const getScheduleDates = async () => {
     time = SCHEDULE_TIME;
   }
 
-  const dayOfWeeks = dayjs().day();
+  const currentWeek = dayjs().day();
 
   return weeks.map((week) => {
-    let scheduleDate = dayjs().hour(time).minute(0).second(0).millisecond(0);
+    let scheduleDate = dayjs().minute(0).second(0).millisecond(0);
 
-    if (week <= dayOfWeeks) {
-      scheduleDate = scheduleDate.add(1, "day");
+    if (week < currentWeek || (week === currentWeek && scheduleDate.hour() >= time)) {
+      scheduleDate = scheduleDate.add(7, "day");
     }
 
-    return scheduleDate.day(week).toDate();
+    return scheduleDate.day(week).hour(time).toDate();
   });
 };
 
@@ -72,15 +72,15 @@ const checkOrCreateChannel = () => {
   });
 };
 
-const getNotificationList = () => {
-  PushNotification.getScheduledLocalNotifications((notifications) => {
-    console.log("=========== Notifications ===========");
-    console.log("\n", "count", notifications.length);
-    notifications.forEach((notification) => {
-      console.log("\n", notification);
-    });
-  });
-};
+// const getNotificationList = () => {
+//   PushNotification.getScheduledLocalNotifications((notifications) => {
+//     console.log("=========== Notifications ===========");
+//     console.log("\n", "count", notifications.length);
+//     notifications.forEach((notification) => {
+//       console.log("\n", notification.date);
+//     });
+//   });
+// };
 
 export const registerLocalNotification = async () => {
   PushNotification.setApplicationIconBadgeNumber(0);
@@ -100,9 +100,10 @@ export const registerLocalNotification = async () => {
       importance: "high",
 
       /* iOS and Android properties */
-      title: "Update Your Status",
-      message: "TEST",
+      title: "Status Alarm",
+      message: "Update Your Status",
       playSound: false,
+      vibrate: false,
       number: 1,
       // actions: ["OK"],
 
@@ -110,13 +111,13 @@ export const registerLocalNotification = async () => {
     });
   });
 
-  getNotificationList();
+  // getNotificationList();
 };
 
 export const unregisterLocalNotification = () => {
   PushNotification.cancelAllLocalNotifications();
 
-  getNotificationList();
+  // getNotificationList();
 };
 
 export const initNotification = () => {
@@ -129,12 +130,10 @@ export const initNotification = () => {
   });
 };
 
-export const register = async () => {
-  registerLocalNotification();
-
+export const registerLocalNotificationEvent = async () => {
   AppState.addEventListener("change", handleAppStateChange);
 };
 
-export const unregister = () => {
+export const unregisterLocalNotificationEvent = () => {
   AppState.removeEventListener("change", handleAppStateChange);
 };

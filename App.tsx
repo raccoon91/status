@@ -6,7 +6,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { Navigations } from "@src/navigation";
 import Toast from "react-native-toast-message";
 import { store } from "./src/store";
-import { initNotification, register, unregister } from "src/utils";
+import { initNotification, registerLocalNotificationEvent, unregisterLocalNotificationEvent } from "src/utils";
 
 initNotification();
 
@@ -16,10 +16,10 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    register();
+    registerLocalNotificationEvent();
 
     return () => {
-      unregister();
+      unregisterLocalNotificationEvent();
     };
   }, []);
 
