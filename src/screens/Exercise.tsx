@@ -4,14 +4,13 @@ import Icon from "react-native-vector-icons/Feather";
 import { useNavigation } from "@react-navigation/core";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
 import { Container, ScrollBox, Box, TouchableBox, Text, DecimalNumber, Button, Input } from "@src/components/atoms";
+import { getExercises, postExercies } from "@src/store/thunk";
 import {
   selectExercise,
   removeExercise,
   changeExercise,
   calculateUpdateStatus,
   clearExerciseState,
-  getExercises,
-  postExercies,
 } from "@src/store/slices/exercise";
 import type { NativeSyntheticEvent, TextInputChangeEventData } from "react-native";
 

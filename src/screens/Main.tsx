@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
 import { useNavigation } from "@react-navigation/core";
-import { getUser } from "src/store/slices/user";
-import { getStatus } from "@src/store/slices/main";
+import { getUser, getStatus } from "src/store/thunk";
 import { Container, Box, Text } from "@src/components/atoms";
 import { Status } from "@src/components/molecules";
 import { FloatMenu, BottomSheet } from "@src/components/organisms";
@@ -40,8 +39,6 @@ export const MainScreen = () => {
       navigation.reset({ routes: [{ name: "User" }] });
     }
   }, [isFetchUser, isLoadUser, name, navigation]);
-
-  console.log(isFetchUser && !isLoadUser && isFetch && !isLoad);
 
   return (
     <Container isLoad={isLoadUser || isLoad} position="relative" f="1" justify="flex-start" bgColor="white" pt="40px">

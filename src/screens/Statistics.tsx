@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Dimensions } from "react-native";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
-import { getStatistics } from "@src/store/slices/statistics";
+import { getStatistics } from "@src/store/thunk";
 import { Container } from "@src/components/atoms";
 import { StackBarChart, SetChartData } from "@src/charts/StackBarChart";
 

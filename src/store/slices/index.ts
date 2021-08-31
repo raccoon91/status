@@ -1,22 +1,8 @@
 import { combineReducers, AnyAction } from "@reduxjs/toolkit";
-import user, { IUserState } from "./user";
-import main, { IMainState } from "./main";
-import exercise, { IExerciseState } from "./exercise";
-import statistics, { IStatisticsState } from "./statistics";
-
-export interface IRejectValue {
-  rejectValue: {
-    type: string;
-    message: string;
-  };
-}
-
-export interface IRootState {
-  user: IUserState;
-  main: IMainState;
-  exercise: IExerciseState;
-  statistics: IStatisticsState;
-}
+import user from "./user";
+import main from "./main";
+import exercise from "./exercise";
+import statistics from "./statistics";
 
 const rootReducer = (state: IRootState | undefined, action: AnyAction) => {
   const combineReducer = combineReducers({

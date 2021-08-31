@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import { Dimensions } from "react-native";
-import { useAppSelector, useAppDispatch } from "@src/hooks";
-import { postUser, changeUserName } from "@src/store/slices/user";
-import { Container, Box, Text, Input, Button } from "@src/components/atoms";
 import { useNavigation } from "@react-navigation/core";
+import { useAppSelector, useAppDispatch } from "@src/hooks";
+import { postUser } from "@src/store/thunk";
+import { changeUserName } from "@src/store/slices/user";
+import { Container, Box, Text, Input, Button } from "@src/components/atoms";
 import type { NativeSyntheticEvent, TextInputChangeEventData } from "react-native";
 
 const appWidth = Dimensions.get("window").width;
