@@ -6,16 +6,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import { Navigations } from "@src/navigation";
 import Toast from "react-native-toast-message";
 import { store } from "./src/store";
-import { initNotification, registerLocalNotificationEvent, unregisterLocalNotificationEvent } from "src/utils";
-
-initNotification();
+import { registerLocalNotificationEvent, unregisterLocalNotificationEvent } from "src/utils";
 
 const App = () => {
   useEffect(() => {
     SplashScreen.hide();
-  }, []);
-
-  useEffect(() => {
     registerLocalNotificationEvent();
 
     return () => {
