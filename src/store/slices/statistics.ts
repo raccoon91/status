@@ -1,7 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Toast from "react-native-toast-message";
 import dayjs from "dayjs";
 import { STATUS_COLORS } from "@src/configs";
+import { IRejectValue } from "./index";
 
 interface IChartData {
   label: string;
@@ -25,30 +27,45 @@ const initialStatisticsState: IStatisticsState = {
   statisticsData: null,
 };
 
-export const getStatistics = createAsyncThunk<IStatistics[]>("statistics/getStatistics", async () => {
-  const storageStatistics = await AsyncStorage.getItem("@statistics");
+export const getStatistics = createAsyncThunk<IStatistics[], void, IRejectValue>(
+  "statistics/getStatistics",
+  async (_, { rejectWithValue }) => {
+    try {
+      const storageStatistics = await AsyncStorage.getItem("@statistics");
 
-  if (storageStatistics != null) {
-    const parsedStatistics = JSON.parse(storageStatistics);
+      if (storageStatistics != null) {
+        const parsedStatistics = JSON.parse(storageStatistics);
 
-    return parsedStatistics.slice(-7);
-  }
+        return parsedStatistics.slice(-7);
+      }
 
-  return null;
-});
+      return null;
+    } catch (err) {
+      console.error(err);
 
-export const postStatistics = createAsyncThunk<IStatistics[], IStatistics>(
+      return rejectWithValue({ type: "error", message: "fail to get statistics" });
+    }
+  },
+);
+
+export const postStatistics = createAsyncThunk<IStatistics[], IStatistics, IRejectValue>(
   "statistics/postStatistics",
-  async ({ status, updated }) => {
-    const storageStatistics = await AsyncStorage.getItem("@statistics");
-    const newStatistics = storageStatistics ? JSON.parse(storageStatistics) : [];
+  async ({ status, updated }, { rejectWithValue }) => {
+    try {
+      const storageStatistics = await AsyncStorage.getItem("@statistics");
+      const newStatistics = storageStatistics ? JSON.parse(storageStatistics) : [];
 
-    const statisticsData = { status, updated };
-    newStatistics.push(statisticsData);
+      const statisticsData = { status, updated };
+      newStatistics.push(statisticsData);
 
-    AsyncStorage.setItem("@statistics", JSON.stringify(newStatistics));
+      AsyncStorage.setItem("@statistics", JSON.stringify(newStatistics));
 
-    return newStatistics.slice(-7);
+      return newStatistics.slice(-7);
+    } catch (err) {
+      console.error(err);
+
+      return rejectWithValue({ type: "error", message: "fail to update statistics" });
+    }
   },
 );
 
@@ -103,10 +120,24 @@ export const statisticsSlice = createSlice({
 
         state.isLoad = false;
       })
+      .addCase(getStatistics.rejected, (_, action) => {
+        if (action?.payload) {
+          const { type, message } = action.payload;
+
+          Toast.show({ type, text1: "Error", text2: message });
+        }
+      })
       .addCase(postStatistics.fulfilled, (state, action) => {
         const newStatistics = action.payload;
 
         setStatisticsData(state, newStatistics);
+      })
+      .addCase(postStatistics.rejected, (_, action) => {
+        if (action?.payload) {
+          const { type, message } = action.payload;
+
+          Toast.show({ type, text1: "Error", text2: message });
+        }
       });
   },
 });

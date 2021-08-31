@@ -1,17 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { USER, STATUS_INFO } from "@src/configs";
-import type { IRootState } from "./index";
-import type { PayloadAction } from "@reduxjs/toolkit";
+import Toast from "react-native-toast-message";
+import { STATUS, STATUS_INFO } from "@src/configs";
+import { IRejectValue } from "./index";
 
 export interface IMainState {
   isFetch: boolean;
   isLoad: boolean;
-  name: string;
-  newName: string;
-  level: number;
-  experience: number;
-  requiredExperience: number;
   status: IStatus[];
   statusInfo: IStatusInfo[];
 }
@@ -19,89 +14,72 @@ export interface IMainState {
 const initialMainState: IMainState = {
   isFetch: false,
   isLoad: false,
-  name: "",
-  newName: "",
-  level: 1,
-  experience: 0,
-  requiredExperience: 0,
   status: [],
   statusInfo: STATUS_INFO,
 };
 
-export const getUser = createAsyncThunk<typeof USER>("main/getUser", async () => {
-  // await AsyncStorage.clear();
-  const storageUser = await AsyncStorage.getItem("@user");
+export const getStatus = createAsyncThunk<typeof STATUS, void, IRejectValue>(
+  "main/getStatus",
+  async (_, { rejectWithValue }) => {
+    try {
+      const storageUser = await AsyncStorage.getItem("@status");
 
-  if (storageUser != null) {
-    return JSON.parse(storageUser);
-  } else {
-    AsyncStorage.setItem("@user", JSON.stringify(USER));
-    return USER;
-  }
-});
+      if (storageUser != null) {
+        return JSON.parse(storageUser);
+      } else {
+        AsyncStorage.setItem("@status", JSON.stringify(STATUS));
+        return STATUS;
+      }
+    } catch (err) {
+      console.error(err);
 
-export const postUser = createAsyncThunk<typeof USER, string>("main/postUser", async (newName: string) => {
-  const storageUser = await AsyncStorage.getItem("@user");
-  const user: typeof USER = storageUser ? JSON.parse(storageUser) : USER;
+      return rejectWithValue({ type: "error", message: "fail to get status" });
+    }
+  },
+);
 
-  user.name = newName;
+export const postStatus = createAsyncThunk<IStatus[] | void, IStatus[], IRejectValue>(
+  "main/postStatus",
+  async (newStatus: IStatus[], { rejectWithValue }) => {
+    try {
+      if (newStatus && newStatus.length > 0) {
+        AsyncStorage.setItem("@status", JSON.stringify(newStatus));
 
-  AsyncStorage.setItem("@user", JSON.stringify(user));
+        return newStatus;
+      }
+    } catch (err) {
+      console.error(err);
 
-  return user;
-});
-
-export const postStatus = createAsyncThunk("main/postStatus", async (newStatus: IStatus[], { getState }) => {
-  if (newStatus && newStatus.length > 0) {
-    const state = getState() as IRootState;
-    const { name, level, experience, requiredExperience } = state.main;
-
-    AsyncStorage.setItem(
-      "@user",
-      JSON.stringify({
-        name,
-        level,
-        experience,
-        requiredExperience,
-        status: newStatus,
-      }),
-    );
-
-    return newStatus;
-  }
-});
+      return rejectWithValue({ type: "error", message: "fail to update status" });
+    }
+  },
+);
 
 export const mainSlice = createSlice({
   name: "mainSlice",
   initialState: initialMainState,
-  reducers: {
-    changeUserName: (state, action: PayloadAction<{ value: string }>) => {
-      const { value } = action.payload;
-
-      state.newName = value;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getUser.pending, (state) => {
+      .addCase(getStatus.pending, (state) => {
         state.isLoad = true;
         state.isFetch = true;
       })
-      .addCase(getUser.fulfilled, (state, action) => {
-        const { name, level, experience, requiredExperience, status } = action.payload;
+      .addCase(getStatus.fulfilled, (state, action) => {
+        const status = action.payload;
 
         state.isLoad = false;
-        state.name = name;
-        state.level = level;
-        state.experience = experience;
-        state.requiredExperience = requiredExperience;
-        state.status = status;
-      })
-      .addCase(postUser.fulfilled, (state, action) => {
-        const { name } = action.payload;
 
-        state.name = name;
-        state.newName = "";
+        if (status) {
+          state.status = status;
+        }
+      })
+      .addCase(getStatus.rejected, (_, action) => {
+        if (action?.payload) {
+          const { type, message } = action.payload;
+
+          Toast.show({ type, text1: "Error", text2: message });
+        }
       })
       .addCase(postStatus.fulfilled, (state, action) => {
         const newStatus = action.payload;
@@ -109,10 +87,15 @@ export const mainSlice = createSlice({
         if (newStatus) {
           state.status = newStatus;
         }
+      })
+      .addCase(postStatus.rejected, (_, action) => {
+        if (action?.payload) {
+          const { type, message } = action.payload;
+
+          Toast.show({ type, text1: "Error", text2: message });
+        }
       });
   },
 });
-
-export const { changeUserName } = mainSlice.actions;
 
 export default mainSlice.reducer;

@@ -32,19 +32,29 @@ const initialExerciseState: IExerciseState = {
   enableUpdate: false,
 };
 
-export const getExercises = createAsyncThunk<{
-  exercises: { [key: string]: IExercise };
-  exerciseNames: string[];
-  updated: string;
-}>("exercise/getExercises", async () => {
-  const storageExercises = await AsyncStorage.getItem("@exercise");
+export const getExercises = createAsyncThunk<
+  {
+    exercises: { [key: string]: IExercise };
+    exerciseNames: string[];
+    updated: string;
+  },
+  void,
+  IRejectValue
+>("exercise/getExercises", async (_, { rejectWithValue }) => {
+  try {
+    const storageExercises = await AsyncStorage.getItem("@exercise");
 
-  if (storageExercises !== null) {
-    const { exercises, updated } = JSON.parse(storageExercises);
+    if (storageExercises !== null) {
+      const { exercises, updated } = JSON.parse(storageExercises);
 
-    return { exercises, exerciseNames: EXERCISE_NAMES.filter((exerciseName) => !exercises[exerciseName]), updated };
-  } else {
-    return { exercises: {}, exerciseNames: EXERCISE_NAMES, updated: "" };
+      return { exercises, exerciseNames: EXERCISE_NAMES.filter((exerciseName) => !exercises[exerciseName]), updated };
+    } else {
+      return { exercises: {}, exerciseNames: EXERCISE_NAMES, updated: "" };
+    }
+  } catch (err) {
+    console.error(err);
+
+    return rejectWithValue({ type: "error", message: "fail to get exercise" });
   }
 });
 
@@ -206,6 +216,13 @@ export const exerciseSlice = createSlice({
         state.exerciseNames = exerciseNames;
         state.lastUpdated = updated;
         state.isLoad = false;
+      })
+      .addCase(getExercises.rejected, (_, action) => {
+        if (action?.payload) {
+          const { type, message } = action.payload;
+
+          Toast.show({ type, text1: "Error", text2: message });
+        }
       })
       .addCase(postExercies.fulfilled, (state, action) => {
         const { updated } = action.payload;

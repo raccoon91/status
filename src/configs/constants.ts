@@ -28,6 +28,13 @@ const WEEKS_STRING_TO_NUMBER: { [key: string]: number } = {
   SA: 6,
 };
 
+const USER = {
+  name: "",
+  level: 1,
+  experience: 0,
+  requiredExperience: 0,
+};
+
 const STATUS_COLORS: { [key: string]: string } = {
   "Hit Point": "#e9e9e9",
   Strength: "#d9d9d9",
@@ -48,14 +55,6 @@ const STATUS: IStatus[] = [
   { name: "Agility", value: 5000 },
   { name: "Stamina", value: 5000 },
 ];
-
-const USER = {
-  name: "",
-  level: 1,
-  experience: 0,
-  requiredExperience: 0,
-  status: STATUS,
-};
 
 const EXERCISE_NAMES = Object.keys(EXERCISES) as string[];
 
@@ -85,9 +84,10 @@ export {
   SCHEDULE_TIME,
   WEEKS_NUMBER_TO_STRING,
   WEEKS_STRING_TO_NUMBER,
+  USER,
   STATUS_COLORS,
   STATUS_INDEX,
-  USER,
+  STATUS,
   EXERCISES,
   EXERCISE_NAMES,
   STATUS_INFO,

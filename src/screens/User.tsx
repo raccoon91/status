@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Dimensions } from "react-native";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
-import { postUser, changeUserName } from "@src/store/slices/main";
+import { postUser, changeUserName } from "@src/store/slices/user";
 import { Container, Box, Text, Input, Button } from "@src/components/atoms";
 import { useNavigation } from "@react-navigation/core";
 import type { NativeSyntheticEvent, TextInputChangeEventData } from "react-native";
@@ -11,7 +11,7 @@ const appWidth = Dimensions.get("window").width;
 export const UserScreen = () => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
-  const { name, newName } = useAppSelector((state) => state.main);
+  const { name, newName } = useAppSelector((state) => state.user);
 
   useEffect(() => {
     if (name) {
@@ -26,7 +26,7 @@ export const UserScreen = () => {
   };
 
   const handleSaveUser = () => {
-    dispatch(postUser(newName));
+    dispatch(postUser());
   };
 
   return (
