@@ -43,10 +43,10 @@ const STATUS_INDEX: { [key: string]: number } = {
 };
 
 const STATUS: IStatus[] = [
-  { name: "Hit Point", value: 5 },
-  { name: "Strength", value: 5 },
-  { name: "Agility", value: 5 },
-  { name: "Stamina", value: 5 },
+  { name: "Hit Point", value: 5000 },
+  { name: "Strength", value: 5000 },
+  { name: "Agility", value: 5000 },
+  { name: "Stamina", value: 5000 },
 ];
 
 const USER = {

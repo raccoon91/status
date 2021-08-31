@@ -13,7 +13,7 @@ export const Status: FC<IStatusProps> = ({ name, value }) => {
         {name}
       </Text>
 
-      <DecimalNumber statusValue={value} />
+      <DecimalNumber number={value / 1000} />
     </Box>
   );
 };

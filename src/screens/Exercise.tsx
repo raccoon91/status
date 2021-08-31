@@ -3,7 +3,7 @@ import { Dimensions } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import { useNavigation } from "@react-navigation/core";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
-import { Container, ScrollBox, Box, TouchableBox, Text, Button, Input } from "@src/components/atoms";
+import { Container, ScrollBox, Box, TouchableBox, Text, DecimalNumber, Button, Input } from "@src/components/atoms";
 import {
   selectExercise,
   removeExercise,
@@ -152,7 +152,7 @@ export const ExerciseScreen = () => {
                 <Text size="16px" w="80px">
                   {stat.name}
                 </Text>
-                <Text size="16px">{stat.value}</Text>
+                <DecimalNumber number={stat.value / 1000} fontSize="16px" fontWeight="normal" />
               </Box>
             ))}
           </Box>

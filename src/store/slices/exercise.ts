@@ -144,9 +144,10 @@ export const exerciseSlice = createSlice({
 
         if (status.length > 0) {
           status.forEach((stat) => {
+            const exerciseValue = Number(state.exercises[exerciseName].value);
             const updateValue = Number(state.exercises[exerciseName].value) * stat.rate;
 
-            if (state.exercises[exerciseName].value) {
+            if (exerciseValue) {
               displayUpdateStatus = true;
             }
 
@@ -157,6 +158,10 @@ export const exerciseSlice = createSlice({
                 name: stat.name,
                 value: updateValue,
               };
+            }
+
+            if (updateStatus[STATUS_INDEX[stat.name]].value >= 500) {
+              updateStatus[STATUS_INDEX[stat.name]].value = 500;
             }
 
             if (updateStatus[STATUS_INDEX[stat.name]].value <= 0) {

@@ -13,7 +13,7 @@ const config = {
     },
     scales: {
       x: { stacked: true },
-      y: { stacked: true, ticks: { maxTicksLimit: 6 } },
+      y: { stacked: true, ticks: { maxTicksLimit: 6, precision: 3 } },
     },
   },
 };

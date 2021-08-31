@@ -2,22 +2,30 @@ import React, { FC } from "react";
 import { Box, Text } from "@src/components/atoms";
 
 interface IDecimalNumberProps {
-  statusValue: number;
+  number: number;
+  fontSize?: string;
+  fontWeight?: string;
+  decimalSize?: string;
 }
 
-export const DecimalNumber: FC<IDecimalNumberProps> = ({ statusValue }) => {
-  const integer = Math.floor(statusValue);
-  const decimal = (statusValue % 1).toFixed(3).split(".")[1];
+export const DecimalNumber: FC<IDecimalNumberProps> = ({
+  number,
+  fontSize = "24px",
+  fontWeight = "bold",
+  decimalSize = "16px",
+}) => {
+  const integer = Math.floor(number);
+  const decimal = (number % 1).toFixed(3).split(".")[1];
 
   return (
     <Box d="row" align="flex-end">
-      <Text size="24px" weight="bold">
+      <Text size={fontSize} weight={fontWeight}>
         {integer}
       </Text>
-      <Text size="16px" mx="2px">
+      <Text size={decimalSize} mx="2px">
         .
       </Text>
-      <Text size="16px">{decimal}</Text>
+      <Text size={decimalSize}>{decimal}</Text>
     </Box>
   );
 };

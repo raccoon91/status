@@ -66,13 +66,13 @@ const setStatisticsData = (state: IStatisticsState, statisticsData: IStatistics[
             label: item.name,
             data: [],
             backgroundColor: STATUS_COLORS[item.name],
-            borderRadius: 4,
+            // borderRadius: 4,
             barThickness: 10,
           };
         }
 
         if (item.value) {
-          newStatisticsData[item.name].data.push(item.value);
+          newStatisticsData[item.name].data.push(item.value / 1000);
         } else {
           newStatisticsData[item.name].data.push(0);
         }

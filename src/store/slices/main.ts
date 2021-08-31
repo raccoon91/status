@@ -29,6 +29,7 @@ const initialMainState: IMainState = {
 };
 
 export const getUser = createAsyncThunk<typeof USER>("main/getUser", async () => {
+  // await AsyncStorage.clear();
   const storageUser = await AsyncStorage.getItem("@user");
 
   if (storageUser != null) {
