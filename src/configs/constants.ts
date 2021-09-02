@@ -2,11 +2,12 @@ import { EXERCISES } from "./exercises";
 
 export const CHANNEL_ID = "STATUS_CHANNEL";
 
-export const SCHEDULE_ALARM = "ON";
-
-export const SCHEDULE_WEEKS = [1, 2, 3, 4, 5];
-
-export const SCHEDULE_TIME = 19;
+export const NOTIFICATION_SCHEDULE = {
+  alarm: "ON",
+  weeks: [1, 2, 3, 4, 5],
+  hour: 19,
+  minute: 0,
+};
 
 export const WEEKS_NUMBER_TO_STRING: { [key: number]: string } = {
   0: "SU",

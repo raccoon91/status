@@ -1,4 +1,20 @@
-import { EXERCISES, STATUS_INDEX, MAX_UPDATE_STATUS_VALUE } from "@src/configs";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { NOTIFICATION_SCHEDULE, EXERCISES, STATUS_INDEX, MAX_UPDATE_STATUS_VALUE } from "@src/configs";
+
+export const getNotificationSchedule = async () => {
+  const storageSchedule = await AsyncStorage.getItem("@schedule");
+  let schedule: typeof NOTIFICATION_SCHEDULE;
+
+  if (storageSchedule !== null) {
+    schedule = JSON.parse(storageSchedule);
+  } else {
+    AsyncStorage.setItem("@schedule", JSON.stringify(NOTIFICATION_SCHEDULE));
+
+    schedule = NOTIFICATION_SCHEDULE;
+  }
+
+  return schedule;
+};
 
 export const exerciseToStatus = (exercises: IExercises) => {
   const status: IStatus[] = [];

@@ -1,81 +1,56 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { Dimensions, Switch } from "react-native";
 import { useNavigation } from "@react-navigation/core";
+import Icon from "react-native-vector-icons/Feather";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Toast from "react-native-toast-message";
-import { Container, ScrollBox, Box, OpacityBox, Text, Input, Button } from "@src/components/atoms";
-import { SCHEDULE_WEEKS, SCHEDULE_TIME, WEEKS_NUMBER_TO_STRING, WEEKS_STRING_TO_NUMBER } from "@src/configs";
-import { registerLocalNotification, unregisterLocalNotification } from "@src/utils";
-import type { NativeSyntheticEvent, TextInputChangeEventData } from "react-native";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import dayjs from "dayjs";
+import { Container, ScrollBox, Box, OpacityBox, Text, Button } from "@src/components/atoms";
+import { WEEKS_NUMBER_TO_STRING, WEEKS_STRING_TO_NUMBER } from "@src/configs";
+import { getNotificationSchedule, registerLocalNotification, unregisterLocalNotification } from "@src/utils";
+import type { Event } from "@react-native-community/datetimepicker";
 
 const appWidth = Dimensions.get("window").width;
 
-const getStorageWeeksAndTime = async () => {
-  const storageWeeks = await AsyncStorage.getItem("@notificationWeeks");
-  const storageTime = await AsyncStorage.getItem("@notificationTime");
-  let weeks: number[];
-  let time: number;
-
-  if (storageWeeks) {
-    weeks = JSON.parse(storageWeeks);
-  } else {
-    AsyncStorage.setItem("@notificationWeeks", JSON.stringify(SCHEDULE_WEEKS));
-
-    weeks = SCHEDULE_WEEKS;
-  }
-
-  if (storageTime) {
-    time = Number(storageTime);
-  } else {
-    AsyncStorage.setItem("@notificationTime", String(SCHEDULE_TIME));
-
-    time = SCHEDULE_TIME;
-  }
-
-  return { storageWeeks: weeks, stroageTime: time };
-};
-
 export const AlarmScreen = () => {
   const navigation = useNavigation();
-  const [isEnabled, setIsEnabled] = useState(true);
+  const [schedule, setSchedule] = useState({});
+  const [alarmEnabled, setAlarmEnabled] = useState(true);
   const [weeks, setWeeks] = useState<{ text: string; selected: boolean }[]>([]);
-  const [time, setTime] = useState("");
-  const [timePeriod, setTimePeriod] = useState("");
+  const [schduleDate, setScheduleDate] = useState<Date | null>(null);
+  const [isOpenTimePicker, setIsOpenTimePicker] = useState(false);
 
-  const setWeeksAndTime = async () => {
-    const { storageWeeks, stroageTime } = await getStorageWeeksAndTime();
+  const getSchedule = useCallback(async () => {
+    const storageSchedule = await getNotificationSchedule();
     const allWeeks = [];
 
     for (let i = 0; i < 7; i++) {
       const week = { text: WEEKS_NUMBER_TO_STRING[i], selected: false };
 
-      if (storageWeeks.includes(i)) {
+      if (storageSchedule.weeks.includes(i)) {
         week.selected = true;
       }
 
       allWeeks.push(week);
     }
 
+    const scheduleDate = dayjs().hour(storageSchedule.hour).minute(storageSchedule.minute).toDate();
+
+    setSchedule(storageSchedule);
+    setAlarmEnabled(storageSchedule.alarm === "ON");
     setWeeks(allWeeks);
-
-    if (stroageTime > 12) {
-      setTimePeriod("PM");
-      setTime(String(stroageTime - 12));
-    } else {
-      setTimePeriod("AM");
-      setTime(String(stroageTime));
-    }
-  };
-
-  useEffect(() => {
-    setWeeksAndTime();
+    setScheduleDate(scheduleDate);
   }, []);
 
+  useEffect(() => {
+    getSchedule();
+  }, [getSchedule]);
+
   const handleToggleSwitch = () => {
-    if (isEnabled) {
-      setIsEnabled(false);
+    if (alarmEnabled) {
+      setAlarmEnabled(false);
     } else {
-      setIsEnabled(true);
+      setAlarmEnabled(true);
     }
   };
 
@@ -87,54 +62,46 @@ export const AlarmScreen = () => {
     setWeeks(newWeeks);
   };
 
-  const handleSelectPeriod = (period: string) => () => {
-    if (timePeriod !== period) {
-      setTimePeriod(period);
-    }
+  const handleOpenTimePicker = () => {
+    setIsOpenTimePicker(true);
   };
 
-  const handleChangeTime = (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
-    const value = e.nativeEvent.text;
+  const handleChangeTime = (event: Event, date?: Date) => {
+    if (date) {
+      setScheduleDate(date);
+    }
 
-    setTime(value);
+    setIsOpenTimePicker(false);
   };
 
   const handleSaveAlarm = async () => {
-    if (!isEnabled) {
-      await AsyncStorage.setItem("@notificationAlarm", "OFF");
+    if (!alarmEnabled) {
+      await AsyncStorage.setItem("@schedule", JSON.stringify({ ...schedule, alarm: "OFF" }));
 
       unregisterLocalNotification();
 
       navigation.navigate("Main");
     } else {
-      const parsedWeeks: number[] = [];
-      let parsedTime = Number(time);
-
-      if (timePeriod === "AM" && (parsedTime < 0 || parsedTime > 11)) {
-        Toast.show({ type: "info", text1: "Error", text2: "AM range should be 0 ~ 11" });
-
-        return;
-      } else if (timePeriod === "PM" && (parsedTime < 1 || parsedTime > 11)) {
-        Toast.show({ type: "info", text1: "Error", text2: "PM range should be 1 ~ 11" });
-
-        return;
-      }
+      const selectedWeeks: number[] = [];
+      const selectedDate = dayjs(schduleDate);
+      const selectedHour = selectedDate.hour();
+      const selectedMinute = selectedDate.minute();
 
       weeks.forEach((week) => {
         if (week.selected) {
-          parsedWeeks.push(WEEKS_STRING_TO_NUMBER[week.text]);
+          selectedWeeks.push(WEEKS_STRING_TO_NUMBER[week.text]);
         }
       });
 
-      await AsyncStorage.setItem("@notificationAlarm", "ON");
-
-      if (timePeriod === "PM") {
-        await AsyncStorage.setItem("@notificationTime", String(parsedTime + 12));
-      } else {
-        await AsyncStorage.setItem("@notificationTime", String(parsedTime));
-      }
-
-      await AsyncStorage.setItem("@notificationWeeks", JSON.stringify(parsedWeeks));
+      await AsyncStorage.setItem(
+        "@schedule",
+        JSON.stringify({
+          alarm: "ON",
+          weeks: selectedWeeks,
+          hour: selectedHour,
+          minute: selectedMinute,
+        }),
+      );
 
       await registerLocalNotification();
 
@@ -153,15 +120,15 @@ export const AlarmScreen = () => {
 
         <Box d="row" justify="space-between" w="100%" mt="20px">
           <Text size="16px" weight="bold">
-            Alarm {isEnabled ? "ON" : "OFF"}
+            Alarm {alarmEnabled ? "ON" : "OFF"}
           </Text>
 
           <Switch
             trackColor={{ false: "#f8f8f8", true: "black" }}
-            thumbColor={isEnabled ? "white" : "black"}
+            thumbColor={alarmEnabled ? "white" : "black"}
             ios_backgroundColor="#f8f8f8"
             onValueChange={handleToggleSwitch}
-            value={isEnabled}
+            value={alarmEnabled}
           />
         </Box>
 
@@ -191,34 +158,26 @@ export const AlarmScreen = () => {
           </Text>
         </Box>
 
-        <Box d="row" justify="flex-start" w="100%" mt="20px">
-          <Box d="row" justify="space-between" w="100px">
-            <OpacityBox
-              w="40px"
-              p="8px"
-              bgColor={timePeriod === "AM" ? "black" : "#f8f8f8"}
-              onPress={handleSelectPeriod("AM")}
-            >
-              <Text color={timePeriod === "AM" ? "white" : "black"}>AM</Text>
-            </OpacityBox>
-            <OpacityBox
-              w="40px"
-              p="8px"
-              bgColor={timePeriod === "PM" ? "black" : "#f8f8f8"}
-              onPress={handleSelectPeriod("PM")}
-            >
-              <Text color={timePeriod === "PM" ? "white" : "black"}>PM</Text>
-            </OpacityBox>
-          </Box>
+        <Box d="row" justify="space-between" w="100%" mt="20px">
+          <Text size="16px" weight="bold">
+            {dayjs(schduleDate).format("A  hh : mm")}
+          </Text>
 
-          <Box d="row" m="0 0 0 40px">
-            <Input keyboardType="numeric" w="60px" h="40px" align="center" value={time} onChange={handleChangeTime} />
-            <Text size="16px" weight="bold" m="0 0 0 10px">
-              {": "}00
-            </Text>
-          </Box>
+          <OpacityBox p="6px" bgColor="black" onPress={handleOpenTimePicker}>
+            <Icon name="edit" color="white" size={20} />
+          </OpacityBox>
         </Box>
       </ScrollBox>
+
+      {schduleDate && isOpenTimePicker && (
+        <DateTimePicker
+          mode="time"
+          display="spinner"
+          value={schduleDate}
+          minuteInterval={30}
+          onChange={handleChangeTime}
+        />
+      )}
 
       <Box position="absolute" left="0" bottom="0" w="100%" h="60px" p="8px">
         <Button

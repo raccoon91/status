@@ -1,8 +1,8 @@
 import { AppState, Platform, PushNotificationIOS } from "react-native";
 import PushNotification from "react-native-push-notification";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import dayjs from "dayjs";
-import { CHANNEL_ID, SCHEDULE_ALARM, SCHEDULE_WEEKS, SCHEDULE_TIME } from "@src/configs";
+import { CHANNEL_ID } from "@src/configs";
+import { getNotificationSchedule } from "./common";
 
 const handleAppStateChange = (nextAppState: string) => {
   if (nextAppState === "active") {
@@ -10,51 +10,27 @@ const handleAppStateChange = (nextAppState: string) => {
   }
 };
 
-const getScheduleDates = async () => {
-  const storageAlarm = await AsyncStorage.getItem("@notificationAlarm");
-  let alarm: string;
+const createScheduleDates = async () => {
+  const schedule = await getNotificationSchedule();
 
-  if (storageAlarm) {
-    alarm = storageAlarm;
-  } else {
-    alarm = SCHEDULE_ALARM;
-  }
-
-  if (alarm === "OFF") {
+  if (schedule.alarm === "OFF") {
     return [];
-  }
-
-  const storageWeeks = await AsyncStorage.getItem("@notificationWeeks");
-  const storageTime = await AsyncStorage.getItem("@notificationTime");
-  let weeks: number[];
-  let time: number;
-
-  if (storageWeeks) {
-    weeks = JSON.parse(storageWeeks);
-  } else {
-    AsyncStorage.setItem("@notificationWeeks", JSON.stringify(SCHEDULE_WEEKS));
-
-    weeks = SCHEDULE_WEEKS;
-  }
-
-  if (storageTime) {
-    time = Number(storageTime);
-  } else {
-    AsyncStorage.setItem("@notificationTime", String(SCHEDULE_TIME));
-
-    time = SCHEDULE_TIME;
   }
 
   const currentWeek = dayjs().day();
 
-  return weeks.map((week) => {
-    let scheduleDate = dayjs().minute(0).second(0).millisecond(0);
+  return schedule.weeks.map((week) => {
+    let scheduleDate = dayjs().second(0).millisecond(0);
 
-    if (week < currentWeek || (week === currentWeek && scheduleDate.hour() >= time)) {
+    if (
+      week < currentWeek ||
+      (week === currentWeek && scheduleDate.hour() > schedule.hour) ||
+      (week === currentWeek && scheduleDate.hour() === schedule.hour && scheduleDate.minute() >= schedule.minute)
+    ) {
       scheduleDate = scheduleDate.add(7, "day");
     }
 
-    return scheduleDate.day(week).hour(time).toDate();
+    return scheduleDate.day(week).hour(schedule.hour).minute(schedule.minute).toDate();
   });
 };
 
@@ -88,7 +64,7 @@ export const registerLocalNotification = async () => {
 
   checkOrCreateChannel();
 
-  const scheduleDates = await getScheduleDates();
+  const scheduleDates = await createScheduleDates();
 
   scheduleDates.forEach((scheduleDate) => {
     PushNotification.localNotificationSchedule({
