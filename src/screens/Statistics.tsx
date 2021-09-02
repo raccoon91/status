@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Dimensions } from "react-native";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
-import { getStatistics } from "@src/store/thunk";
+import { getExercises } from "@src/store/thunk";
 import { Container } from "@src/components/atoms";
 import { StackBarChart, SetChartData } from "@src/charts/StackBarChart";
 
@@ -11,23 +11,23 @@ export const StatisticsScreen = () => {
   const dispatch = useAppDispatch();
   const chartDataRef = useRef<SetChartData>(null);
   const [isChartMount, setIsChartMount] = useState(false);
-  const { isFetch, isLoad, statisticsData } = useAppSelector((state) => state.statistics);
+  const { isFetch, isLoad, statistics } = useAppSelector((state) => state.exercise);
 
   useEffect(() => {
     if (!isFetch) {
-      dispatch(getStatistics());
+      dispatch(getExercises());
     }
   }, [isFetch, dispatch]);
 
   useEffect(() => {
-    if (isChartMount && !!statisticsData && !!chartDataRef?.current?.setChartData) {
-      chartDataRef.current.setChartData(statisticsData.labels, statisticsData.datasets);
+    if (isChartMount && !!statistics && !!chartDataRef?.current?.setChartData) {
+      chartDataRef.current.setChartData(statistics.labels, statistics.datasets);
 
       return () => {
         setIsChartMount(false);
       };
     }
-  }, [isChartMount, statisticsData, chartDataRef]);
+  }, [isChartMount, statistics, chartDataRef]);
 
   const chartLoadEnd = () => {
     setIsChartMount(true);

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
 import { useNavigation } from "@react-navigation/core";
-import { getUser, getStatus } from "src/store/thunk";
+import { getUser, getStatus } from "@src/store/thunk";
 import { Container, Box, Text } from "@src/components/atoms";
 import { Status } from "@src/components/molecules";
 import { FloatMenu, BottomSheet } from "@src/components/organisms";
@@ -16,11 +16,11 @@ const floatMenuOptions = {
   ],
 };
 
-export const MainScreen = () => {
+export const StatusScreen = () => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const { isFetch: isFetchUser, isLoad: isLoadUser, name, level } = useAppSelector((state) => state.user);
-  const { isFetch, isLoad, status } = useAppSelector((state) => state.main);
+  const { isFetch, isLoad, status, statusInfo } = useAppSelector((state) => state.status);
 
   useEffect(() => {
     if (!isFetch) {
@@ -67,7 +67,7 @@ export const MainScreen = () => {
       <FloatMenu floatMenuOptions={floatMenuOptions} />
 
       <BottomSheet>
-        <StatusInfo />
+        <StatusInfo statusInfo={statusInfo} />
       </BottomSheet>
     </Container>
   );

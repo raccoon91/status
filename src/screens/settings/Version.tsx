@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Box, Text } from "src/components/atoms";
+import { Container, Box, Text } from "@src/components/atoms";
 const { version } = require("../../../package.json");
 
 export const VersionScreen = () => {

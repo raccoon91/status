@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { userExtraReducers } from "src/store/thunk";
+import { userExtraReducers } from "@src/store/thunk";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 const initialUserState: IUserState = {

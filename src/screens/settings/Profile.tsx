@@ -1,9 +1,9 @@
 import React from "react";
 import { useAppSelector } from "@src/hooks";
-import { Container, Box, Text } from "src/components/atoms";
+import { Container, Box, Text } from "@src/components/atoms";
 
 export const ProfileScreen = () => {
-  const { name, level, requiredExperience, experience } = useAppSelector((state) => state.main);
+  const { name, level, requiredExperience, experience } = useAppSelector((state) => state.user);
 
   return (
     <Container f="1" justify="flex-start" bgColor="white" p="40px 60px">

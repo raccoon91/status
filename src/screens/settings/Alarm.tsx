@@ -3,9 +3,9 @@ import { Dimensions, Switch } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-toast-message";
-import { Container, ScrollBox, Box, OpacityBox, Text, Input, Button } from "src/components/atoms";
-import { SCHEDULE_WEEKS, SCHEDULE_TIME, WEEKS_NUMBER_TO_STRING, WEEKS_STRING_TO_NUMBER } from "src/configs";
-import { registerLocalNotification, unregisterLocalNotification } from "src/utils";
+import { Container, ScrollBox, Box, OpacityBox, Text, Input, Button } from "@src/components/atoms";
+import { SCHEDULE_WEEKS, SCHEDULE_TIME, WEEKS_NUMBER_TO_STRING, WEEKS_STRING_TO_NUMBER } from "@src/configs";
+import { registerLocalNotification, unregisterLocalNotification } from "@src/utils";
 import type { NativeSyntheticEvent, TextInputChangeEventData } from "react-native";
 
 const appWidth = Dimensions.get("window").width;

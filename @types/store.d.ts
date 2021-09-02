@@ -19,16 +19,13 @@ interface IExercise {
   unit?: string;
 }
 
+interface IExercises {
+  [key: string]: IExercise;
+}
+
 interface IStatistics {
   status: IStatus[];
   updated: string;
-}
-
-interface IRejectValue {
-  rejectValue: {
-    type: string;
-    message: string;
-  };
 }
 
 interface IUserState {
@@ -41,23 +38,11 @@ interface IUserState {
   requiredExperience: number;
 }
 
-interface IMainState {
+interface IStatusState {
   isFetch: boolean;
   isLoad: boolean;
   status: IStatus[];
   statusInfo: IStatusInfo[];
-}
-
-interface IExerciseState {
-  isFetch: boolean;
-  isLoad: boolean;
-  isUpdate: boolean;
-  lastUpdated: string;
-  exercises: { [key: string]: IExercise };
-  exerciseNames: string[];
-  displayUpdateStatus: boolean;
-  updateStatus: IStatus[];
-  enableUpdate: boolean;
 }
 
 interface IChartData {
@@ -67,10 +52,17 @@ interface IChartData {
   barThickness?: number;
   borderRadius?: number;
 }
-interface IStatisticsState {
+
+interface IExerciseState {
   isFetch: boolean;
   isLoad: boolean;
-  statisticsData: {
+  isUpdate: boolean;
+  lastUpdated: string;
+  exercises: IExercises;
+  exerciseNames: string[];
+  updateStatus: IStatus[];
+  enableUpdate: boolean;
+  statistics: {
     labels: string[];
     datasets: IChartData[];
   } | null;
@@ -78,7 +70,13 @@ interface IStatisticsState {
 
 interface IRootState {
   user: IUserState;
-  main: IMainState;
+  status: IStatusState;
   exercise: IExerciseState;
-  statistics: IStatisticsState;
+}
+
+interface IRejectValue {
+  rejectValue: {
+    type: string;
+    message: string;
+  };
 }

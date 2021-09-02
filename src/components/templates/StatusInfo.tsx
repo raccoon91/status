@@ -1,12 +1,9 @@
 import React from "react";
 import Icon from "react-native-vector-icons/Entypo";
-import { useAppSelector } from "@src/hooks";
 import { Box, Container, ScrollBox, Text } from "@src/components/atoms";
 import { ArccodionGroup, Arccodion } from "@src/components/molecules";
 
-export const StatusInfo = () => {
-  const { statusInfo } = useAppSelector((state) => state.main);
-
+export const StatusInfo = ({ statusInfo }: { statusInfo: IStatusInfo[] }) => {
   return (
     <Container f="1">
       <Text size="26px" weight="bold" mb="30px">

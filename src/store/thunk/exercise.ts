@@ -2,29 +2,73 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-toast-message";
 import dayjs from "dayjs";
-import { postStatus } from "./main";
-import { postStatistics } from "./statistics";
-import { STATUS_INDEX, EXERCISES, EXERCISE_NAMES } from "@src/configs";
+import { STATUS_COLORS, EXERCISE_NAMES } from "@src/configs";
+import { exerciseToStatus } from "@src/utils";
+import { postStatus } from "./status";
 import type { ActionReducerMapBuilder } from "@reduxjs/toolkit";
+
+const setStatisticsData = (state: IExerciseState, statisticsData: IStatistics[]) => {
+  if (statisticsData) {
+    const labels: string[] = [];
+    const datasets: { [key: string]: IChartData } = {};
+
+    statisticsData.forEach((statistics) => {
+      labels.push(dayjs(statistics.updated).format("MM-DD"));
+
+      statistics.status.forEach((item) => {
+        if (!datasets[item.name]) {
+          datasets[item.name] = {
+            label: item.name,
+            data: [],
+            backgroundColor: STATUS_COLORS[item.name],
+            barThickness: 10,
+          };
+        }
+
+        if (item.value) {
+          datasets[item.name].data.push(item.value / 1000);
+        } else {
+          datasets[item.name].data.push(0);
+        }
+      });
+    });
+
+    state.statistics = {
+      labels,
+      datasets: Object.values(datasets),
+    };
+  }
+};
 
 export const getExercises = createAsyncThunk<
   {
-    exercises: { [key: string]: IExercise };
+    lastUpdated: string;
+    exercises: IExercises;
     exerciseNames: string[];
-    updated: string;
+    statisticsData: IStatistics[];
   },
   void,
   IRejectValue
 >("exercise/getExercises", async (_, { rejectWithValue }) => {
   try {
-    const storageExercises = await AsyncStorage.getItem("@exercise");
+    const storageStatistics = await AsyncStorage.getItem("@statistics");
 
-    if (storageExercises !== null) {
-      const { exercises, updated } = JSON.parse(storageExercises);
+    if (storageStatistics !== null) {
+      const parsedStatistics: { exercises: IExercises; updated: string }[] = JSON.parse(storageStatistics) || [];
+      const lastStatistics = parsedStatistics.slice(-1)[0];
+      const statisticsData = parsedStatistics.slice(-7).map((data) => ({
+        status: exerciseToStatus(data.exercises),
+        updated: data.updated,
+      }));
 
-      return { exercises, exerciseNames: EXERCISE_NAMES.filter((exerciseName) => !exercises[exerciseName]), updated };
+      return {
+        lastUpdated: lastStatistics.updated,
+        exercises: lastStatistics.exercises,
+        exerciseNames: EXERCISE_NAMES.filter((exerciseName) => !lastStatistics.exercises[exerciseName]),
+        statisticsData,
+      };
     } else {
-      return { exercises: {}, exerciseNames: EXERCISE_NAMES, updated: "" };
+      return { lastUpdated: "", exercises: {}, exerciseNames: EXERCISE_NAMES, statisticsData: [] };
     }
   } catch (err) {
     console.error(err);
@@ -33,13 +77,12 @@ export const getExercises = createAsyncThunk<
   }
 });
 
-export const postExercies = createAsyncThunk<{ updated: string }, void, IRejectValue>(
+export const postExercies = createAsyncThunk<{ statisticsData: IStatistics[]; updated: string }, void, IRejectValue>(
   "exercise/postExercies",
   async (_, { getState, rejectWithValue, dispatch }) => {
     try {
       const state = getState() as IRootState;
-      const { exercises, lastUpdated, updateStatus } = state.exercise;
-      const { status } = state.main;
+      const { exercises, lastUpdated } = state.exercise;
       const updated = dayjs().format("YYYY-MM-DD HH:mm");
 
       if (lastUpdated) {
@@ -51,37 +94,22 @@ export const postExercies = createAsyncThunk<{ updated: string }, void, IRejectV
         }
       }
 
-      const storageExercises: { [key: string]: IExercise } = {};
+      const storageStatistics = await AsyncStorage.getItem("@statistics");
+      const parsedStatistics: { exercises: IExercises; updated: string }[] = storageStatistics
+        ? JSON.parse(storageStatistics)
+        : [];
 
-      Object.keys(exercises).forEach((exerciseName) => {
-        if (exercises?.[exerciseName]?.value) {
-          storageExercises[exerciseName] = { value: "", unit: EXERCISES?.[exerciseName]?.unit || "" };
-        }
-      });
+      parsedStatistics.push({ exercises, updated });
+      const statisticsData = parsedStatistics.slice(-7).map((data) => ({
+        status: exerciseToStatus(data.exercises),
+        updated,
+      }));
 
-      await AsyncStorage.setItem("@exercise", JSON.stringify({ exercises: storageExercises, updated }));
+      AsyncStorage.setItem("@statistics", JSON.stringify(parsedStatistics));
 
-      const newStatus: IStatus[] = [];
-      const newUpdateStatus: IStatus[] = [];
+      dispatch(postStatus(exercises));
 
-      status.forEach((stat) => {
-        const updateValue = updateStatus?.[STATUS_INDEX[stat.name]]?.value || 0;
-
-        newStatus.push({
-          name: stat.name,
-          value: stat.value + updateValue,
-        });
-
-        newUpdateStatus.push({
-          name: stat.name,
-          value: updateValue,
-        });
-      });
-
-      dispatch(postStatistics({ status: newUpdateStatus, updated }));
-      dispatch(postStatus(newStatus));
-
-      return { updated };
+      return { statisticsData, updated };
     } catch (err) {
       console.error(err);
 
@@ -97,12 +125,13 @@ export const exerciseExtraReducers = (builder: ActionReducerMapBuilder<IExercise
       state.isFetch = true;
     })
     .addCase(getExercises.fulfilled, (state, action) => {
-      const { exercises, exerciseNames, updated } = action.payload;
+      const { exercises, exerciseNames, lastUpdated, statisticsData } = action.payload;
 
       state.exercises = exercises;
       state.exerciseNames = exerciseNames;
-      state.lastUpdated = updated;
+      state.lastUpdated = lastUpdated;
       state.isLoad = false;
+      setStatisticsData(state, statisticsData);
     })
     .addCase(getExercises.rejected, (_, action) => {
       if (action?.payload) {
@@ -112,11 +141,12 @@ export const exerciseExtraReducers = (builder: ActionReducerMapBuilder<IExercise
       }
     })
     .addCase(postExercies.fulfilled, (state, action) => {
-      const { updated } = action.payload;
+      const { statisticsData, updated } = action.payload;
 
-      state.isUpdate = true;
       state.lastUpdated = updated;
       state.updateStatus = [];
+      setStatisticsData(state, statisticsData);
+      state.isUpdate = true;
     })
     .addCase(postExercies.rejected, (_, action) => {
       if (action?.payload) {

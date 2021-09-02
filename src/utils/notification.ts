@@ -2,7 +2,7 @@ import { AppState, Platform, PushNotificationIOS } from "react-native";
 import PushNotification from "react-native-push-notification";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import dayjs from "dayjs";
-import { CHANNEL_ID, SCHEDULE_ALARM, SCHEDULE_WEEKS, SCHEDULE_TIME } from "src/configs";
+import { CHANNEL_ID, SCHEDULE_ALARM, SCHEDULE_WEEKS, SCHEDULE_TIME } from "@src/configs";
 
 const handleAppStateChange = (nextAppState: string) => {
   if (nextAppState === "active") {

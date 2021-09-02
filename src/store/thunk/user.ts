@@ -5,7 +5,7 @@ import { USER } from "@src/configs";
 import type { ActionReducerMapBuilder } from "@reduxjs/toolkit";
 
 export const getUser = createAsyncThunk<typeof USER, void, IRejectValue>(
-  "main/getUser",
+  "user/getUser",
   async (_, { rejectWithValue }) => {
     try {
       const storageUser = await AsyncStorage.getItem("@user");
@@ -14,6 +14,7 @@ export const getUser = createAsyncThunk<typeof USER, void, IRejectValue>(
         return JSON.parse(storageUser);
       } else {
         AsyncStorage.setItem("@user", JSON.stringify(USER));
+
         return USER;
       }
     } catch (err) {
@@ -25,7 +26,7 @@ export const getUser = createAsyncThunk<typeof USER, void, IRejectValue>(
 );
 
 export const postUser = createAsyncThunk<typeof USER, void, IRejectValue>(
-  "main/postUser",
+  "user/postUser",
   async (_, { getState, rejectWithValue }) => {
     try {
       const storageUser = await AsyncStorage.getItem("@user");
@@ -59,11 +60,11 @@ export const userExtraReducers = (builder: ActionReducerMapBuilder<IUserState>) 
     .addCase(getUser.fulfilled, (state, action) => {
       const { name, level, experience, requiredExperience } = action.payload;
 
-      state.isLoad = false;
       state.name = name;
       state.level = level;
       state.experience = experience;
       state.requiredExperience = requiredExperience;
+      state.isLoad = false;
     })
     .addCase(getUser.rejected, (_, action) => {
       if (action?.payload) {

@@ -1,15 +1,13 @@
 import { combineReducers, AnyAction } from "@reduxjs/toolkit";
 import user from "./user";
-import main from "./main";
+import status from "./status";
 import exercise from "./exercise";
-import statistics from "./statistics";
 
 const rootReducer = (state: IRootState | undefined, action: AnyAction) => {
   const combineReducer = combineReducers({
     user,
-    main,
+    status,
     exercise,
-    statistics,
   });
 
   return combineReducer(state, action);

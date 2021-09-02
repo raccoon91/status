@@ -5,8 +5,8 @@ import { Provider } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { Navigations } from "@src/navigation";
 import Toast from "react-native-toast-message";
-import { store } from "./src/store";
-import { registerLocalNotificationEvent, unregisterLocalNotificationEvent } from "src/utils";
+import { store } from "@src/store";
+import { registerLocalNotificationEvent, unregisterLocalNotificationEvent } from "@src/utils";
 
 const App = () => {
   useEffect(() => {

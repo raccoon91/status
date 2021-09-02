@@ -2,18 +2,20 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-toast-message";
 import { STATUS } from "@src/configs";
+import { exerciseToStatus } from "@src/utils";
 import type { ActionReducerMapBuilder } from "@reduxjs/toolkit";
 
 export const getStatus = createAsyncThunk<typeof STATUS, void, IRejectValue>(
-  "main/getStatus",
+  "status/getStatus",
   async (_, { rejectWithValue }) => {
     try {
-      const storageUser = await AsyncStorage.getItem("@status");
+      const storageStatus = await AsyncStorage.getItem("@status");
 
-      if (storageUser != null) {
-        return JSON.parse(storageUser);
+      if (storageStatus != null) {
+        return JSON.parse(storageStatus);
       } else {
         AsyncStorage.setItem("@status", JSON.stringify(STATUS));
+
         return STATUS;
       }
     } catch (err) {
@@ -24,15 +26,22 @@ export const getStatus = createAsyncThunk<typeof STATUS, void, IRejectValue>(
   },
 );
 
-export const postStatus = createAsyncThunk<IStatus[] | void, IStatus[], IRejectValue>(
-  "main/postStatus",
-  async (newStatus: IStatus[], { rejectWithValue }) => {
+export const postStatus = createAsyncThunk<IStatus[], IExercises, IRejectValue>(
+  "status/postStatus",
+  async (newExercises, { rejectWithValue }) => {
     try {
-      if (newStatus && newStatus.length > 0) {
-        AsyncStorage.setItem("@status", JSON.stringify(newStatus));
+      const storageStatus = await AsyncStorage.getItem("@status");
+      const parsedStatus: IStatus[] = storageStatus ? JSON.parse(storageStatus) : STATUS;
+      const updateStatus = exerciseToStatus(newExercises);
 
-        return newStatus;
-      }
+      const newStatus = parsedStatus.map((status, index) => ({
+        name: status.name,
+        value: status.value + (updateStatus?.[index]?.value || 0),
+      }));
+
+      AsyncStorage.setItem("@status", JSON.stringify(newStatus));
+
+      return newStatus;
     } catch (err) {
       console.error(err);
 
@@ -41,7 +50,7 @@ export const postStatus = createAsyncThunk<IStatus[] | void, IStatus[], IRejectV
   },
 );
 
-export const mainExtraReducers = (builder: ActionReducerMapBuilder<IMainState>) => {
+export const statusExtraReducers = (builder: ActionReducerMapBuilder<IStatusState>) => {
   builder
     .addCase(getStatus.pending, (state) => {
       state.isLoad = true;
@@ -50,11 +59,8 @@ export const mainExtraReducers = (builder: ActionReducerMapBuilder<IMainState>) 
     .addCase(getStatus.fulfilled, (state, action) => {
       const status = action.payload;
 
+      state.status = status;
       state.isLoad = false;
-
-      if (status) {
-        state.status = status;
-      }
     })
     .addCase(getStatus.rejected, (_, action) => {
       if (action?.payload) {
@@ -66,9 +72,7 @@ export const mainExtraReducers = (builder: ActionReducerMapBuilder<IMainState>) 
     .addCase(postStatus.fulfilled, (state, action) => {
       const newStatus = action.payload;
 
-      if (newStatus) {
-        state.status = newStatus;
-      }
+      state.status = newStatus;
     })
     .addCase(postStatus.rejected, (_, action) => {
       if (action?.payload) {

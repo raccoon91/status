@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { MainScreen, StatisticsScreen, SettingScreen } from "@src/screens";
+import { StatusScreen, StatisticsScreen, SettingScreen } from "@src/screens";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -16,7 +16,7 @@ export const MainNavigation = () => (
   >
     <Tab.Screen
       name="Status"
-      component={MainScreen}
+      component={StatusScreen}
       options={{
         tabBarIcon: ({ color }) => <Icon name="home" color={color} size={22} />,
       }}

@@ -19,8 +19,9 @@ const appWidth = Dimensions.get("window").width;
 export const ExerciseScreen = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
-  const { isFetch, isLoad, isUpdate, exercises, exerciseNames, displayUpdateStatus, updateStatus, enableUpdate } =
-    useAppSelector((state) => state.exercise);
+  const { isFetch, isLoad, isUpdate, exercises, exerciseNames, updateStatus, enableUpdate } = useAppSelector(
+    (state) => state.exercise,
+  );
   const [toggleExercises, setToggleExercises] = useState(false);
 
   useEffect(() => {
@@ -140,7 +141,7 @@ export const ExerciseScreen = () => {
           </Box>
         ) : null}
 
-        {displayUpdateStatus ? (
+        {enableUpdate ? (
           <Box align="flex-start" m="30px 0 0">
             <Text size="20px" weight="bold" mb="10px">
               Status
