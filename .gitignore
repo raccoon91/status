@@ -29,6 +29,9 @@ build/
 local.properties
 *.iml
 
+# Android Bundle
+index.android.bundle
+
 # node.js
 node_modules/
 npm-debug.log
