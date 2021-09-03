@@ -1,4 +1,5 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useCallback } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import { Dimensions } from "react-native";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
 import { getExercises } from "@src/store/thunk";
@@ -13,21 +14,25 @@ export const StatisticsScreen = () => {
   const [isChartMount, setIsChartMount] = useState(false);
   const { isFetch, isLoad, statistics } = useAppSelector((state) => state.exercise);
 
-  useEffect(() => {
-    if (!isFetch) {
-      dispatch(getExercises());
-    }
-  }, [isFetch, dispatch]);
+  useFocusEffect(
+    useCallback(() => {
+      if (!isFetch) {
+        dispatch(getExercises());
+      }
+    }, [isFetch, dispatch]),
+  );
 
-  useEffect(() => {
-    if (isChartMount && !!statistics && !!chartDataRef?.current?.setChartData) {
-      chartDataRef.current.setChartData(statistics.labels, statistics.datasets);
+  useFocusEffect(
+    useCallback(() => {
+      if (isChartMount && !!statistics && !!chartDataRef?.current?.setChartData) {
+        chartDataRef.current.setChartData(statistics.labels, statistics.datasets);
 
-      return () => {
-        setIsChartMount(false);
-      };
-    }
-  }, [isChartMount, statistics, chartDataRef]);
+        return () => {
+          setIsChartMount(false);
+        };
+      }
+    }, [isChartMount, statistics, chartDataRef]),
+  );
 
   const chartLoadEnd = () => {
     setIsChartMount(true);

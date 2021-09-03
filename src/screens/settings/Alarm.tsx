@@ -1,6 +1,6 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback } from "react";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { Dimensions, Switch } from "react-native";
-import { useNavigation } from "@react-navigation/core";
 import Icon from "react-native-vector-icons/Feather";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -42,9 +42,11 @@ export const AlarmScreen = () => {
     setScheduleDate(scheduleDate);
   }, []);
 
-  useEffect(() => {
-    getSchedule();
-  }, [getSchedule]);
+  useFocusEffect(
+    useCallback(() => {
+      getSchedule();
+    }, [getSchedule]),
+  );
 
   const handleToggleSwitch = () => {
     if (alarmEnabled) {

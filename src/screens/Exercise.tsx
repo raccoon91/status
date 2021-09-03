@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback } from "react";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { Dimensions } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
-import { useNavigation } from "@react-navigation/core";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
 import { Container, ScrollBox, Box, TouchableBox, Text, DecimalNumber, Button, Input } from "@src/components/atoms";
 import { getExercises, postExercies } from "@src/store/thunk";
@@ -24,21 +24,25 @@ export const ExerciseScreen = () => {
   );
   const [toggleExercises, setToggleExercises] = useState(false);
 
-  useEffect(() => {
-    if (isUpdate) {
-      navigation.navigate("Main");
+  useFocusEffect(
+    useCallback(() => {
+      if (isUpdate) {
+        navigation.navigate("Main");
 
-      return () => {
-        dispatch(clearExerciseState());
-      };
-    }
-  }, [isUpdate, navigation, dispatch]);
+        return () => {
+          dispatch(clearExerciseState());
+        };
+      }
+    }, [isUpdate, navigation, dispatch]),
+  );
 
-  useEffect(() => {
-    if (!isFetch) {
-      dispatch(getExercises());
-    }
-  }, [isFetch, dispatch]);
+  useFocusEffect(
+    useCallback(() => {
+      if (!isFetch) {
+        dispatch(getExercises());
+      }
+    }, [isFetch, dispatch]),
+  );
 
   const handleRemoveExercise = (exercise: string) => () => {
     dispatch(removeExercise({ name: exercise }));

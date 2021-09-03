@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useCallback } from "react";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { Dimensions } from "react-native";
-import { useNavigation } from "@react-navigation/core";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
 import { postUser } from "@src/store/thunk";
 import { changeUserName } from "@src/store/slices/user";
@@ -14,11 +14,13 @@ export const UserScreen = () => {
   const dispatch = useAppDispatch();
   const { name, newName } = useAppSelector((state) => state.user);
 
-  useEffect(() => {
-    if (name) {
-      navigation.reset({ routes: [{ name: "Main" }] });
-    }
-  }, [name, navigation]);
+  useFocusEffect(
+    useCallback(() => {
+      if (name) {
+        navigation.reset({ routes: [{ name: "Main" }] });
+      }
+    }, [name, navigation]),
+  );
 
   const handleChangeUser = (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
     const value = e.nativeEvent.text;
