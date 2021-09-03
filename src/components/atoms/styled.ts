@@ -1,4 +1,19 @@
 import { css } from "styled-components/native";
+import type { StackNavigationOptions } from "@react-navigation/stack/lib/typescript/src/types";
+
+export const headerStyle = (title: string, theme = "light"): StackNavigationOptions => ({
+  title,
+  headerStyle: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#e2e2e2",
+    backgroundColor: theme === "light" ? "white" : "black",
+  },
+  headerTintColor: theme === "light" ? "black" : "white",
+  headerTitleStyle: {
+    fontWeight: "bold",
+  },
+  headerTitleAlign: "left",
+});
 
 export const styledPosition = css<IPosition>`
   ${({ position }) => position && `position: ${position};`};
@@ -18,7 +33,11 @@ export const styledFlex = css<IFlex>`
 
 export const styledDimension = css<IDimension>`
   ${({ w }) => w && `width: ${w};`}
+  ${({ maxWidth }) => maxWidth && `max-width: ${maxWidth};`}
+  ${({ minWidth }) => minWidth && `min-width: ${minWidth};`}
   ${({ h }) => h && `height: ${h};`}
+  ${({ maxHeight }) => maxHeight && `max-height: ${maxHeight};`}
+  ${({ minHeight }) => minHeight && `min-height: ${minHeight};`}
 `;
 
 export const styledMargin = css<IMargin>`

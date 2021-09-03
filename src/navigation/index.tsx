@@ -1,6 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { getFocusedRouteNameFromRoute, RouteProp } from "@react-navigation/core";
+import { getFocusedRouteNameFromRoute, RouteProp } from "@react-navigation/native";
+import { headerStyle } from "src/components/atoms";
 import { UserScreen, ExerciseScreen, ProfileScreen, AlarmScreen, VersionScreen } from "@src/screens";
 import { MainNavigation } from "./Main";
 
@@ -15,96 +16,16 @@ const Stack = createStackNavigator();
 export const Navigations = () => {
   return (
     <Stack.Navigator initialRouteName="Main">
-      <Stack.Screen
-        name="User"
-        options={{
-          title: "User",
-          headerStyle: {
-            borderBottomWidth: 1,
-            borderBottomColor: "#e2e2e2",
-          },
-          headerTitleStyle: {
-            fontWeight: "bold",
-          },
-          headerTitleAlign: "left",
-        }}
-        component={UserScreen}
-      />
+      <Stack.Screen name="User" options={headerStyle("User", "light")} component={UserScreen} />
       <Stack.Screen
         name="Main"
-        options={({ route }) => ({
-          title: getTitleName(route),
-          headerStyle: {
-            borderBottomWidth: 1,
-            borderBottomColor: "#e2e2e2",
-          },
-          headerTitleStyle: {
-            fontWeight: "bold",
-          },
-          headerTitleAlign: "left",
-        })}
+        options={({ route }) => headerStyle(getTitleName(route), "light")}
         component={MainNavigation}
       />
-      <Stack.Screen
-        name="Exercise"
-        options={{
-          title: "Exercise",
-          headerStyle: {
-            backgroundColor: "black",
-          },
-          headerTintColor: "white",
-          headerTitleStyle: {
-            fontWeight: "bold",
-          },
-          headerTitleAlign: "left",
-        }}
-        component={ExerciseScreen}
-      />
-      <Stack.Screen
-        name="Profile"
-        options={{
-          title: "Profile",
-          headerStyle: {
-            borderBottomWidth: 1,
-            borderBottomColor: "#e2e2e2",
-          },
-          headerTitleStyle: {
-            fontWeight: "bold",
-          },
-          headerTitleAlign: "left",
-        }}
-        component={ProfileScreen}
-      />
-      <Stack.Screen
-        name="Alarm"
-        options={{
-          title: "Alarm",
-          headerStyle: {
-            borderBottomWidth: 1,
-            borderBottomColor: "#e2e2e2",
-          },
-          headerTitleStyle: {
-            fontWeight: "bold",
-          },
-          headerTitleAlign: "left",
-        }}
-        component={AlarmScreen}
-      />
-      <Stack.Screen
-        name="Version"
-        options={{
-          title: "Version",
-          headerStyle: {
-            borderBottomWidth: 1,
-            borderBottomColor: "#e2e2e2",
-          },
-          headerTitleStyle: {
-            fontWeight: "bold",
-          },
-          headerTitleAlign: "left",
-        }}
-        component={VersionScreen}
-      />
+      <Stack.Screen name="Exercise" options={headerStyle("Exercise", "dark")} component={ExerciseScreen} />
+      <Stack.Screen name="Profile" options={headerStyle("Profile", "light")} component={ProfileScreen} />
+      <Stack.Screen name="Alarm" options={headerStyle("Alarm", "light")} component={AlarmScreen} />
+      <Stack.Screen name="Version" options={headerStyle("Version", "light")} component={VersionScreen} />
     </Stack.Navigator>
   );
 };

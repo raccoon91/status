@@ -1,3 +1,4 @@
+export * from "./styled";
 export * from "./Container";
 export * from "./ScrollBox";
 export * from "./Box";
