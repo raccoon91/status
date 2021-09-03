@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import { Container } from "@src/components/atoms";
 import { FloatMenuMainButton, FloatMenuSubButton } from "@src/components/molecules";
-import { useNavigation } from "@react-navigation/core";
+import { useNavigation } from "@react-navigation/native";
 
 interface IFloatMenu {
   floatMenuOptions: {

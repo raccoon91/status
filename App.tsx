@@ -19,14 +19,17 @@ const App = () => {
   }, []);
 
   return (
-    <SafeAreaProvider>
-      <Provider store={store}>
-        <NavigationContainer>
-          <Navigations />
-        </NavigationContainer>
-      </Provider>
+    <>
+      <SafeAreaProvider>
+        <Provider store={store}>
+          <NavigationContainer>
+            <Navigations />
+          </NavigationContainer>
+        </Provider>
+      </SafeAreaProvider>
+
       <Toast ref={(ref) => Toast.setRef(ref)} />
-    </SafeAreaProvider>
+    </>
   );
 };
 
