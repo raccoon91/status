@@ -19,7 +19,7 @@ export const CloseAppModal: FC<ICloseAppModalProps> = ({ show, close, exit }) =>
           minHeight="150px"
           p="20px 30px"
           bgColor="white"
-          border="2px solid #e8e8e8"
+          border="1px solid #e8e8e8"
           radius="5px"
         >
           <Text size="20px" weight="bold">
