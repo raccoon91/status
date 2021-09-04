@@ -3,7 +3,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-toast-message";
 import dayjs from "dayjs";
 import { STATUS_COLORS, EXERCISE_NAMES } from "@src/configs";
-import { exerciseToStatus } from "@src/utils";
+import { exerciseToStatus, calculateExperience } from "@src/utils";
+import { putUser } from "./user";
 import { postStatus } from "./status";
 import type { ActionReducerMapBuilder } from "@reduxjs/toolkit";
 
@@ -85,14 +86,14 @@ export const postExercies = createAsyncThunk<{ statisticsData: IStatistics[]; up
       const { exercises, lastUpdated } = state.exercise;
       const updated = dayjs().format("YYYY-MM-DD HH:mm");
 
-      if (lastUpdated) {
-        if (!dayjs(lastUpdated).isBefore(dayjs(updated), "day")) {
-          return rejectWithValue({ type: "info", message: "you can update status after a day" });
-        }
-        if (!dayjs(lastUpdated).isBefore(dayjs(updated).subtract(6, "hour"))) {
-          return rejectWithValue({ type: "info", message: "you can update status after six hour" });
-        }
-      }
+      // if (lastUpdated) {
+      //   if (!dayjs(lastUpdated).isBefore(dayjs(updated), "day")) {
+      //     return rejectWithValue({ type: "info", message: "you can update status after a day" });
+      //   }
+      //   if (!dayjs(lastUpdated).isBefore(dayjs(updated).subtract(6, "hour"))) {
+      //     return rejectWithValue({ type: "info", message: "you can update status after six hour" });
+      //   }
+      // }
 
       const storageStatistics = await AsyncStorage.getItem("@statistics");
       const parsedStatistics: { exercises: IExercises; updated: string }[] = storageStatistics
@@ -100,6 +101,7 @@ export const postExercies = createAsyncThunk<{ statisticsData: IStatistics[]; up
         : [];
 
       parsedStatistics.push({ exercises, updated });
+      const experience = calculateExperience(exercises);
       const statisticsData = parsedStatistics.slice(-7).map((data) => ({
         status: exerciseToStatus(data.exercises),
         updated,
@@ -107,6 +109,7 @@ export const postExercies = createAsyncThunk<{ statisticsData: IStatistics[]; up
 
       AsyncStorage.setItem("@statistics", JSON.stringify(parsedStatistics));
 
+      dispatch(putUser(experience));
       dispatch(postStatus(exercises));
 
       return { statisticsData, updated };

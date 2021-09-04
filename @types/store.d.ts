@@ -36,6 +36,7 @@ interface IUserState {
   level: number;
   experience: number;
   requiredExperience: number;
+  totalExperience: number;
 }
 
 interface IStatusState {

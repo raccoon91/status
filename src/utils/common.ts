@@ -46,3 +46,17 @@ export const exerciseToStatus = (exercises: IExercises) => {
 
   return status;
 };
+
+export const calculateExperience = (exercises: IExercises) => {
+  let experience = 0;
+
+  Object.keys(exercises).forEach((exerciseName) => {
+    const exerciseStatus = EXERCISES?.[exerciseName]?.status || [];
+
+    exerciseStatus.forEach((stat) => {
+      experience += Number(exercises[exerciseName].value) * stat.point;
+    });
+  });
+
+  return experience;
+};

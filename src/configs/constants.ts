@@ -33,7 +33,8 @@ export const USER = {
   name: "",
   level: 1,
   experience: 0,
-  requiredExperience: 0,
+  requiredExperience: 1000,
+  totalExperience: 0,
 };
 
 export const MAX_UPDATE_STATUS_VALUE = 500;

@@ -9,7 +9,8 @@ const initialUserState: IUserState = {
   newName: "",
   level: 1,
   experience: 0,
-  requiredExperience: 0,
+  requiredExperience: 1000,
+  totalExperience: 0,
 };
 
 export const userSlice = createSlice({

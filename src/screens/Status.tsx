@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { useNavigation, useNavigationState, useFocusEffect } from "@react-navigation/native";
 import { BackHandler } from "react-native";
+import { ProgressBar } from "react-native-paper";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
 import { getUser, getStatus } from "@src/store/thunk";
 import { Container, Box, Text } from "@src/components/atoms";
@@ -22,7 +23,14 @@ export const StatusScreen = () => {
   const navigation = useNavigation();
   const screenName = useNavigationState((state) => state.routes[state.index].name);
   const [toggleCloseAppModal, setToggleCloseAppModal] = useState(false);
-  const { isFetch: isFetchUser, isLoad: isLoadUser, name, level } = useAppSelector((state) => state.user);
+  const {
+    isFetch: isFetchUser,
+    isLoad: isLoadUser,
+    name,
+    level,
+    experience,
+    requiredExperience,
+  } = useAppSelector((state) => state.user);
   const { isFetch, isLoad, status, statusInfo } = useAppSelector((state) => state.status);
 
   const openCloseAppModal = useCallback(() => {
@@ -83,7 +91,7 @@ export const StatusScreen = () => {
 
       <Container isLoad={isLoadUser || isLoad} position="relative" f="1" justify="flex-start" bgColor="white" pt="40px">
         <Box w="70%">
-          <Box d="row" justify="space-between" w="100%" mb="10px">
+          <Box d="row" justify="space-between" w="100%" mb="20px">
             {name.length > 0 && (
               <>
                 <Box bgColor="black" p="4px 12px 6px" radius="5px">
@@ -95,6 +103,24 @@ export const StatusScreen = () => {
                 <Text size="20px" weight="bold">
                   Lv. {level}
                 </Text>
+              </>
+            )}
+          </Box>
+
+          <Box align="stretch" w="100%">
+            {name.length > 0 && (
+              <>
+                <Box d="row" justify="space-between">
+                  <Text size="18px" weight="bold" mb="12px">
+                    Exp.
+                  </Text>
+
+                  <Text size="18px" weight="bold" mb="12px">
+                    {Math.floor(experience / requiredExperience) * 100} %
+                  </Text>
+                </Box>
+
+                <ProgressBar progress={experience / requiredExperience} color="#000000" />
               </>
             )}
           </Box>
