@@ -116,7 +116,7 @@ export const StatusScreen = () => {
                   </Text>
 
                   <Text size="18px" weight="bold" mb="12px">
-                    {Math.floor(experience / requiredExperience) * 100} %
+                    {Math.floor((experience / requiredExperience) * 100)} %
                   </Text>
                 </Box>
 
