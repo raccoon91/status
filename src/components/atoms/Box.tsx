@@ -1,9 +1,16 @@
 import styled from "styled-components/native";
-import { styledPosition, styledFlex, styledDimension, styledMargin, styledPadding, styledBorder } from "./styled";
+import {
+  styledPosition,
+  styledFlex,
+  styledDimension,
+  styledMargin,
+  styledPadding,
+  styledBorder,
+  styledBackground,
+} from "./styled";
 
-interface IBoxProps extends IPosition, IFlex, IDimension, IMargin, IPadding, IBorder {
+interface IBoxProps extends IPosition, IFlex, IDimension, IMargin, IPadding, IBorder, IBackground {
   display?: string;
-  bgColor?: string;
 }
 
 export const Box = styled.View<IBoxProps>`
@@ -14,5 +21,5 @@ export const Box = styled.View<IBoxProps>`
   ${styledMargin}
   ${styledPadding}
   ${styledBorder}
-  ${({ bgColor }) => bgColor && `background-color: ${bgColor};`}
+  ${styledBackground}
 `;

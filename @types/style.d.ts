@@ -4,6 +4,7 @@ interface IPosition {
   right?: string;
   bottom?: string;
   left?: string;
+  zIndex?: string;
 }
 
 interface IFlex {
@@ -42,4 +43,9 @@ interface IMargin {
 interface IBorder {
   border?: string;
   radius?: string;
+}
+
+interface IBackground {
+  bgColor?: string;
+  opacity?: string;
 }

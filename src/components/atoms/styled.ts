@@ -16,11 +16,12 @@ export const headerStyle = (title: string, theme = "light"): StackNavigationOpti
 });
 
 export const styledPosition = css<IPosition>`
-  ${({ position }) => position && `position: ${position};`};
-  ${({ top }) => top && `top: ${top};`};
-  ${({ right }) => right && `right: ${right};`};
-  ${({ left }) => left && `left: ${left};`};
-  ${({ bottom }) => bottom && `bottom: ${bottom};`};
+  ${({ position }) => position && `position: ${position};`}
+  ${({ top }) => top && `top: ${top};`}
+  ${({ right }) => right && `right: ${right};`}
+  ${({ left }) => left && `left: ${left};`}
+  ${({ bottom }) => bottom && `bottom: ${bottom};`}
+  ${({ zIndex }) => zIndex && `z-index: ${zIndex};`}
 `;
 
 export const styledFlex = css<IFlex>`
@@ -57,6 +58,11 @@ export const styledPadding = css<IPadding>`
 `;
 
 export const styledBorder = css<IBorder>`
-  ${({ border }) => border && `border: ${border};`};
-  ${({ radius }) => radius && `border-radius: ${radius};`};
+  ${({ border }) => border && `border: ${border};`}
+  ${({ radius }) => radius && `border-radius: ${radius};`}
+`;
+
+export const styledBackground = css<IBackground>`
+  ${({ bgColor }) => bgColor && `background-color: ${bgColor};`}
+  ${({ opacity }) => opacity && `opacity: ${opacity};`}
 `;

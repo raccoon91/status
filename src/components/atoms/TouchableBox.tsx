@@ -1,13 +1,11 @@
 import styled from "styled-components/native";
-import { styledDimension, styledMargin, styledPadding } from "./styled";
+import { styledPosition, styledDimension, styledMargin, styledPadding, styledBackground } from "./styled";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
-interface ITouchableBoxProps extends IFlex, IDimension, IMargin, IPadding, IBorder {
-  bgColor?: string;
-  color?: string;
-}
+interface ITouchableBoxProps extends IPosition, IFlex, IDimension, IMargin, IPadding, IBorder, IBackground {}
 
 export const TouchableBox = styled(TouchableWithoutFeedback)<ITouchableBoxProps>`
+  ${styledPosition}
   align-items: ${({ align }) => align || "center"};
   justify-content: ${({ justify }) => justify || "center"};
   ${styledDimension}
@@ -15,5 +13,5 @@ export const TouchableBox = styled(TouchableWithoutFeedback)<ITouchableBoxProps>
   ${styledPadding}
   ${({ border }) => border && `border: ${border};`}
   border-radius: ${({ radius }) => radius || "3px"};
-  ${({ bgColor }) => bgColor && `background-color: ${bgColor};`}
+  ${styledBackground}
 `;
