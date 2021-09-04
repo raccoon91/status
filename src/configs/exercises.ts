@@ -17,7 +17,7 @@ const EXERCISE_LIST: IExerciseConstant[] = [
   },
   {
     name: "plank",
-    unit: "count",
+    unit: "min",
     status: [
       { name: "Hit Point", point: 1, rate: 0.1 },
       { name: "Strength", point: 1, rate: 0.1 },
