@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-toast-message";
 import dayjs from "dayjs";
-import { STATUS_COLORS, EXERCISE_NAMES } from "@src/configs";
+import { STATUS_COLORS } from "@src/configs";
 import { exerciseToStatus, calculateExperience } from "@src/utils";
 import { putUser } from "./user";
 import { postStatus } from "./status";
@@ -22,7 +22,7 @@ const setStatisticsData = (state: IExerciseState, statisticsData: IStatistics[])
             label: item.name,
             data: [],
             backgroundColor: STATUS_COLORS[item.name],
-            barThickness: 10,
+            barThickness: 12,
           };
         }
 
@@ -73,11 +73,11 @@ export const getExercises = createAsyncThunk<
       return {
         lastUpdated: lastStatistics.updated,
         exercises,
-        exerciseNames: EXERCISE_NAMES.filter((exerciseName) => !lastStatistics.exercises[exerciseName]),
+        exerciseNames: Object.keys(lastStatistics.exercises),
         statisticsData,
       };
     } else {
-      return { lastUpdated: "", exercises: {}, exerciseNames: EXERCISE_NAMES, statisticsData: [] };
+      return { lastUpdated: "", exercises: {}, exerciseNames: [], statisticsData: [] };
     }
   } catch (err) {
     console.error(err);
@@ -94,14 +94,14 @@ export const postExercies = createAsyncThunk<{ statisticsData: IStatistics[]; up
       const { exercises, lastUpdated } = state.exercise;
       const updated = dayjs().format("YYYY-MM-DD HH:mm");
 
-      // if (lastUpdated) {
-      //   if (!dayjs(lastUpdated).isBefore(dayjs(updated), "day")) {
-      //     return rejectWithValue({ type: "info", message: "you can update status after a day" });
-      //   }
-      //   if (!dayjs(lastUpdated).isBefore(dayjs(updated).subtract(6, "hour"))) {
-      //     return rejectWithValue({ type: "info", message: "you can update status after six hour" });
-      //   }
-      // }
+      if (lastUpdated) {
+        if (!dayjs(lastUpdated).isBefore(dayjs(updated), "day")) {
+          return rejectWithValue({ type: "info", message: "you can update status after a day" });
+        }
+        if (!dayjs(lastUpdated).isBefore(dayjs(updated).subtract(6, "hour"))) {
+          return rejectWithValue({ type: "info", message: "you can update status after six hour" });
+        }
+      }
 
       const storageStatistics = await AsyncStorage.getItem("@statistics");
       const parsedStatistics: { exercises: IExercises; updated: string }[] = storageStatistics

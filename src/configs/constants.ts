@@ -1,4 +1,5 @@
 import { EXERCISES } from "./exercises";
+const { version } = require("../../package.json");
 
 export const CHANNEL_ID = "STATUS_CHANNEL";
 
@@ -30,6 +31,7 @@ export const WEEKS_STRING_TO_NUMBER: { [key: string]: number } = {
 };
 
 export const USER = {
+  version,
   name: "",
   level: 1,
   experience: 0,

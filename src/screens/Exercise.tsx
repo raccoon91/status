@@ -27,7 +27,7 @@ export const ExerciseScreen = () => {
   useFocusEffect(
     useCallback(() => {
       if (isUpdate) {
-        navigation.navigate("Main");
+        navigation.navigate("Statistics");
 
         return () => {
           dispatch(clearExerciseState());
@@ -78,7 +78,7 @@ export const ExerciseScreen = () => {
     <>
       <AddExerciseModal
         show={toggleAddExerciseModal}
-        exerciseNames={Object.keys(exercises)}
+        exerciseNames={exerciseNames}
         close={closeAddExerciseModal}
         addExercise={handleSelectExercise}
         removeExercise={handleRemoveExercise}

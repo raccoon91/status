@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { exerciseExtraReducers } from "@src/store/thunk";
-import { EXERCISES, EXERCISE_NAMES } from "@src/configs";
+import { EXERCISES } from "@src/configs";
 import { exerciseToStatus } from "@src/utils";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
@@ -10,7 +10,7 @@ const initialExerciseState: IExerciseState = {
   isUpdate: false,
   lastUpdated: "",
   exercises: {},
-  exerciseNames: EXERCISE_NAMES,
+  exerciseNames: [],
   updateStatus: [],
   enableUpdate: false,
   statistics: null,
@@ -25,13 +25,13 @@ export const exerciseSlice = createSlice({
       const selectedExercise = EXERCISES[name];
 
       state.exercises[name] = { value: "", unit: selectedExercise.unit };
-      state.exerciseNames = EXERCISE_NAMES.filter((exerciseName) => !state.exercises[exerciseName]);
+      state.exerciseNames = Object.keys(state.exercises);
     },
     removeExercise: (state, action: PayloadAction<{ name: string }>) => {
       const { name } = action.payload;
 
       delete state.exercises[name];
-      state.exerciseNames = EXERCISE_NAMES.filter((exerciseName) => !state.exercises[exerciseName]);
+      state.exerciseNames = Object.keys(state.exercises);
     },
     changeExercise: (state, action: PayloadAction<{ name: string; value: string }>) => {
       const { name, value } = action.payload;
@@ -55,7 +55,7 @@ export const exerciseSlice = createSlice({
         }
       });
 
-      const newExerciseNames = EXERCISE_NAMES.filter((exerciseName) => !newExercises[exerciseName]);
+      const newExerciseNames = Object.keys(newExercises);
 
       state.isUpdate = false;
       state.exercises = newExercises;
