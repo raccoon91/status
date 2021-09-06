@@ -1,15 +1,14 @@
 import React from "react";
 import Icon from "react-native-vector-icons/Entypo";
+import { useAppSelector } from "@src/hooks";
 import { Box, Container, ScrollBox, Text } from "@src/components/atoms";
 import { ArccodionGroup, Arccodion } from "@src/components/molecules";
 
-export const StatusInfo = ({ statusInfo }: { statusInfo: IStatusInfo[] }) => {
+export const StatusInfoScreen = () => {
+  const { statusInfo } = useAppSelector((state) => state.status);
+
   return (
     <Container f="1">
-      <Text size="26px" weight="bold" mb="30px">
-        Status Info
-      </Text>
-
       <ScrollBox w="100%" p="20px 40px">
         <ArccodionGroup>
           {statusInfo.map((statInfo, index) => (

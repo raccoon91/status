@@ -2,7 +2,7 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { getFocusedRouteNameFromRoute, RouteProp } from "@react-navigation/native";
 import { headerStyle } from "src/components/atoms";
-import { UserScreen, ExerciseScreen, ProfileScreen, AlarmScreen, VersionScreen } from "@src/screens";
+import { UserScreen, StatusInfoScreen, ExerciseScreen, ProfileScreen, AlarmScreen, VersionScreen } from "@src/screens";
 import { MainNavigation } from "./Main";
 
 const getTitleName = (route: RouteProp<Record<string, object | undefined>, string>) => {
@@ -23,6 +23,7 @@ export const Navigations = () => {
         component={MainNavigation}
       />
       <Stack.Screen name="Exercise" options={headerStyle("Exercise", "dark")} component={ExerciseScreen} />
+      <Stack.Screen name="StatusInfo" options={headerStyle("StatusInfo", "dark")} component={StatusInfoScreen} />
       <Stack.Screen name="Profile" options={headerStyle("Profile", "light")} component={ProfileScreen} />
       <Stack.Screen name="Alarm" options={headerStyle("Alarm", "light")} component={AlarmScreen} />
       <Stack.Screen name="Version" options={headerStyle("Version", "light")} component={VersionScreen} />

@@ -2,15 +2,16 @@ import React, { useState, useCallback } from "react";
 import { useNavigation, useNavigationState, useFocusEffect } from "@react-navigation/native";
 import { BackHandler } from "react-native";
 import { ProgressBar } from "react-native-paper";
+import Icon from "react-native-vector-icons/Feather";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
 import { getUser, getStatus } from "@src/store/thunk";
-import { Container, Box, Text } from "@src/components/atoms";
+import { Container, Box, Text, TouchableBox } from "@src/components/atoms";
 import { Status } from "@src/components/molecules";
-import { FloatMenu, BottomSheet } from "@src/components/organisms";
-import { StatusInfo, CloseAppModal } from "@src/components/templates";
+import { FloatMenu } from "@src/components/organisms";
+import { CloseAppModal } from "@src/components/templates";
 
 const floatMenuOptions = {
-  position: { right: "20px", bottom: "80px" },
+  position: { right: "30px", bottom: "30px" },
   mainMenu: { color: "black", iconName: "plus" },
   subMenu: [
     { color: "gray", iconName: "user-plus", to: "Exercise" },
@@ -31,7 +32,7 @@ export const StatusScreen = () => {
     experience,
     requiredExperience,
   } = useAppSelector((state) => state.user);
-  const { isFetch, isLoad, status, statusInfo } = useAppSelector((state) => state.status);
+  const { isFetch, isLoad, status } = useAppSelector((state) => state.status);
 
   const openCloseAppModal = useCallback(() => {
     if (screenName === "Status") {
@@ -76,6 +77,10 @@ export const StatusScreen = () => {
       }
     }, [isFetchUser, isLoadUser, name, navigation]),
   );
+
+  const goToStatusInfo = () => {
+    navigation.navigate("StatusInfo");
+  };
 
   const handleExitApp = () => {
     BackHandler.exitApp();
@@ -125,16 +130,17 @@ export const StatusScreen = () => {
             )}
           </Box>
 
+          <TouchableBox d="row" justify="flex-end" w="100%" m="30px 0 20px" onPress={goToStatusInfo}>
+            <Icon name="info" color="black" size={16} />
+            <Text m="0 0 0 6px">Status Info</Text>
+          </TouchableBox>
+
           {status.map((stat) => (
             <Status key={stat.name} name={stat.name} value={stat.value} />
           ))}
         </Box>
 
         <FloatMenu floatMenuOptions={floatMenuOptions} />
-
-        <BottomSheet>
-          <StatusInfo statusInfo={statusInfo} />
-        </BottomSheet>
       </Container>
     </>
   );
