@@ -8,6 +8,14 @@ const EXERCISE_LIST: IExerciseConstant[] = [
     ],
   },
   {
+    name: "pull up",
+    unit: "count",
+    status: [
+      { name: "Hit Point", point: 1, rate: 0.1 },
+      { name: "Strength", point: 1, rate: 0.1 },
+    ],
+  },
+  {
     name: "crunch",
     unit: "count",
     status: [

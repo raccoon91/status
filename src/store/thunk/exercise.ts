@@ -56,15 +56,23 @@ export const getExercises = createAsyncThunk<
 
     if (storageStatistics !== null) {
       const parsedStatistics: { exercises: IExercises; updated: string }[] = JSON.parse(storageStatistics) || [];
+      const exercises: IExercises = {};
       const lastStatistics = parsedStatistics.slice(-1)[0];
       const statisticsData = parsedStatistics.slice(-7).map((data) => ({
         status: exerciseToStatus(data.exercises),
         updated: data.updated,
       }));
 
+      Object.keys(lastStatistics.exercises).forEach((exerciseName: string) => {
+        exercises[exerciseName] = {
+          ...lastStatistics.exercises,
+          value: "",
+        };
+      });
+
       return {
         lastUpdated: lastStatistics.updated,
-        exercises: lastStatistics.exercises,
+        exercises,
         exerciseNames: EXERCISE_NAMES.filter((exerciseName) => !lastStatistics.exercises[exerciseName]),
         statisticsData,
       };
