@@ -16,7 +16,7 @@ const setStatisticsData = (state: IExerciseState, statisticsData: IStatistics[])
     statisticsData.forEach((statistics) => {
       labels.push(dayjs(statistics.updated).format("MM-DD"));
 
-      statistics.status.forEach((item) => {
+      statistics.status.reverse().forEach((item) => {
         if (!datasets[item.name]) {
           datasets[item.name] = {
             label: item.name,

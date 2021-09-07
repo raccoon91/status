@@ -11,7 +11,7 @@ const config = {
     animation: { delay: 300 },
     plugins: {
       title: { display: true, text: "Status Statistics" },
-      legend: { position: "bottom", align: "start", labels: { boxWidth: 14 } },
+      legend: { position: "bottom", reverse: true, align: "start", labels: { boxWidth: 14 } },
       tooltip: { enabled: false },
     },
     scales: {
@@ -89,5 +89,5 @@ export const StackBarChart: FC<IStackBarChartProps> = ({
 
 const webviewStyle = (width: number, height: number) => ({
   width,
-  height,
+  height: height + 10,
 });

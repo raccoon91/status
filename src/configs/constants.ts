@@ -42,10 +42,10 @@ export const USER = {
 export const MAX_UPDATE_STATUS_VALUE = 500;
 
 export const STATUS_COLORS: { [key: string]: string } = {
-  "Hit Point": "#e9e9e9",
-  Strength: "#d9d9d9",
-  Agility: "#c4c4c4",
-  Stamina: "#9d9d9d",
+  "Hit Point": "#9d9d9d",
+  Strength: "#c4c4c4",
+  Agility: "#d9d9d9",
+  Stamina: "#e9e9e9",
 };
 
 export const STATUS_INDEX: { [key: string]: number } = {
