@@ -87,48 +87,54 @@ export const getExercises = createAsyncThunk<
   }
 });
 
-export const postExercies = createAsyncThunk<{ statisticsData: IStatistics[]; updated: string }, void, IRejectValue>(
-  "exercise/postExercies",
-  async (_, { getState, rejectWithValue, dispatch }) => {
-    try {
-      const state = getState() as IRootState;
-      const { exercises, lastUpdated } = state.exercise;
-      const updated = dayjs().format("YYYY-MM-DD HH:mm");
-
-      if (lastUpdated) {
-        if (!dayjs(lastUpdated).isBefore(dayjs(updated), "day")) {
-          return rejectWithValue({ type: "info", message: "you can update status after a day" });
-        }
-        if (!dayjs(lastUpdated).isBefore(dayjs(updated).subtract(6, "hour"))) {
-          return rejectWithValue({ type: "info", message: "you can update status after six hour" });
-        }
-      }
-
-      const storageStatistics = await AsyncStorage.getItem("@statistics");
-      const parsedStatistics: { exercises: IExercises; updated: string }[] = storageStatistics
-        ? JSON.parse(storageStatistics)
-        : [];
-
-      parsedStatistics.push({ exercises, updated });
-      const experience = calculateExperience(exercises);
-      const statisticsData = parsedStatistics.slice(-7).map((data) => ({
-        status: exerciseToStatus(data.exercises),
-        updated,
-      }));
-
-      AsyncStorage.setItem("@statistics", JSON.stringify(parsedStatistics));
-
-      dispatch(putUser(experience));
-      dispatch(postStatus(exercises));
-
-      return { statisticsData, updated };
-    } catch (err) {
-      console.error(err);
-
-      return rejectWithValue({ type: "error", message: "fail to update exercise" });
-    }
+export const postExercies = createAsyncThunk<
+  {
+    updated: string;
+    statisticsData: IStatistics[];
+    weekStatistics: { exercises: IExercises; updated: string }[];
   },
-);
+  void,
+  IRejectValue
+>("exercise/postExercies", async (_, { getState, rejectWithValue, dispatch }) => {
+  try {
+    const state = getState() as IRootState;
+    const { exercises, lastUpdated } = state.exercise;
+    const updated = dayjs().format("YYYY-MM-DD HH:mm");
+
+    if (lastUpdated) {
+      if (!dayjs(lastUpdated).isBefore(dayjs(updated), "day")) {
+        return rejectWithValue({ type: "info", message: "you can update status after a day" });
+      }
+      if (!dayjs(lastUpdated).isBefore(dayjs(updated).subtract(6, "hour"))) {
+        return rejectWithValue({ type: "info", message: "you can update status after six hour" });
+      }
+    }
+
+    const storageStatistics = await AsyncStorage.getItem("@statistics");
+    const parsedStatistics: { exercises: IExercises; updated: string }[] = storageStatistics
+      ? JSON.parse(storageStatistics)
+      : [];
+
+    parsedStatistics.push({ exercises, updated });
+    const experience = calculateExperience(exercises);
+    const weekStatistics = parsedStatistics.slice(-7);
+    const statisticsData = weekStatistics.map((data) => ({
+      status: exerciseToStatus(data.exercises),
+      updated,
+    }));
+
+    AsyncStorage.setItem("@statistics", JSON.stringify(parsedStatistics));
+
+    dispatch(putUser(experience));
+    dispatch(postStatus(exercises));
+
+    return { updated, statisticsData, weekStatistics };
+  } catch (err) {
+    console.error(err);
+
+    return rejectWithValue({ type: "error", message: "fail to update exercise" });
+  }
+});
 
 export const exerciseExtraReducers = (builder: ActionReducerMapBuilder<IExerciseState>) => {
   builder
@@ -142,8 +148,8 @@ export const exerciseExtraReducers = (builder: ActionReducerMapBuilder<IExercise
       state.exercises = exercises;
       state.exerciseNames = exerciseNames;
       state.lastUpdated = lastUpdated;
-      state.weekStatistics = weekStatistics;
       setStatisticsData(state, statisticsData);
+      state.weekStatistics = weekStatistics;
       state.isLoad = false;
     })
     .addCase(getExercises.rejected, (_, action) => {
@@ -154,11 +160,12 @@ export const exerciseExtraReducers = (builder: ActionReducerMapBuilder<IExercise
       }
     })
     .addCase(postExercies.fulfilled, (state, action) => {
-      const { statisticsData, updated } = action.payload;
+      const { updated, statisticsData, weekStatistics } = action.payload;
 
       state.lastUpdated = updated;
       state.updateStatus = [];
       setStatisticsData(state, statisticsData);
+      state.weekStatistics = weekStatistics;
       state.isUpdate = true;
     })
     .addCase(postExercies.rejected, (_, action) => {
