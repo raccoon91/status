@@ -34,10 +34,8 @@ const setStatisticsData = (state: IExerciseState, statisticsData: IStatistics[])
       });
     });
 
-    state.statistics = {
-      labels,
-      datasets: Object.values(datasets),
-    };
+    state.chartLabels = labels;
+    state.chartDatasets = Object.values(datasets);
   }
 };
 
@@ -47,6 +45,7 @@ export const getExercises = createAsyncThunk<
     exercises: IExercises;
     exerciseNames: string[];
     statisticsData: IStatistics[];
+    weekStatistics: { exercises: IExercises; updated: string }[];
   },
   void,
   IRejectValue
@@ -58,7 +57,8 @@ export const getExercises = createAsyncThunk<
       const parsedStatistics: { exercises: IExercises; updated: string }[] = JSON.parse(storageStatistics) || [];
       const exercises: IExercises = {};
       const lastStatistics = parsedStatistics.slice(-1)[0];
-      const statisticsData = parsedStatistics.slice(-7).map((data) => ({
+      const weekStatistics = parsedStatistics.slice(-7);
+      const statisticsData = weekStatistics.map((data) => ({
         status: exerciseToStatus(data.exercises),
         updated: data.updated,
       }));
@@ -75,9 +75,10 @@ export const getExercises = createAsyncThunk<
         exercises,
         exerciseNames: Object.keys(lastStatistics.exercises),
         statisticsData,
+        weekStatistics,
       };
     } else {
-      return { lastUpdated: "", exercises: {}, exerciseNames: [], statisticsData: [] };
+      return { lastUpdated: "", exercises: {}, exerciseNames: [], statisticsData: [], weekStatistics: [] };
     }
   } catch (err) {
     console.error(err);
@@ -136,13 +137,14 @@ export const exerciseExtraReducers = (builder: ActionReducerMapBuilder<IExercise
       state.isFetch = true;
     })
     .addCase(getExercises.fulfilled, (state, action) => {
-      const { exercises, exerciseNames, lastUpdated, statisticsData } = action.payload;
+      const { exercises, exerciseNames, lastUpdated, statisticsData, weekStatistics } = action.payload;
 
       state.exercises = exercises;
       state.exerciseNames = exerciseNames;
       state.lastUpdated = lastUpdated;
-      state.isLoad = false;
+      state.weekStatistics = weekStatistics;
       setStatisticsData(state, statisticsData);
+      state.isLoad = false;
     })
     .addCase(getExercises.rejected, (_, action) => {
       if (action?.payload) {

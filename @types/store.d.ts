@@ -16,7 +16,6 @@ interface IStatusInfo {
 
 interface IExercise {
   value: string;
-  unit?: string;
 }
 
 interface IExercises {
@@ -63,9 +62,14 @@ interface IExerciseState {
   exerciseNames: string[];
   updateStatus: IStatus[];
   enableUpdate: boolean;
-  statistics: {
-    labels: string[];
-    datasets: IChartData[];
+  chartLabels: string[] | null;
+  chartDatasets: IChartData[] | null;
+  weekStatistics: { exercises: IExercises; updated: string }[];
+  selectedChartIndex: string | null;
+  selectedStatistics: {
+    exercises: { name: string; value: string | number; unit: string }[];
+    status: IStatus[];
+    updated: string;
   } | null;
 }
 

@@ -1,15 +1,18 @@
-import React, { forwardRef, useRef, useImperativeHandle } from "react";
+import React, { FC, useRef, useState, useEffect } from "react";
 import { Platform } from "react-native";
 import { WebView } from "react-native-webview";
+import type { WebViewMessageEvent } from "react-native-webview";
 
 const config = {
   type: "bar",
   data: { labels: [], dataset: [] },
   options: {
     responsive: true,
+    animation: { delay: 300 },
     plugins: {
       title: { display: true, text: "Status Statistics" },
       legend: { position: "bottom", align: "start", labels: { boxWidth: 14 } },
+      tooltip: { enabled: false },
     },
     scales: {
       x: { stacked: true },
@@ -18,59 +21,58 @@ const config = {
   },
 };
 
-interface IStackBarChartData {
-  label: string;
-  data: number[];
-  backgroundColor: string;
-}
-
 interface IStackBarChartProps {
+  chartLabels: string[] | null;
+  chartDatasets: IChartData[] | null;
   width: number;
   height: number;
-  chartLoadEnd: () => void;
+  handleClickChart: (evet: WebViewMessageEvent) => void;
 }
 
-export interface SetChartData {
-  setChartData: (labels: string[], datasets: IStackBarChartData[]) => void;
-}
-
-export const StackBarChart = forwardRef<SetChartData, IStackBarChartProps>(({ width, height, chartLoadEnd }, ref) => {
+export const StackBarChart: FC<IStackBarChartProps> = ({
+  chartLabels,
+  chartDatasets,
+  width,
+  height,
+  handleClickChart,
+}) => {
   const webviewRef = useRef<WebView>(null);
+  const [isMount, setIsMount] = useState(false);
   const source = Platform.OS === "ios" ? require("./chart.html") : { uri: "file:///android_asset/chart.html" };
 
-  useImperativeHandle(ref, () => ({
-    setChartData,
-  }));
-
-  const renderChart = (chartConfig = config, canvasWidth: number, canvasHeight: number) => {
-    if (webviewRef.current) {
-      webviewRef.current.injectJavaScript(`
-        const canvasEl = document.createElement("canvas");
-        canvasEl.width = ${canvasWidth};
-        canvasEl.height = ${canvasHeight};
-        document.body.appendChild(canvasEl);
-        window.barChart = new Chart(canvasEl.getContext('2d'), ${JSON.stringify(chartConfig)});
+  useEffect(() => {
+    if (isMount && !!chartLabels && !!chartDatasets) {
+      webviewRef.current?.injectJavaScript(`
+        ${!!chartLabels && `window.barChart.config.data.labels = ${JSON.stringify(chartLabels)};`}
+        ${!!chartDatasets && `window.barChart.config.data.datasets = ${JSON.stringify(chartDatasets)};`}
+        window.barChart.update();
       `);
     }
-  };
+  }, [isMount, chartLabels, chartDatasets]);
 
-  const setChartData = (labels: string[], datasets: IStackBarChartData[]) => {
-    if (webviewRef.current) {
-      if (labels) {
-        webviewRef.current.injectJavaScript(`window.barChart.config.data.labels = ${JSON.stringify(labels)};`);
-      }
+  const renderChart = (chartConfig = config, canvasWidth: number, canvasHeight: number) => {
+    webviewRef.current?.injectJavaScript(`
+      var canvasEl = document.createElement("canvas");
+      canvasEl.width = ${canvasWidth};
+      canvasEl.height = ${canvasHeight};
+      document.body.appendChild(canvasEl);
+      window.barChart = new Chart(canvasEl.getContext("2d"), ${JSON.stringify(chartConfig)});
 
-      if (datasets) {
-        webviewRef.current.injectJavaScript(`window.barChart.config.data.datasets = ${JSON.stringify(datasets)};`);
-      }
+      canvasEl.onclick = function (evt) {
+        var points = window.barChart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true)
 
-      webviewRef.current.injectJavaScript("window.barChart.update();");
-    }
+        if (points.length) {
+          var elementIndex = points[0].index;
+  
+          window.ReactNativeWebView.postMessage(JSON.stringify(elementIndex))
+        }
+      };
+    `);
   };
 
   const handleLoadEnd = () => {
     renderChart(config, width, height);
-    chartLoadEnd();
+    setIsMount(true);
   };
 
   return (
@@ -78,11 +80,12 @@ export const StackBarChart = forwardRef<SetChartData, IStackBarChartProps>(({ wi
       originWhitelist={["*"]}
       ref={webviewRef}
       source={source}
+      onMessage={handleClickChart}
       onLoadEnd={handleLoadEnd}
       style={webviewStyle(width, height)}
     />
   );
-});
+};
 
 const webviewStyle = (width: number, height: number) => ({
   width,

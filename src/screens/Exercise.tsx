@@ -12,6 +12,7 @@ import {
 } from "@src/store/slices/exercise";
 import { Container, ScrollBox, Box, Text, DecimalNumber, Button, Input, OpacityBox } from "@src/components/atoms";
 import { AddExerciseModal } from "@src/components/templates";
+import { EXERCISES } from "@src/configs/exercises";
 import type { NativeSyntheticEvent, TextInputChangeEventData } from "react-native";
 
 const appWidth = Dimensions.get("window").width;
@@ -101,7 +102,7 @@ export const ExerciseScreen = () => {
                 onChange={handleChangeExerciseValue(exerciseName)}
               />
               <Text w="36px" m="10px 0 0 4px">
-                {exercises?.[exerciseName]?.unit || ""}
+                {EXERCISES?.[exerciseName]?.unit || ""}
               </Text>
             </Box>
           ))}
