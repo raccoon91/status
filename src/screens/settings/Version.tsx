@@ -1,8 +1,13 @@
 import React from "react";
+import { Linking } from "react-native";
 import { Container, Box, Text } from "@src/components/atoms";
 const { version } = require("../../../package.json");
 
 export const VersionScreen = () => {
+  const handleOpenEmailApp = () => {
+    Linking.openURL("mailto:dev.beomseok@gmail.com");
+  };
+
   return (
     <Container f="1" justify="flex-start" bgColor="white" p="40px 60px">
       <Box d="row" justify="space-between" w="100%">
@@ -33,7 +38,7 @@ export const VersionScreen = () => {
         <Text size="16px" weight="bold">
           Contact
         </Text>
-        <Text size="16px" weight="bold">
+        <Text size="16px" weight="bold" onPress={handleOpenEmailApp}>
           dev.beomseok@gmail.com
         </Text>
       </Box>
