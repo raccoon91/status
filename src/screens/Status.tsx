@@ -5,7 +5,7 @@ import { ProgressBar } from "react-native-paper";
 import Icon from "react-native-vector-icons/Feather";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
 import { getUser, getStatus } from "@src/store/thunk";
-import { Container, Box, Text, TouchableBox } from "@src/components/atoms";
+import { Container, Block, Flex, Bold, Text, Button } from "@src/components/atoms";
 import { Status } from "@src/components/molecules";
 import { FloatMenu } from "@src/components/organisms";
 import { CloseAppModal } from "@src/components/templates";
@@ -14,8 +14,8 @@ const floatMenuOptions = {
   position: { right: "30px", bottom: "30px" },
   mainMenu: { color: "black", iconName: "plus" },
   subMenu: [
-    { color: "gray", iconName: "user-plus", to: "Exercise" },
-    { color: "gray", iconName: "bell", to: "Alarm" },
+    { name: "", color: "gray", iconName: "user-plus", to: "Exercise" },
+    { name: "", color: "gray", iconName: "bell", to: "Alarm" },
   ],
 };
 
@@ -94,51 +94,39 @@ export const StatusScreen = () => {
     <>
       <CloseAppModal show={toggleCloseAppModal} close={closeCloseAppModal} exit={handleExitApp} />
 
-      <Container isLoad={isLoadUser || isLoad} position="relative" f="1" justify="flex-start" bgColor="white" pt="40px">
-        <Box w="70%">
-          <Box d="row" justify="space-between" w="100%" mb="20px">
-            {name.length > 0 && (
-              <>
-                <Box bgColor="black" p="4px 12px 6px" radius="5px">
-                  <Text color="white" size="20px" weight="bold">
-                    {name}
-                  </Text>
-                </Box>
+      <Container isLoad={isLoadUser || isLoad} position="relative" pt="40px">
+        <Block w="70%">
+          {name?.length > 0 && (
+            <>
+              <Flex d="row" justify="space-between" w="100%" mb="20px">
+                <Bold size="20px">{name}</Bold>
+                <Bold size="20px">Lv. {level}</Bold>
+              </Flex>
 
-                <Text size="20px" weight="bold">
-                  Lv. {level}
-                </Text>
-              </>
-            )}
-          </Box>
-
-          <Box align="stretch" w="100%">
-            {name.length > 0 && (
-              <>
-                <Box d="row" justify="space-between">
-                  <Text size="18px" weight="bold" mb="12px">
-                    Exp.
-                  </Text>
-
-                  <Text size="18px" weight="bold" mb="12px">
-                    {Math.floor((experience / requiredExperience) * 100)} %
-                  </Text>
-                </Box>
+              <Flex align="stretch" w="100%">
+                <Flex d="row" justify="space-between">
+                  <Bold mb="12px">Exp.</Bold>
+                  <Bold mb="12px">{Math.floor((experience / requiredExperience) * 100)} %</Bold>
+                </Flex>
 
                 <ProgressBar progress={experience / requiredExperience} color="#000000" />
-              </>
-            )}
-          </Box>
+              </Flex>
+            </>
+          )}
 
-          <TouchableBox d="row" justify="flex-end" w="100%" m="30px 0 20px" onPress={goToStatusInfo}>
-            <Icon name="info" color="black" size={16} />
-            <Text m="0 0 0 6px">Status Info</Text>
-          </TouchableBox>
+          <Flex d="row" justify="flex-end" w="100%" m="20px 0 24px">
+            <Button variant="black" h="28px" px="8px" onPress={goToStatusInfo}>
+              <Icon name="info" color="white" size={16} />
+              <Text color="white" ml="6px">
+                Status Info
+              </Text>
+            </Button>
+          </Flex>
 
           {status.map((stat) => (
             <Status key={stat.name} name={stat.name} value={stat.value} />
           ))}
-        </Box>
+        </Block>
 
         <FloatMenu floatMenuOptions={floatMenuOptions} />
       </Container>

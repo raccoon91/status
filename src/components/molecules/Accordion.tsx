@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import Icon from "react-native-vector-icons/Feather";
-import { Box, Text, OpacityBox } from "@src/components/atoms";
+import { Flex, Bold, OpacityBox } from "@src/components/atoms";
 
 interface IAccordion {
   arccordionKey: number;
@@ -32,15 +32,11 @@ export const Arccodion: FC<IAccordion> = ({
 
   return (
     <>
-      <OpacityBox justify="space-between" mb="8px" bgColor="#f8f8f8" onPress={handleChangeActvieKey}>
+      <OpacityBox justify="space-between" p="12px 16px" mb="8px" onPress={handleChangeActvieKey}>
         {title && (
-          <Text
-            size="18px"
-            weight="bold"
-            color={arccordionKey === activeKey ? activeColor || "black" : initColor || "black"}
-          >
+          <Bold size="18px" color={arccordionKey === activeKey ? activeColor || "black" : initColor || "black"}>
             {title}
-          </Text>
+          </Bold>
         )}
         {right ? (
           right
@@ -48,9 +44,9 @@ export const Arccodion: FC<IAccordion> = ({
           <Icon name={arccordionKey === activeKey ? "chevron-up" : "chevron-down"} color="black" size={28} />
         )}
       </OpacityBox>
-      <Box display={arccordionKey === activeKey ? "flex" : "none"} align="flex-start" mb="8px">
+      <Flex display={arccordionKey === activeKey ? "flex" : "none"} align="flex-start" mb="8px">
         {children}
-      </Box>
+      </Flex>
     </>
   );
 };

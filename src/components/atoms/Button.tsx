@@ -1,36 +1,64 @@
 import React, { FC } from "react";
-import { TouchableBox } from "./TouchableBox";
-import { Text } from "./Text";
+import { OpacityBox } from "./OpacityBox";
+import { Text } from "./typography";
+
+const getVariant = (variant?: string) => {
+  switch (variant) {
+    case "black":
+      return {
+        bgColor: "black",
+        color: "white",
+      };
+    case "gray":
+      return {
+        bgColor: "darkgray",
+        color: "white",
+      };
+    case "disabled":
+      return {
+        bgColor: "#e8e8e8",
+        color: "white",
+      };
+    case "outline-black":
+      return {
+        border: "1px solid black",
+        bgColor: "white",
+        color: "black",
+      };
+    case "outline-gray":
+      return {
+        border: "1px solid darkgray",
+        bgColor: "white",
+        color: "darkgray",
+      };
+    default:
+      return {
+        bgColor: "black",
+        color: "white",
+      };
+  }
+};
 
 interface IButtonProps extends IFlex, IDimension, IMargin, IPadding, IBorder {
-  title: string | React.ReactElement;
+  variant?: string;
   size?: string;
   weight?: string;
-  bgColor?: string;
-  color?: string;
-  active?: boolean;
-  activeBgColor?: string;
-  activeColor?: string;
   onPress?: () => void;
+  children: React.ReactNode | React.ReactNode[];
 }
 
-export const Button: FC<IButtonProps> = ({
-  title,
-  size,
-  weight,
-  active,
-  bgColor = "#e8e8e8",
-  color = "black",
-  activeBgColor = "black",
-  activeColor = "white",
-  onPress,
-  ...styles
-}) => {
+export const Button: FC<IButtonProps> = ({ children, size, weight, variant, onPress, ...styles }) => {
+  const { color, ...boxStyles } = getVariant(variant);
+
   return (
-    <TouchableBox {...styles} bgColor={active ? activeBgColor : bgColor} onPress={onPress}>
-      <Text size={size} weight={weight} color={active ? activeColor : color}>
-        {title}
-      </Text>
-    </TouchableBox>
+    <OpacityBox {...styles} {...boxStyles} onPress={onPress}>
+      {typeof children === "string" ? (
+        <Text size={size} weight={weight} color={color}>
+          {children}
+        </Text>
+      ) : (
+        React.Children.map(children, (child) => child)
+      )}
+    </OpacityBox>
   );
 };

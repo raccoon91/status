@@ -3,12 +3,10 @@ import { StatusBar } from "react-native";
 import styled from "styled-components/native";
 import { ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Box } from "./Box";
-import { styledPosition, styledFlex, styledDimension, styledMargin, styledPadding } from "./styled";
+import { styledPosition, styledFlex, styledDimension, styledMargin, styledPadding, styledBackground } from "./styled";
+import { Flex } from "./Flex";
 
-interface IContainerStyleProps extends IPosition, IFlex, IDimension, IMargin, IPadding {
-  bgColor?: string;
-}
+interface IContainerStyleProps extends IPosition, IFlex, IDimension, IMargin, IPadding, IBackground {}
 interface IContainerProps extends IContainerStyleProps {
   isLoad?: boolean;
   barTheme?: string;
@@ -22,12 +20,12 @@ export const Container: FC<IContainerProps> = ({ isLoad, barTheme, children, ...
         backgroundColor={barTheme === "white" ? "white" : "black"}
         barStyle={barTheme === "white" ? "dark-content" : "light-content"}
       />
-      {!isLoad ? (
-        children
-      ) : (
-        <Box mt="120px">
+      {isLoad ? (
+        <Flex mt="140px">
           <ActivityIndicator size="large" color="black" />
-        </Box>
+        </Flex>
+      ) : (
+        children
       )}
     </ContainerBox>
   );
@@ -35,9 +33,9 @@ export const Container: FC<IContainerProps> = ({ isLoad, barTheme, children, ...
 
 const ContainerBox = styled(SafeAreaView)<IContainerStyleProps>`
   ${styledPosition}
-  ${styledFlex}
-  ${styledDimension}
+  ${styledFlex({ f: 1, justify: "flex-start" })}
+  ${styledDimension({ w: "100%" })}
   ${styledMargin}
   ${styledPadding}
-  ${({ bgColor }) => bgColor && `background-color: ${bgColor};`}
+  ${styledBackground({ bgColor: "white" })}
 `;

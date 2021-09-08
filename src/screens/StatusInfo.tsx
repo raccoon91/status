@@ -1,15 +1,15 @@
 import React from "react";
 import Icon from "react-native-vector-icons/Entypo";
 import { useAppSelector } from "@src/hooks";
-import { Box, Container, ScrollBox, Text } from "@src/components/atoms";
+import { Flex, Container, ScrollBox, Text } from "@src/components/atoms";
 import { ArccodionGroup, Arccodion } from "@src/components/molecules";
 
 export const StatusInfoScreen = () => {
   const { statusInfo } = useAppSelector((state) => state.status);
 
   return (
-    <Container f="1">
-      <ScrollBox w="100%" p="20px 40px">
+    <Container>
+      <ScrollBox p="20px 40px">
         <ArccodionGroup>
           {statusInfo.map((statInfo, index) => (
             <Arccodion
@@ -20,12 +20,12 @@ export const StatusInfoScreen = () => {
               activeColor="black"
             >
               {statInfo.exercises.map((exercise) => (
-                <Box key={`ei-${statInfo.name}-${exercise}`} d="row" p="8px 16px">
+                <Flex key={`ei-${statInfo.name}-${exercise}`} d="row" p="8px 16px">
                   <Icon name="dot-single" color="black" size={28} />
-                  <Text size="16px" px="4px">
+                  <Text size="16px" pl="4px">
                     {exercise}
                   </Text>
-                </Box>
+                </Flex>
               ))}
             </Arccodion>
           ))}

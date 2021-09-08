@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Box, Text } from "@src/components/atoms";
+import { Flex, Text } from "@src/components/atoms";
 
 interface IDecimalNumberProps {
   number: number;
@@ -18,7 +18,7 @@ export const DecimalNumber: FC<IDecimalNumberProps> = ({
   const decimal = (number % 1).toFixed(3).split(".")[1];
 
   return (
-    <Box d="row" align="flex-end">
+    <Flex d="row" align="flex-end">
       <Text size={fontSize} weight={fontWeight}>
         {integer}
       </Text>
@@ -26,6 +26,6 @@ export const DecimalNumber: FC<IDecimalNumberProps> = ({
         .
       </Text>
       <Text size={decimalSize}>{decimal}</Text>
-    </Box>
+    </Flex>
   );
 };

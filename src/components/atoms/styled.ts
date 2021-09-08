@@ -24,16 +24,17 @@ export const styledPosition = css<IPosition>`
   ${({ zIndex }) => zIndex && `z-index: ${zIndex};`}
 `;
 
-export const styledFlex = css<IFlex>`
-  ${({ f }) => f && `flex: ${f};`}
-  ${({ d }) => d && `flex-direction: ${d};`}
+export const styledFlex = (defaultStyle?: IFlex) => css<IFlex>`
+  ${({ f }) => (f || defaultStyle?.f) && `flex: ${f || defaultStyle?.f};`}
+  ${({ d }) => (d || defaultStyle?.d) && `flex-direction: ${d || defaultStyle?.d};`}
   ${({ wrap }) => wrap && `flex-wrap: ${wrap};`}
-  justify-content: ${({ justify }) => justify || "center"};
-  align-items: ${({ align }) => align || "center"};
+  justify-content: ${({ justify }) => justify || defaultStyle?.justify || "center"};
+  align-items: ${({ align }) => align || defaultStyle?.align || "center"};
 `;
 
-export const styledDimension = css<IDimension>`
-  ${({ w }) => w && `width: ${w};`}
+export const styledDimension = (defaultStyle?: IDimension) => css<IDimension>`
+  ${({ display }) => display && `display: ${display};`}
+  ${({ w }) => (w || defaultStyle?.w) && `width: ${w || defaultStyle?.w};`}
   ${({ maxWidth }) => maxWidth && `max-width: ${maxWidth};`}
   ${({ minWidth }) => minWidth && `min-width: ${minWidth};`}
   ${({ h }) => h && `height: ${h};`}
@@ -44,7 +45,9 @@ export const styledDimension = css<IDimension>`
 export const styledMargin = css<IMargin>`
   ${({ m }) => m && `margin: ${m};`}
   ${({ mt }) => mt && `margin-top: ${mt};`}
+  ${({ mr }) => mr && `margin-right: ${mr};`}
   ${({ mb }) => mb && `margin-bottom: ${mb};`}
+  ${({ ml }) => ml && `margin-left: ${ml};`}
   ${({ mx }) => mx && `margin: 0 ${mx};`}
   ${({ my }) => my && `margin: ${my} 0;`}
 `;
@@ -52,17 +55,26 @@ export const styledMargin = css<IMargin>`
 export const styledPadding = css<IPadding>`
   ${({ p }) => p && `padding: ${p};`}
   ${({ pt }) => pt && `padding-top: ${pt};`}
+  ${({ pr }) => pr && `padding-right: ${pr};`}
   ${({ pb }) => pb && `padding-bottom: ${pb};`}
+  ${({ pl }) => pl && `padding-left: ${pl};`}
   ${({ px }) => px && `padding: 0 ${px};`}
   ${({ py }) => py && `padding: ${py} 0;`}
 `;
 
-export const styledBorder = css<IBorder>`
-  ${({ border }) => border && `border: ${border};`}
-  ${({ radius }) => radius && `border-radius: ${radius};`}
+export const styledBorder = (defaultStyle?: IBorder) => css<IBorder>`
+  ${({ border }) => (border || defaultStyle?.border) && `border: ${border || defaultStyle?.border};`}
+  ${({ radius }) => (radius || defaultStyle?.radius) && `border-radius: ${radius || defaultStyle?.radius};`}
 `;
 
-export const styledBackground = css<IBackground>`
-  ${({ bgColor }) => bgColor && `background-color: ${bgColor};`}
+export const styledBackground = (defaultStyle?: IBackground) => css<IBackground>`
+  ${({ bgColor }) => (bgColor || defaultStyle?.bgColor) && `background-color: ${bgColor || defaultStyle?.bgColor};`}
   ${({ opacity }) => opacity && `opacity: ${opacity};`}
+`;
+
+export const styledText = (defaultStyle?: IText) => css<IText>`
+  ${({ color }) => color && `color: ${color};`}
+  ${({ size }) => (size || defaultStyle?.size) && `font-size: ${size || defaultStyle?.size};`}
+  ${({ weight }) => (weight || defaultStyle?.weight) && `font-weight: ${weight || defaultStyle?.weight};`}
+  ${({ tAlign }) => tAlign && `text-align: ${tAlign};`}
 `;

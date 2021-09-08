@@ -5,17 +5,19 @@ interface IPosition {
   bottom?: string;
   left?: string;
   zIndex?: string;
+  events?: string;
 }
 
 interface IFlex {
   d?: string;
-  f?: string;
+  f?: string | number;
   wrap?: string;
   align?: string;
   justify?: string;
 }
 
 interface IDimension {
+  display?: string;
   w?: string;
   maxWidth?: string;
   minWidth?: string;
@@ -27,7 +29,9 @@ interface IDimension {
 interface IPadding {
   p?: string;
   pt?: string;
+  pr?: string;
   pb?: string;
+  pl?: string;
   px?: string;
   py?: string;
 }
@@ -35,7 +39,9 @@ interface IPadding {
 interface IMargin {
   m?: string;
   mt?: string;
+  mr?: string;
   mb?: string;
+  ml?: string;
   mx?: string;
   my?: string;
 }
@@ -48,4 +54,11 @@ interface IBorder {
 interface IBackground {
   bgColor?: string;
   opacity?: string;
+}
+
+interface IText {
+  color?: string;
+  size?: string;
+  weight?: string;
+  tAlign?: string;
 }

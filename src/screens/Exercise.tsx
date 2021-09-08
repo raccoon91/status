@@ -10,7 +10,7 @@ import {
   calculateUpdateStatus,
   clearExerciseState,
 } from "@src/store/slices/exercise";
-import { Container, ScrollBox, Box, Text, DecimalNumber, Button, Input, OpacityBox } from "@src/components/atoms";
+import { Container, ScrollBox, Flex, Block, Bold, Text, DecimalNumber, Button, Input } from "@src/components/atoms";
 import { AddExerciseModal } from "@src/components/templates";
 import { EXERCISES } from "@src/configs/exercises";
 import type { NativeSyntheticEvent, TextInputChangeEventData } from "react-native";
@@ -69,7 +69,7 @@ export const ExerciseScreen = () => {
     dispatch(selectExercise({ name: exercise }));
   };
 
-  const handleSaveUpdate = async () => {
+  const handleSaveUpdate = () => {
     if (enableUpdate) {
       dispatch(postExercies());
     }
@@ -85,63 +85,60 @@ export const ExerciseScreen = () => {
         removeExercise={handleRemoveExercise}
       />
 
-      <Container isLoad={isLoad} position="relative" f="1" w="100%" bgColor="white" barTheme="white">
-        <ScrollBox f="1" w="100%" p="20px 40px 60px">
+      <Container isLoad={isLoad} position="relative" barTheme="white">
+        <ScrollBox p="20px 40px 60px">
           {Object.keys(exercises).map((exerciseName) => (
-            <Box key={`e-${exerciseName}`} d="row" justify="flex-start" m="16px 0 0">
-              <Text size="16px" weight="bold">
-                {exerciseName}
-              </Text>
+            <Flex key={`e-${exerciseName}`} d="row" justify="flex-start" mt="16px">
+              <Bold>{exerciseName}</Bold>
               <Input
                 keyboardType="numeric"
                 w="120px"
                 h="40px"
                 px="8px"
-                m="0 0 0 auto"
+                ml="auto"
                 value={exercises[exerciseName].value}
                 onChange={handleChangeExerciseValue(exerciseName)}
               />
               <Text w="36px" m="10px 0 0 4px">
                 {EXERCISES?.[exerciseName]?.unit || ""}
               </Text>
-            </Box>
+            </Flex>
           ))}
 
-          <OpacityBox w="100%" h="40px" m="30px 0 0" p="0" bgColor="black" onPress={openAddExerciseModal}>
-            <Text size="16px" color="white" weight="bold">
-              Edit Exercise
-            </Text>
-          </OpacityBox>
+          <Button variant="black" w="100%" h="40px" size="16px" weight="bold" mt="30px" onPress={openAddExerciseModal}>
+            Edit Exercise
+          </Button>
 
           {enableUpdate ? (
-            <Box align="flex-start" m="30px 0 0">
-              <Text size="20px" weight="bold" mb="10px">
+            <Flex align="flex-start" mt="30px">
+              <Bold size="20px" mb="10px">
                 Status
-              </Text>
+              </Bold>
 
               {updateStatus.map((stat) => (
-                <Box key={`s-${stat.name}`} d="row" justify="space-between" mt="6px">
+                <Flex key={`s-${stat.name}`} d="row" justify="space-between" mt="6px">
                   <Text size="16px" w="80px">
                     {stat.name}
                   </Text>
                   <DecimalNumber number={stat.value / 1000} fontSize="16px" fontWeight="normal" />
-                </Box>
+                </Flex>
               ))}
-            </Box>
+            </Flex>
           ) : null}
         </ScrollBox>
 
-        <Box position="absolute" left="0" bottom="0" w="100%" h="60px" p="8px">
+        <Block position="absolute" left="0" bottom="0" w="100%" h="60px" p="8px">
           <Button
-            title="SAVE"
+            variant={enableUpdate ? "black" : "disabled"}
             size="18px"
             weight="bold"
             w={`${appWidth - 16}px`}
             h="100%"
-            active={enableUpdate}
             onPress={handleSaveUpdate}
-          />
-        </Box>
+          >
+            SAVE
+          </Button>
+        </Block>
       </Container>
     </>
   );

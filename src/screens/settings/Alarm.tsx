@@ -5,7 +5,7 @@ import Icon from "react-native-vector-icons/Feather";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import dayjs from "dayjs";
-import { Container, ScrollBox, Box, OpacityBox, Text, Button } from "@src/components/atoms";
+import { Container, ScrollBox, Flex, Block, Bold, Button } from "@src/components/atoms";
 import { WEEKS_NUMBER_TO_STRING, WEEKS_STRING_TO_NUMBER } from "@src/configs";
 import { getNotificationSchedule, registerLocalNotification, unregisterLocalNotification } from "@src/utils";
 import type { Event } from "@react-native-community/datetimepicker";
@@ -112,18 +112,14 @@ export const AlarmScreen = () => {
   };
 
   return (
-    <Container position="relative" f="1" bgColor="white">
-      <ScrollBox f="1" justify="flex-start" w="100%" p="40px 20px 60px">
-        <Box d="row" justify="flex-start" w="100%">
-          <Text size="16px" weight="bold">
-            Alarm On / Off
-          </Text>
-        </Box>
+    <Container position="relative">
+      <ScrollBox p="40px 20px 60px">
+        <Flex d="row" justify="flex-start" w="100%">
+          <Bold>Alarm On / Off</Bold>
+        </Flex>
 
-        <Box d="row" justify="space-between" w="100%" mt="20px">
-          <Text size="16px" weight="bold">
-            Alarm {alarmEnabled ? "ON" : "OFF"}
-          </Text>
+        <Flex d="row" justify="space-between" w="100%" mt="20px">
+          <Bold>Alarm {alarmEnabled ? "ON" : "OFF"}</Bold>
 
           <Switch
             trackColor={{ false: "#f8f8f8", true: "black" }}
@@ -132,43 +128,38 @@ export const AlarmScreen = () => {
             onValueChange={handleToggleSwitch}
             value={alarmEnabled}
           />
-        </Box>
+        </Flex>
 
-        <Box d="row" justify="flex-start" w="100%" mt="40px">
-          <Text size="16px" weight="bold">
-            Alarm Weeks
-          </Text>
-        </Box>
+        <Flex d="row" justify="flex-start" w="100%" mt="40px">
+          <Bold>Alarm Weeks</Bold>
+        </Flex>
 
-        <Box d="row" justify="space-between" w="100%" mt="20px">
+        <Flex d="row" justify="space-between" w="100%" minHeight="30px" mt="20px">
           {weeks.map((week, weekIndex) => (
-            <OpacityBox
+            <Button
               key={week.text}
-              w="10%"
-              p="6px"
-              bgColor={week.selected ? "black" : "#f8f8f8"}
+              variant={week.selected ? "black" : "disabled"}
+              w="36px"
+              h="30px"
+              px="6px"
               onPress={handleSelectWeek(weekIndex)}
             >
-              <Text color={week.selected ? "white" : "black"}>{week.text}</Text>
-            </OpacityBox>
+              {week.text}
+            </Button>
           ))}
-        </Box>
+        </Flex>
 
-        <Box d="row" justify="flex-start" w="100%" mt="40px">
-          <Text size="16px" weight="bold">
-            Alarm Time
-          </Text>
-        </Box>
+        <Flex d="row" justify="flex-start" w="100%" mt="40px">
+          <Bold>Alarm Time</Bold>
+        </Flex>
 
-        <Box d="row" justify="space-between" w="100%" mt="20px">
-          <Text size="16px" weight="bold">
-            {dayjs(schduleDate).format("A  hh : mm")}
-          </Text>
+        <Flex d="row" justify="space-between" w="100%" minHeight="30px" mt="20px">
+          <Bold>{dayjs(schduleDate).format("A  hh : mm")}</Bold>
 
-          <OpacityBox p="6px" bgColor="black" onPress={handleOpenTimePicker}>
-            <Icon name="edit" color="white" size={20} />
-          </OpacityBox>
-        </Box>
+          <Button variant="black" h="30px" px="6px" onPress={handleOpenTimePicker}>
+            <Icon name="edit" color="white" size={18} />
+          </Button>
+        </Flex>
       </ScrollBox>
 
       {schduleDate && isOpenTimePicker && (
@@ -181,17 +172,11 @@ export const AlarmScreen = () => {
         />
       )}
 
-      <Box position="absolute" left="0" bottom="0" w="100%" h="60px" p="8px">
-        <Button
-          title="SAVE"
-          size="18px"
-          weight="bold"
-          w={`${appWidth - 16}px`}
-          h="100%"
-          active={true}
-          onPress={handleSaveAlarm}
-        />
-      </Box>
+      <Block position="absolute" left="0" bottom="0" w="100%" h="60px" p="8px">
+        <Button variant="black" size="18px" weight="bold" w={`${appWidth - 16}px`} h="100%" onPress={handleSaveAlarm}>
+          SAVE
+        </Button>
+      </Block>
     </Container>
   );
 };

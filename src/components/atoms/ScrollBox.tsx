@@ -1,14 +1,11 @@
 import styled from "styled-components/native";
-import { styledDimension, styledMargin, styledPadding } from "./styled";
+import { styledDimension, styledMargin, styledPadding, styledBackground } from "./styled";
 
-interface IScrollBoxProps extends IFlex, IDimension, IMargin, IPadding {
-  bgColor?: string;
-}
+interface IScrollBoxProps extends IFlex, IDimension, IMargin, IPadding, IBackground {}
 
 export const ScrollBox = styled.ScrollView<IScrollBoxProps>`
-  ${({ f }) => f && `flex: ${f};`}
-  ${styledDimension}
+  ${styledDimension({ w: "100%", h: "100%" })}
   ${styledMargin}
   ${styledPadding}
-  ${({ bgColor }) => bgColor && `background-color: ${bgColor};`}
+  ${styledBackground()}
 `;

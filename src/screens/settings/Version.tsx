@@ -1,6 +1,6 @@
 import React from "react";
 import { Linking } from "react-native";
-import { Container, Box, Text } from "@src/components/atoms";
+import { Container, Flex, Bold } from "@src/components/atoms";
 const { version } = require("../../../package.json");
 
 export const VersionScreen = () => {
@@ -9,39 +9,23 @@ export const VersionScreen = () => {
   };
 
   return (
-    <Container f="1" justify="flex-start" bgColor="white" p="40px 60px">
-      <Box d="row" justify="space-between" w="100%">
-        <Text size="16px" weight="bold">
-          App Name
-        </Text>
-        <Text size="16px" weight="bold">
-          Status
-        </Text>
-      </Box>
-      <Box d="row" justify="space-between" w="100%" mt="30px">
-        <Text size="16px" weight="bold">
-          Version
-        </Text>
-        <Text size="16px" weight="bold">
-          {version}
-        </Text>
-      </Box>
-      <Box d="row" justify="space-between" w="100%" mt="30px">
-        <Text size="16px" weight="bold">
-          Developer
-        </Text>
-        <Text size="16px" weight="bold">
-          raccoon
-        </Text>
-      </Box>
-      <Box d="row" justify="space-between" w="100%" mt="30px">
-        <Text size="16px" weight="bold">
-          Contact
-        </Text>
-        <Text size="16px" weight="bold" onPress={handleOpenEmailApp}>
-          dev.beomseok@gmail.com
-        </Text>
-      </Box>
+    <Container p="40px 60px">
+      <Flex d="row" justify="space-between" w="100%">
+        <Bold>App Name</Bold>
+        <Bold>Status</Bold>
+      </Flex>
+      <Flex d="row" justify="space-between" w="100%" mt="30px">
+        <Bold>Version</Bold>
+        <Bold>{version}</Bold>
+      </Flex>
+      <Flex d="row" justify="space-between" w="100%" mt="30px">
+        <Bold>Developer</Bold>
+        <Bold>raccoon</Bold>
+      </Flex>
+      <Flex d="row" justify="space-between" w="100%" mt="30px">
+        <Bold>Contact</Bold>
+        <Bold onPress={handleOpenEmailApp}>dev.beomseok@gmail.com</Bold>
+      </Flex>
     </Container>
   );
 };

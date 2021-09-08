@@ -4,7 +4,7 @@ import { Dimensions } from "react-native";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
 import { getExercises } from "@src/store/thunk";
 import { selectStatistics } from "@src/store/slices/exercise";
-import { Container, ScrollBox, Box, Text } from "@src/components/atoms";
+import { Container, ScrollBox, Flex, Bold, Text } from "@src/components/atoms";
 import { StackBarChart } from "@src/charts/StackBarChart";
 import type { WebViewMessageEvent } from "react-native-webview";
 
@@ -27,8 +27,8 @@ export const StatisticsScreen = () => {
   };
 
   return (
-    <Container isLoad={isLoad} f="1" justify="flex-start" w="100%" bgColor="white">
-      <ScrollBox f="1" w="100%" p="10px 20px">
+    <Container isLoad={isLoad}>
+      <ScrollBox p="10px 20px">
         <StackBarChart
           chartLabels={chartLabels}
           chartDatasets={chartDatasets}
@@ -39,48 +39,42 @@ export const StatisticsScreen = () => {
 
         {selectedStatistics && (
           <>
-            <Box d="row" align="flex-end" justify="flex-start" w="100%">
-              <Text w="100px" size="16px" weight="bold">
-                Date
-              </Text>
+            <Flex d="row" align="flex-end" justify="flex-start" w="100%">
+              <Bold w="100px">Date</Bold>
               <Text>{selectedStatistics.updated}</Text>
-            </Box>
+            </Flex>
 
-            <Box d="row" align="flex-start" justify="flex-start" w="100%" mt="20px">
-              <Text w="100px" size="16px" weight="bold">
-                Exercises
-              </Text>
+            <Flex d="row" align="flex-start" justify="flex-start" w="100%" mt="20px">
+              <Bold w="100px">Exercises</Bold>
 
-              <Box align="flex-start">
+              <Flex align="flex-start">
                 {selectedStatistics.exercises.map((exercises) => {
                   if (exercises.value) {
                     return (
-                      <Box key={`s-e-${exercises.name}`} d="row" justify="flex-start" mb="8px">
+                      <Flex key={`s-e-${exercises.name}`} d="row" justify="flex-start" mb="8px">
                         <Text w="80px">{exercises.name}</Text>
                         <Text>{exercises.value}</Text>
-                        <Text mx="8px">{exercises.unit}</Text>
-                      </Box>
+                        <Text ml="8px">{exercises.unit}</Text>
+                      </Flex>
                     );
                   }
                   return null;
                 })}
-              </Box>
-            </Box>
+              </Flex>
+            </Flex>
 
-            <Box d="row" align="flex-start" justify="flex-start" w="100%" mt="12px">
-              <Text w="100px" size="16px" weight="bold">
-                Status
-              </Text>
+            <Flex d="row" align="flex-start" justify="flex-start" w="100%" mt="12px">
+              <Bold w="100px">Status</Bold>
 
-              <Box align="flex-start">
+              <Flex align="flex-start">
                 {selectedStatistics.status.map((stat) => (
-                  <Box key={`s-e-${stat.name}`} d="row" justify="flex-start" mb="8px">
+                  <Flex key={`s-e-${stat.name}`} d="row" justify="flex-start" mb="8px">
                     <Text w="80px">{stat.name}</Text>
                     <Text>{stat.value / 1000}</Text>
-                  </Box>
+                  </Flex>
                 ))}
-              </Box>
-            </Box>
+              </Flex>
+            </Flex>
           </>
         )}
       </ScrollBox>

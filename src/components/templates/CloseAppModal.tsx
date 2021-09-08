@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { Modal } from "react-native";
-import { Box, Text } from "@src/components/atoms";
+import { Flex, Block, Bold, Button } from "@src/components/atoms";
 
 interface ICloseAppModalProps {
   show: boolean;
@@ -10,10 +10,8 @@ interface ICloseAppModalProps {
 export const CloseAppModal: FC<ICloseAppModalProps> = ({ show, close, exit }) => {
   return (
     <Modal animationType="fade" transparent={true} visible={show} onRequestClose={close}>
-      <Box w="100%" h="100%">
-        <Box
-          align="flex-start"
-          justify="flex-start"
+      <Flex w="100%" h="100%">
+        <Block
           w="50%"
           minWidth="250px"
           minHeight="150px"
@@ -22,23 +20,19 @@ export const CloseAppModal: FC<ICloseAppModalProps> = ({ show, close, exit }) =>
           border="1px solid #e8e8e8"
           radius="5px"
         >
-          <Text size="20px" weight="bold">
-            Confirm
-          </Text>
-          <Text weight="bold" mt="20px">
-            Do you want to Exit?
-          </Text>
+          <Bold size="20px">Confirm</Bold>
+          <Bold mt="20px">Do you want to Exit?</Bold>
 
-          <Box d="row" justify="flex-end" w="100%" mt="30px">
-            <Text color="blue" weight="bold" onPress={close}>
+          <Flex d="row" justify="flex-end" w="100%" mt="30px">
+            <Button variant="outline-gray" h="30px" px="12px" onPress={close}>
               Cancel
-            </Text>
-            <Text color="blue" weight="bold" m="0 0 0 40px" onPress={exit}>
+            </Button>
+            <Button variant="black" h="30px" px="12px" ml="20px" onPress={exit}>
               OK
-            </Text>
-          </Box>
-        </Box>
-      </Box>
+            </Button>
+          </Flex>
+        </Block>
+      </Flex>
     </Modal>
   );
 };

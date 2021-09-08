@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { Container } from "@src/components/atoms";
+import { Block } from "@src/components/atoms";
 import { FloatMenuMainButton, FloatMenuSubButton } from "@src/components/molecules";
 import { useNavigation } from "@react-navigation/native";
 
@@ -17,6 +17,7 @@ interface IFloatMenu {
       iconColor?: string;
     };
     subMenu: {
+      name?: string;
       size?: string;
       color?: string;
       iconName: string;
@@ -44,7 +45,7 @@ export const FloatMenu: FC<IFloatMenu> = ({ floatMenuOptions: { position, mainMe
   };
 
   return (
-    <Container position="absolute" right={position.right || "0"} bottom={position.bottom || "0"} w="50px" h="50px">
+    <Block position="absolute" right={position.right || "0"} bottom={position.bottom || "0"} w="50px" h="50px">
       <FloatMenuMainButton
         size={mainMenu.size || "48px"}
         bgColor={mainMenu.color || "black"}
@@ -61,6 +62,7 @@ export const FloatMenu: FC<IFloatMenu> = ({ floatMenuOptions: { position, mainMe
           <FloatMenuSubButton
             key={`sub-menu=${index}`}
             index={index + 1}
+            name={sub.name}
             size={sub.size || "40px"}
             color={sub.color || "gray"}
             iconName={sub.iconName}
@@ -70,6 +72,6 @@ export const FloatMenu: FC<IFloatMenu> = ({ floatMenuOptions: { position, mainMe
             pressSubMenu={handlePressSubMenu(sub.to)}
           />
         ))}
-    </Container>
+    </Block>
   );
 };

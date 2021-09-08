@@ -7,7 +7,7 @@ import {
   GestureResponderEvent,
   PanResponderGestureState,
 } from "react-native";
-import { Box } from "@src/components/atoms";
+import { Flex } from "@src/components/atoms";
 
 const DEVICE = Dimensions.get("window");
 
@@ -50,9 +50,9 @@ interface IBottomSheetProps {
 export const BottomSheet: FC<IBottomSheetProps> = ({ children }) => {
   return (
     <Animated.View style={[styles.animatedView, { bottom: animatedPosition }]} {...panGesture.panHandlers}>
-      <Box justify="flex-start" w="100%" h="50px" pt="20px">
-        <Box w="40px" h="5px" radius="20px" bgColor="#d2d2d2" />
-      </Box>
+      <Flex justify="flex-start" w="100%" h="50px" pt="20px">
+        <Flex w="40px" h="5px" radius="20px" bgColor="#d2d2d2" />
+      </Flex>
 
       {children}
     </Animated.View>

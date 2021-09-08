@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Modal } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
-import { Box, Text, OpacityBox, ScrollBox } from "@src/components/atoms";
+import { Block, Flex, Bold, Text, Button, ScrollBox } from "@src/components/atoms";
 import { EXERCISE_NAMES } from "@src/configs";
 
 interface IAddExerciseModalProps {
@@ -20,10 +20,8 @@ export const AddExerciseModal: FC<IAddExerciseModalProps> = ({
 }) => {
   return (
     <Modal animationType="fade" transparent={true} visible={show} onRequestClose={close}>
-      <Box w="100%" h="100%">
-        <Box
-          align="flex-start"
-          justify="flex-start"
+      <Flex w="100%" h="100%">
+        <Block
           w="50%"
           minWidth="300px"
           minHeight="150px"
@@ -32,72 +30,69 @@ export const AddExerciseModal: FC<IAddExerciseModalProps> = ({
           border="1px solid #e8e8e8"
           radius="5px"
         >
-          <Text size="20px" weight="bold">
-            Add Exercise
-          </Text>
+          <Bold size="20px">Add Exercise</Bold>
 
-          <Box d="row" wrap="wrap" justify="flex-start" w="100%" mt="20px">
+          <Flex d="row" wrap="wrap" justify="flex-start" w="100%" mt="20px">
             {exerciseNames.map((exerciseName) => (
-              <OpacityBox
+              <Button
                 key={`s-${exerciseName}`}
-                p="2px 4px 2px 6px"
+                variant="black"
+                h="24px"
+                px="6px"
                 m="0 2px 4px"
-                bgColor="black"
-                radius="3px"
                 onPress={removeExercise(exerciseName)}
               >
-                <Text color="white" m="0 4px 0 0">
+                <Text color="white" mr="4px">
                   {exerciseName}
                 </Text>
                 <Icon name="x" color="white" size={12} />
-              </OpacityBox>
+              </Button>
             ))}
-          </Box>
+          </Flex>
 
-          <ScrollBox w="100%" maxHeight="240px" mt="20px">
+          <ScrollBox maxHeight="240px" mt="20px">
             {EXERCISE_NAMES.map((exerciseName) => {
               if (exerciseNames.includes(exerciseName)) {
                 return (
-                  <OpacityBox
+                  <Button
                     key={`l-${exerciseName}`}
+                    variant="black"
                     w="100%"
                     h="40px"
-                    p="0"
                     my="3px"
-                    bgColor="black"
+                    size="16px"
+                    weight="bold"
                     onPress={removeExercise(exerciseName)}
                   >
-                    <Text color="white" weight="bold">
-                      {exerciseName}
-                    </Text>
-                  </OpacityBox>
+                    {exerciseName}
+                  </Button>
                 );
               } else {
                 return (
-                  <OpacityBox
+                  <Button
                     key={`l-${exerciseName}`}
+                    variant="outline-black"
                     w="100%"
                     h="40px"
-                    p="0"
                     my="3px"
+                    size="16px"
+                    weight="bold"
                     onPress={addExercise(exerciseName)}
                   >
-                    <Text color="black" weight="bold">
-                      {exerciseName}
-                    </Text>
-                  </OpacityBox>
+                    {exerciseName}
+                  </Button>
                 );
               }
             })}
           </ScrollBox>
 
-          <Box d="row" justify="flex-end" w="100%" mt="30px">
-            <Text color="blue" weight="bold" onPress={close}>
+          <Flex d="row" justify="flex-end" w="100%" mt="30px">
+            <Button variant="black" h="30px" px="12px" onPress={close}>
               OK
-            </Text>
-          </Box>
-        </Box>
-      </Box>
+            </Button>
+          </Flex>
+        </Block>
+      </Flex>
     </Modal>
   );
 };
