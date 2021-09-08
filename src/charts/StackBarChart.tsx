@@ -1,6 +1,7 @@
 import React, { FC, useRef, useState, useEffect } from "react";
 import { Platform } from "react-native";
 import { WebView } from "react-native-webview";
+const chartHtml = Platform.OS === "ios" ? require("./chart.html") : { uri: "file:///android_asset/chart.html" };
 import type { WebViewMessageEvent } from "react-native-webview";
 
 const config = {
@@ -38,7 +39,6 @@ export const StackBarChart: FC<IStackBarChartProps> = ({
 }) => {
   const webviewRef = useRef<WebView>(null);
   const [isMount, setIsMount] = useState(false);
-  const source = Platform.OS === "ios" ? require("./chart.html") : { uri: "file:///android_asset/chart.html" };
 
   useEffect(() => {
     if (isMount && !!chartLabels && !!chartDatasets) {
@@ -79,7 +79,7 @@ export const StackBarChart: FC<IStackBarChartProps> = ({
     <WebView
       originWhitelist={["*"]}
       ref={webviewRef}
-      source={source}
+      source={chartHtml}
       onMessage={handleClickChart}
       onLoadEnd={handleLoadEnd}
       style={webviewStyle(width, height)}
