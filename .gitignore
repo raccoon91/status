@@ -29,6 +29,9 @@ build/
 local.properties
 *.iml
 
+# Firebase
+firebase.json
+
 # Android Bundle
 index.android.bundle
 
