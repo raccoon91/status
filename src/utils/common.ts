@@ -63,5 +63,9 @@ export const calculateExperience = (exercises: IExercises) => {
     });
   });
 
+  if (experience > 500) {
+    return 500;
+  }
+
   return experience;
 };

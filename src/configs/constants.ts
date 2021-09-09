@@ -39,7 +39,7 @@ export const USER = {
   totalExperience: 0,
 };
 
-export const MAX_UPDATE_STATUS_VALUE = 500;
+export const MAX_UPDATE_STATUS_VALUE = 50;
 
 export const STATUS_COLORS: { [key: string]: string } = {
   "Hit Point": "#9d9d9d",

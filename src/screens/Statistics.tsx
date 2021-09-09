@@ -32,9 +32,9 @@ export const StatisticsScreen = () => {
   return (
     <Container isLoad={isLoad} py="10px">
       <ScrollBox px="20px">
-        <Flex w="100%" h="50px" bgColor="#f8f8f8" mb="16px" radius="3px">
+        {/* <Flex w="100%" h="50px" bgColor="#f8f8f8" mb="16px" radius="3px">
           <BannerAd unitId={adUnitId} size={BannerAdSize.BANNER} />
-        </Flex>
+        </Flex> */}
 
         <StackBarChart
           chartLabels={chartLabels}

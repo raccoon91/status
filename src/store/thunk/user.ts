@@ -60,7 +60,7 @@ export const putUser = createAsyncThunk<typeof USER, number, IRejectValue>(
       const state = getState() as IRootState;
       const { level, experience, requiredExperience, totalExperience } = state.user;
 
-      if (experience + newExperience > requiredExperience) {
+      if (experience + newExperience >= requiredExperience) {
         user.level = level + 1;
         user.experience = experience + newExperience - requiredExperience;
         user.requiredExperience += 10;
