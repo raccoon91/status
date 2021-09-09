@@ -8,6 +8,8 @@
     "start": "react-native start",
     "bundle-android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
     "build-android:debug": "cd android && gradlew assembleDebug",
+    "bundle-remove": "rm -rf android/app/src/main/res/drawable-* android/app/src/main/res/raw",
+    "build-android:release": "cd android && gradlew bundleRelease",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "format": "prettier --write ./src ./App.tsx ./@types"
   },
