@@ -112,8 +112,8 @@ export const AlarmScreen = () => {
   };
 
   return (
-    <Container position="relative">
-      <ScrollBox p="40px 20px 60px">
+    <Container position="relative" p="20px 0 60px">
+      <ScrollBox px="20px">
         <Flex d="row" justify="flex-start" w="100%">
           <Bold>Alarm On / Off</Bold>
         </Flex>

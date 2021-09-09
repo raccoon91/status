@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { Dimensions } from "react-native";
+import Toast from "react-native-toast-message";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
 import { getExercises, postExercies } from "@src/store/thunk";
 import {
@@ -66,7 +67,11 @@ export const ExerciseScreen = () => {
   };
 
   const handleSelectExercise = (exercise: string) => () => {
-    dispatch(selectExercise({ name: exercise }));
+    if (exerciseNames.length < 6) {
+      dispatch(selectExercise({ name: exercise }));
+    } else {
+      Toast.show({ type: "info", text1: "Error", text2: "you can select max 6 exercises" });
+    }
   };
 
   const handleSaveUpdate = () => {
@@ -85,8 +90,8 @@ export const ExerciseScreen = () => {
         removeExercise={handleRemoveExercise}
       />
 
-      <Container isLoad={isLoad} position="relative" barTheme="white">
-        <ScrollBox p="20px 40px 60px">
+      <Container isLoad={isLoad} position="relative" barTheme="white" p="20px 0 60px">
+        <ScrollBox px="40px">
           {Object.keys(exercises).map((exerciseName) => (
             <Flex key={`e-${exerciseName}`} d="row" justify="flex-start" mt="16px">
               <Bold>{exerciseName}</Bold>
@@ -115,14 +120,20 @@ export const ExerciseScreen = () => {
                 Status
               </Bold>
 
-              {updateStatus.map((stat) => (
-                <Flex key={`s-${stat.name}`} d="row" justify="space-between" mt="6px">
-                  <Text size="16px" w="80px">
-                    {stat.name}
-                  </Text>
-                  <DecimalNumber number={stat.value / 1000} fontSize="16px" fontWeight="normal" />
-                </Flex>
-              ))}
+              {updateStatus.map((stat) => {
+                if (stat.value) {
+                  return (
+                    <Flex key={`s-${stat.name}`} d="row" justify="space-between" mt="6px">
+                      <Text size="16px" w="80px">
+                        {stat.name}
+                      </Text>
+                      <DecimalNumber number={stat.value / 1000} fontSize="16px" fontWeight="normal" />
+                    </Flex>
+                  );
+                } else {
+                  return null;
+                }
+              })}
             </Flex>
           ) : null}
         </ScrollBox>

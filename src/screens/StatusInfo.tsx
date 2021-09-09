@@ -8,8 +8,8 @@ export const StatusInfoScreen = () => {
   const { statusInfo } = useAppSelector((state) => state.status);
 
   return (
-    <Container>
-      <ScrollBox p="20px 40px">
+    <Container py="20px">
+      <ScrollBox px="40px">
         <ArccodionGroup>
           {statusInfo.map((statInfo, index) => (
             <Arccodion

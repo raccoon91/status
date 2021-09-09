@@ -114,7 +114,7 @@ export const StatusScreen = () => {
             </>
           )}
 
-          <Flex d="row" justify="flex-end" w="100%" m="20px 0 24px">
+          <Flex d="row" justify="flex-end" w="100%" m="24px 0 20px">
             <Button variant="black" h="28px" px="8px" onPress={goToStatusInfo}>
               <Icon name="info" color="white" size={16} />
               <Text color="white" ml="6px">
