@@ -16,20 +16,20 @@ const setStatisticsData = (state: IExerciseState, statisticsData: IStatistics[])
     statisticsData.forEach((statistics) => {
       labels.push(dayjs(statistics.updated).format("MM-DD"));
 
-      statistics.status.reverse().forEach((item) => {
-        if (!datasets[item.name]) {
-          datasets[item.name] = {
-            label: item.name,
+      statistics.status.reverse().forEach((stat) => {
+        if (!datasets[stat.name]) {
+          datasets[stat.name] = {
+            label: stat.name,
             data: [],
-            backgroundColor: STATUS_COLORS[item.name],
+            backgroundColor: STATUS_COLORS[stat.name],
             barThickness: 12,
           };
         }
 
-        if (item.value) {
-          datasets[item.name].data.push(item.value / 1000);
+        if (stat.value) {
+          datasets[stat.name].data.push(stat.value / 1000);
         } else {
-          datasets[item.name].data.push(0);
+          datasets[stat.name].data.push(0);
         }
       });
     });
@@ -103,7 +103,7 @@ export const postExercies = createAsyncThunk<
 
     if (lastUpdated) {
       if (!dayjs(lastUpdated).isBefore(dayjs(updated), "day")) {
-        return rejectWithValue({ type: "info", message: "you can update status after a day" });
+        return rejectWithValue({ type: "info", message: "you can update status tomorrow" });
       }
       if (!dayjs(lastUpdated).isBefore(dayjs(updated).subtract(6, "hour"))) {
         return rejectWithValue({ type: "info", message: "you can update status after six hour" });

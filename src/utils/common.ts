@@ -17,7 +17,12 @@ export const getNotificationSchedule = async () => {
 };
 
 export const exerciseToStatus = (exercises: IExercises) => {
-  const status: IStatus[] = [];
+  const status: IStatus[] = [
+    { name: "Hit Point", value: 0 },
+    { name: "Strength", value: 0 },
+    { name: "Agility", value: 0 },
+    { name: "Stamina", value: 0 },
+  ];
 
   Object.keys(exercises).forEach((exerciseName) => {
     const exerciseStatus = EXERCISES?.[exerciseName]?.status || [];
