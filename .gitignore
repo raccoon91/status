@@ -34,6 +34,8 @@ firebase.json
 
 # Android Bundle
 index.android.bundle
+android/app/src/main/res/drawable-*
+android/app/src/main/res/raw
 
 # node.js
 node_modules/
