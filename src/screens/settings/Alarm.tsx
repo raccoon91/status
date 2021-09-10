@@ -2,12 +2,11 @@ import React, { useState, useCallback } from "react";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { Dimensions, Switch } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import dayjs from "dayjs";
 import { Container, ScrollBox, Flex, Block, Bold, Button } from "@src/components/atoms";
 import { WEEKS_NUMBER_TO_STRING, WEEKS_STRING_TO_NUMBER } from "@src/configs";
-import { getNotificationSchedule, registerLocalNotification, unregisterLocalNotification } from "@src/utils";
+import { getNotificationSchedule, registerLocalNotification, unregisterLocalNotification, storage } from "@src/utils";
 import type { Event } from "@react-native-community/datetimepicker";
 
 const appWidth = Dimensions.get("window").width;
@@ -78,7 +77,7 @@ export const AlarmScreen = () => {
 
   const handleSaveAlarm = async () => {
     if (!alarmEnabled) {
-      await AsyncStorage.setItem("@schedule", JSON.stringify({ ...schedule, alarm: "OFF" }));
+      await storage.setItem("@schedule", { ...schedule, alarm: "OFF" });
 
       unregisterLocalNotification();
 
@@ -95,15 +94,12 @@ export const AlarmScreen = () => {
         }
       });
 
-      await AsyncStorage.setItem(
-        "@schedule",
-        JSON.stringify({
-          alarm: "ON",
-          weeks: selectedWeeks,
-          hour: selectedHour,
-          minute: selectedMinute,
-        }),
-      );
+      await storage.setItem("@schedule", {
+        alarm: "ON",
+        weeks: selectedWeeks,
+        hour: selectedHour,
+        minute: selectedMinute,
+      });
 
       await registerLocalNotification();
 

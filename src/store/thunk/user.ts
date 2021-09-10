@@ -1,22 +1,16 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-toast-message";
 import { USER } from "@src/configs";
+import { storage, calculateUserLevel } from "@src/utils";
 import type { ActionReducerMapBuilder } from "@reduxjs/toolkit";
 
 export const getUser = createAsyncThunk<typeof USER, void, IRejectValue>(
   "user/getUser",
   async (_, { rejectWithValue }) => {
     try {
-      const storageUser = await AsyncStorage.getItem("@user");
+      const storageUser = await storage.getItem("@user", USER);
 
-      if (storageUser != null) {
-        return JSON.parse(storageUser);
-      } else {
-        AsyncStorage.setItem("@user", JSON.stringify(USER));
-
-        return USER;
-      }
+      return storageUser;
     } catch (err) {
       console.error(err);
 
@@ -29,8 +23,7 @@ export const postUser = createAsyncThunk<typeof USER, void, IRejectValue>(
   "user/postUser",
   async (_, { getState, rejectWithValue }) => {
     try {
-      const storageUser = await AsyncStorage.getItem("@user");
-      const user: typeof USER = storageUser ? JSON.parse(storageUser) : USER;
+      const storageUser = await storage.getItem("@user", USER);
       const state = getState() as IRootState;
       const { newName } = state.user;
 
@@ -38,11 +31,11 @@ export const postUser = createAsyncThunk<typeof USER, void, IRejectValue>(
         return rejectWithValue({ type: "info", message: "user name should be 1 ~ 10 character" });
       }
 
-      user.name = newName;
+      storageUser.name = newName;
 
-      AsyncStorage.setItem("@user", JSON.stringify(user));
+      storage.setItem("@user", storageUser);
 
-      return user;
+      return storageUser;
     } catch (err) {
       console.error(err);
 
@@ -53,26 +46,27 @@ export const postUser = createAsyncThunk<typeof USER, void, IRejectValue>(
 
 export const putUser = createAsyncThunk<typeof USER, number, IRejectValue>(
   "user/putUser",
-  async (newExperience, { getState, rejectWithValue }) => {
+  async (updateExperience, { getState, rejectWithValue }) => {
     try {
-      const storageUser = await AsyncStorage.getItem("@user");
-      const user: typeof USER = storageUser ? JSON.parse(storageUser) : USER;
       const state = getState() as IRootState;
-      const { level, experience, requiredExperience, totalExperience } = state.user;
+      const { level, requiredExperience, totalExperience } = state.user;
 
-      if (experience + newExperience >= requiredExperience) {
-        user.level = level + 1;
-        user.experience = experience + newExperience - requiredExperience;
-        user.requiredExperience += 10;
-        user.totalExperience = totalExperience + newExperience;
-      } else {
-        user.experience = experience + newExperience;
-        user.totalExperience = totalExperience + newExperience;
-      }
+      const { newLevel, newExperience, newRequiredExperience } = calculateUserLevel(
+        totalExperience + updateExperience,
+        level,
+        requiredExperience,
+      );
 
-      AsyncStorage.setItem("@user", JSON.stringify(user));
+      const storageUser = await storage.getItem("@user", USER);
 
-      return user;
+      storageUser.level = newLevel;
+      storageUser.experience = newExperience;
+      storageUser.requiredExperience = newRequiredExperience;
+      storageUser.totalExperience = totalExperience + updateExperience;
+
+      storage.setItem("@user", storageUser);
+
+      return storageUser;
     } catch (err) {
       console.error(err);
 

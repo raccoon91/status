@@ -1,19 +1,20 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { NOTIFICATION_SCHEDULE, EXERCISES, STATUS_INDEX, MAX_UPDATE_STATUS_VALUE } from "@src/configs";
+import dayjs from "dayjs";
+import { EXERCISES, STATUS_INDEX, MAX_UPDATE_STATUS_VALUE, STATUS_COLORS } from "@src/configs";
 
-export const getNotificationSchedule = async () => {
-  const storageSchedule = await AsyncStorage.getItem("@schedule");
-  let schedule: typeof NOTIFICATION_SCHEDULE;
-
-  if (storageSchedule !== null) {
-    schedule = JSON.parse(storageSchedule);
+export const calculateUserLevel = (
+  totalExperience: number,
+  level = 1,
+  requiredExperience = 1000,
+): { newLevel: number; newExperience: number; newRequiredExperience: number } => {
+  if (totalExperience < requiredExperience) {
+    return {
+      newLevel: level,
+      newExperience: totalExperience,
+      newRequiredExperience: requiredExperience,
+    };
   } else {
-    AsyncStorage.setItem("@schedule", JSON.stringify(NOTIFICATION_SCHEDULE));
-
-    schedule = NOTIFICATION_SCHEDULE;
+    return calculateUserLevel(totalExperience - requiredExperience, level + 1, requiredExperience + 100);
   }
-
-  return schedule;
 };
 
 export const exerciseToStatus = (exercises: IExercises) => {
@@ -63,9 +64,43 @@ export const calculateExperience = (exercises: IExercises) => {
     });
   });
 
-  if (experience > 500) {
-    return 500;
+  if (experience > 1000) {
+    return 1000;
   }
 
   return experience;
+};
+
+export const calculateStatistics = (statistics: IStatistics[]) => {
+  const labels: string[] = [];
+  const datasets: { [key: string]: IChartData } = {};
+
+  for (let i = 0; i < statistics.length; i++) {
+    const { exercises, updated } = statistics[i];
+    const status = exerciseToStatus(exercises);
+
+    labels.push(dayjs(updated).format("MM-DD"));
+
+    status.reverse().forEach((stat) => {
+      if (!datasets[stat.name]) {
+        datasets[stat.name] = {
+          label: stat.name,
+          data: [],
+          backgroundColor: STATUS_COLORS[stat.name],
+          barThickness: 12,
+        };
+      }
+
+      if (stat.value) {
+        datasets[stat.name].data.push(stat.value / 1000);
+      } else {
+        datasets[stat.name].data.push(0);
+      }
+    });
+  }
+
+  return {
+    labels,
+    datasets: Object.values(datasets),
+  };
 };

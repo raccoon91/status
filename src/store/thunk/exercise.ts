@@ -1,67 +1,28 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-toast-message";
 import dayjs from "dayjs";
-import { STATUS_COLORS } from "@src/configs";
-import { exerciseToStatus, calculateExperience } from "@src/utils";
+import { storage, calculateExperience, calculateStatistics } from "@src/utils";
 import { putUser } from "./user";
 import { postStatus } from "./status";
 import type { ActionReducerMapBuilder } from "@reduxjs/toolkit";
-
-const setStatisticsData = (state: IExerciseState, statisticsData: IStatistics[]) => {
-  if (statisticsData) {
-    const labels: string[] = [];
-    const datasets: { [key: string]: IChartData } = {};
-
-    statisticsData.forEach((statistics) => {
-      labels.push(dayjs(statistics.updated).format("MM-DD"));
-
-      statistics.status.reverse().forEach((stat) => {
-        if (!datasets[stat.name]) {
-          datasets[stat.name] = {
-            label: stat.name,
-            data: [],
-            backgroundColor: STATUS_COLORS[stat.name],
-            barThickness: 12,
-          };
-        }
-
-        if (stat.value) {
-          datasets[stat.name].data.push(stat.value / 1000);
-        } else {
-          datasets[stat.name].data.push(0);
-        }
-      });
-    });
-
-    state.chartLabels = labels;
-    state.chartDatasets = Object.values(datasets);
-  }
-};
 
 export const getExercises = createAsyncThunk<
   {
     lastUpdated: string;
     exercises: IExercises;
     exerciseNames: string[];
-    statisticsData: IStatistics[];
-    weekStatistics: { exercises: IExercises; updated: string }[];
+    weekStatistics: IStatistics[];
   },
   void,
   IRejectValue
 >("exercise/getExercises", async (_, { rejectWithValue }) => {
   try {
-    const storageStatistics = await AsyncStorage.getItem("@statistics");
+    const storageStatistics = await storage.getItemOrNull<IStatistics[]>("@statistics");
 
-    if (storageStatistics !== null) {
-      const parsedStatistics: { exercises: IExercises; updated: string }[] = JSON.parse(storageStatistics) || [];
+    if (storageStatistics) {
       const exercises: IExercises = {};
-      const lastStatistics = parsedStatistics.slice(-1)[0];
-      const weekStatistics = parsedStatistics.slice(-7);
-      const statisticsData = weekStatistics.map((data) => ({
-        status: exerciseToStatus(data.exercises),
-        updated: data.updated,
-      }));
+      const lastStatistics = storageStatistics.slice(-1)[0];
+      const weekStatistics = storageStatistics.slice(-7);
 
       Object.keys(lastStatistics.exercises).forEach((exerciseName: string) => {
         exercises[exerciseName] = {
@@ -74,7 +35,6 @@ export const getExercises = createAsyncThunk<
         lastUpdated: lastStatistics.updated,
         exercises,
         exerciseNames: Object.keys(lastStatistics.exercises),
-        statisticsData,
         weekStatistics,
       };
     } else {
@@ -90,8 +50,7 @@ export const getExercises = createAsyncThunk<
 export const postExercies = createAsyncThunk<
   {
     updated: string;
-    statisticsData: IStatistics[];
-    weekStatistics: { exercises: IExercises; updated: string }[];
+    weekStatistics: IStatistics[];
   },
   void,
   IRejectValue
@@ -99,36 +58,29 @@ export const postExercies = createAsyncThunk<
   try {
     const state = getState() as IRootState;
     const { exercises, lastUpdated } = state.exercise;
-    const updated = dayjs().format("YYYY-MM-DD HH:mm");
+    const currentDate = dayjs().format("YYYY-MM-DD HH:mm");
 
-    if (lastUpdated) {
-      if (!dayjs(lastUpdated).isBefore(dayjs(updated), "day")) {
-        return rejectWithValue({ type: "info", message: "you can update status tomorrow" });
-      }
-      if (!dayjs(lastUpdated).isBefore(dayjs(updated).subtract(6, "hour"))) {
-        return rejectWithValue({ type: "info", message: "you can update status after six hour" });
-      }
+    if (lastUpdated && !dayjs(lastUpdated).isBefore(dayjs(currentDate), "day")) {
+      return rejectWithValue({ type: "info", message: "you can update status tomorrow" });
     }
 
-    const storageStatistics = await AsyncStorage.getItem("@statistics");
-    const parsedStatistics: { exercises: IExercises; updated: string }[] = storageStatistics
-      ? JSON.parse(storageStatistics)
-      : [];
+    if (lastUpdated && !dayjs(lastUpdated).isBefore(dayjs(currentDate).subtract(6, "hour"), "hour")) {
+      return rejectWithValue({ type: "info", message: "you can update status after six hour" });
+    }
 
-    parsedStatistics.push({ exercises, updated });
+    const storageStatistics = await storage.getItem<IStatistics[]>("@statistics", []);
+
+    storageStatistics.push({ exercises, updated: currentDate });
+
     const experience = calculateExperience(exercises);
-    const weekStatistics = parsedStatistics.slice(-7);
-    const statisticsData = weekStatistics.map((data) => ({
-      status: exerciseToStatus(data.exercises),
-      updated,
-    }));
+    const weekStatistics = storageStatistics.slice(-7);
 
-    AsyncStorage.setItem("@statistics", JSON.stringify(parsedStatistics));
+    storage.setItem("@statistics", storageStatistics);
 
     dispatch(putUser(experience));
     dispatch(postStatus(exercises));
 
-    return { updated, statisticsData, weekStatistics };
+    return { updated: currentDate, weekStatistics };
   } catch (err) {
     console.error(err);
 
@@ -143,12 +95,14 @@ export const exerciseExtraReducers = (builder: ActionReducerMapBuilder<IExercise
       state.isFetch = true;
     })
     .addCase(getExercises.fulfilled, (state, action) => {
-      const { exercises, exerciseNames, lastUpdated, statisticsData, weekStatistics } = action.payload;
+      const { exercises, exerciseNames, lastUpdated, weekStatistics } = action.payload;
+      const { labels, datasets } = calculateStatistics(weekStatistics);
 
       state.exercises = exercises;
       state.exerciseNames = exerciseNames;
       state.lastUpdated = lastUpdated;
-      setStatisticsData(state, statisticsData);
+      state.chartLabels = labels;
+      state.chartDatasets = datasets;
       state.weekStatistics = weekStatistics;
       state.isLoad = false;
     })
@@ -160,11 +114,13 @@ export const exerciseExtraReducers = (builder: ActionReducerMapBuilder<IExercise
       }
     })
     .addCase(postExercies.fulfilled, (state, action) => {
-      const { updated, statisticsData, weekStatistics } = action.payload;
+      const { updated, weekStatistics } = action.payload;
+      const { labels, datasets } = calculateStatistics(weekStatistics);
 
       state.lastUpdated = updated;
       state.updateStatus = [];
-      setStatisticsData(state, statisticsData);
+      state.chartLabels = labels;
+      state.chartDatasets = datasets;
       state.weekStatistics = weekStatistics;
       state.isUpdate = true;
     })

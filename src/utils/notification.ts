@@ -1,13 +1,13 @@
 import { AppState, Platform, PushNotificationIOS } from "react-native";
 import PushNotification from "react-native-push-notification";
 import dayjs from "dayjs";
-import { CHANNEL_ID } from "@src/configs";
-import { getNotificationSchedule } from "./common";
+import { storage } from "./storage";
+import { NOTIFICATION_SCHEDULE, CHANNEL_ID } from "@src/configs";
 
-const handleAppStateChange = (nextAppState: string) => {
-  if (nextAppState === "active") {
-    registerLocalNotification();
-  }
+export const getNotificationSchedule = async () => {
+  const storageSchedule = await storage.getItem("@schedule", NOTIFICATION_SCHEDULE);
+
+  return storageSchedule;
 };
 
 const createScheduleDates = async () => {
@@ -94,6 +94,12 @@ export const unregisterLocalNotification = () => {
   PushNotification.cancelAllLocalNotifications();
 
   // getNotificationList();
+};
+
+const handleAppStateChange = (nextAppState: string) => {
+  if (nextAppState === "active") {
+    registerLocalNotification();
+  }
 };
 
 export const initNotification = () => {

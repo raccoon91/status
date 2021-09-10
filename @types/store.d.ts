@@ -1,7 +1,7 @@
 interface IExerciseConstant {
   name: string;
-  description?: string;
   unit: string;
+  description?: string;
   status: { name: string; point: number; rate: number }[];
 }
 interface IStatus {
@@ -23,7 +23,7 @@ interface IExercises {
 }
 
 interface IStatistics {
-  status: IStatus[];
+  exercises: IExercises;
   updated: string;
 }
 
