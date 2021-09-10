@@ -81,7 +81,7 @@ export const AlarmScreen = () => {
 
       unregisterLocalNotification();
 
-      navigation.navigate("Main");
+      navigation.navigate("Status");
     } else {
       const selectedWeeks: number[] = [];
       const selectedDate = dayjs(schduleDate);
@@ -103,7 +103,7 @@ export const AlarmScreen = () => {
 
       await registerLocalNotification();
 
-      navigation.navigate("Main");
+      navigation.navigate("Status");
     }
   };
 
