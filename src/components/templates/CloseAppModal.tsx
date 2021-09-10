@@ -1,5 +1,6 @@
 import React, { FC } from "react";
-import { Modal } from "react-native";
+
+import Modal from "react-native-modal";
 import { Flex, Block, Bold, Button } from "@src/components/atoms";
 
 interface ICloseAppModalProps {
@@ -9,7 +10,7 @@ interface ICloseAppModalProps {
 }
 export const CloseAppModal: FC<ICloseAppModalProps> = ({ show, close, exit }) => {
   return (
-    <Modal animationType="fade" transparent={true} visible={show} onRequestClose={close}>
+    <Modal isVisible={show} backdropTransitionOutTiming={0} onBackdropPress={close} onBackButtonPress={close}>
       <Flex w="100%" h="100%">
         <Block
           w="50%"

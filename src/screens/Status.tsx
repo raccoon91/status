@@ -1,10 +1,9 @@
 import React, { useState, useCallback } from "react";
-import { useNavigation, useNavigationState, useFocusEffect } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { BackHandler } from "react-native";
 import { ProgressBar } from "react-native-paper";
 import Icon from "react-native-vector-icons/Feather";
-import { useAppSelector, useAppDispatch } from "@src/hooks";
-import { getUser, getStatus } from "@src/store/thunk";
+import { useAppSelector } from "@src/hooks";
 import { Container, Loading, Block, Flex, Bold, Text, Button } from "@src/components/atoms";
 import { Status } from "@src/components/molecules";
 import { FloatMenu } from "@src/components/organisms";
@@ -14,88 +13,77 @@ const floatMenuOptions = {
   position: { right: "30px", bottom: "30px" },
   mainMenu: { color: "black", iconName: "plus" },
   subMenu: [
-    { name: "", color: "gray", iconName: "user-plus", to: "Exercise" },
-    { name: "", color: "gray", iconName: "bell", to: "Alarm" },
+    { name: "Update", color: "gray", iconName: "user-plus", to: "Exercise" },
+    { name: "Alarm", color: "gray", iconName: "bell", to: "Alarm" },
   ],
 };
 
 export const StatusScreen = () => {
-  const dispatch = useAppDispatch();
   const navigation = useNavigation();
-  const screenName = useNavigationState((state) => state.routes[state.index].name);
-  const [toggleCloseAppModal, setToggleCloseAppModal] = useState(false);
-  const {
-    isFetch: isFetchUser,
-    isLoad: isLoadUser,
-    name,
-    level,
-    experience,
-    requiredExperience,
-  } = useAppSelector((state) => state.user);
-  const { isFetch, isLoad, status } = useAppSelector((state) => state.status);
+  const [exitApp, setExitApp] = useState(0);
+  const [isOpenMenu, setIsOpenMenu] = useState(false);
+  const [isOpenExitAppModal, setIsOpenExitAppModal] = useState(false);
+  const { name, level, experience, requiredExperience } = useAppSelector((state) => state.user);
+  const { isLoad, status } = useAppSelector((state) => state.status);
 
-  const openCloseAppModal = useCallback(() => {
-    if (screenName === "Status") {
-      setToggleCloseAppModal(true);
-
-      return true;
+  const handleBackButton = useCallback(() => {
+    if (isOpenMenu) {
+      return false;
     }
 
-    return false;
-  }, [screenName]);
+    setTimeout(() => {
+      setExitApp(0);
+    }, 1000);
+
+    if (exitApp === 0) {
+      setExitApp(exitApp + 1);
+    } else if (exitApp === 1) {
+      handleOpenExitAppModal();
+    }
+
+    return true;
+  }, [exitApp, isOpenMenu, setExitApp]);
 
   useFocusEffect(
     useCallback(() => {
-      BackHandler.addEventListener("hardwareBackPress", openCloseAppModal);
+      BackHandler.addEventListener("hardwareBackPress", handleBackButton);
 
       return () => {
-        BackHandler.removeEventListener("hardwareBackPress", openCloseAppModal);
+        BackHandler.removeEventListener("hardwareBackPress", handleBackButton);
       };
-    }, [openCloseAppModal]),
-  );
-
-  useFocusEffect(
-    useCallback(() => {
-      if (!isFetch) {
-        dispatch(getStatus());
-      }
-    }, [isFetch, dispatch]),
-  );
-
-  useFocusEffect(
-    useCallback(() => {
-      if (!isFetchUser) {
-        dispatch(getUser());
-      }
-    }, [isFetchUser, dispatch]),
-  );
-
-  useFocusEffect(
-    useCallback(() => {
-      if (isFetchUser && !isLoadUser && !name) {
-        navigation.reset({ routes: [{ name: "User" }] });
-      }
-    }, [isFetchUser, isLoadUser, name, navigation]),
+    }, [handleBackButton]),
   );
 
   const goToStatusInfo = () => {
     navigation.navigate("StatusInfo");
   };
 
+  const handleOpenMenu = () => {
+    setIsOpenMenu(true);
+  };
+
+  const handleCloseMenu = () => {
+    setIsOpenMenu(false);
+  };
+
+  const handleOpenExitAppModal = () => {
+    setIsOpenExitAppModal(true);
+  };
+
+  const handleCloseExitAppModal = () => {
+    setIsOpenExitAppModal(false);
+  };
+
   const handleExitApp = () => {
     BackHandler.exitApp();
   };
 
-  const closeCloseAppModal = () => {
-    setToggleCloseAppModal(false);
-  };
-
   return (
     <>
-      <CloseAppModal show={toggleCloseAppModal} close={closeCloseAppModal} exit={handleExitApp} />
+      <CloseAppModal show={isOpenExitAppModal} close={handleCloseExitAppModal} exit={handleExitApp} />
 
       <Container position="relative" pt="40px">
-        <Loading isLoad={isLoadUser || isLoad} w="100%" h="1005">
+        <Loading isLoad={isLoad} w="100%" h="100%">
           <Block w="70%">
             {name?.length > 0 && (
               <>
@@ -130,7 +118,12 @@ export const StatusScreen = () => {
           </Block>
         </Loading>
 
-        <FloatMenu floatMenuOptions={floatMenuOptions} />
+        <FloatMenu
+          show={isOpenMenu}
+          open={handleOpenMenu}
+          close={handleCloseMenu}
+          floatMenuOptions={floatMenuOptions}
+        />
       </Container>
     </>
   );

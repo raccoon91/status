@@ -5,7 +5,6 @@ interface IPosition {
   bottom?: string;
   left?: string;
   zIndex?: string;
-  events?: string;
 }
 
 interface IFlex {

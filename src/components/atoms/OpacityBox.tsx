@@ -1,9 +1,18 @@
 import styled from "styled-components/native";
-import { styledFlex, styledDimension, styledPadding, styledMargin, styledBorder, styledBackground } from "./styled";
+import {
+  styledPosition,
+  styledFlex,
+  styledDimension,
+  styledPadding,
+  styledMargin,
+  styledBorder,
+  styledBackground,
+} from "./styled";
 
 interface IOpacityBoxProps extends IPosition, IFlex, IDimension, IMargin, IPadding, IBorder, IBackground, IText {}
 
 export const OpacityBox = styled.TouchableOpacity<IOpacityBoxProps>`
+  ${styledPosition}
   ${styledFlex({ d: "row" })}
   ${styledDimension({ display: "flex" })}
   ${styledMargin}

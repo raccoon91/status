@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Modal } from "react-native";
+import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/Feather";
 import { Block, Flex, Bold, Text, Button, ScrollBox } from "@src/components/atoms";
 import { EXERCISE_NAMES } from "@src/configs";
@@ -19,7 +19,7 @@ export const AddExerciseModal: FC<IAddExerciseModalProps> = ({
   removeExercise,
 }) => {
   return (
-    <Modal animationType="fade" transparent={true} visible={show} onRequestClose={close}>
+    <Modal isVisible={show} backdropTransitionOutTiming={0} onBackdropPress={close} onBackButtonPress={close}>
       <Flex w="100%" h="100%">
         <Block
           w="50%"
