@@ -5,7 +5,7 @@ import { ProgressBar } from "react-native-paper";
 import Icon from "react-native-vector-icons/Feather";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
 import { getUser, getStatus } from "@src/store/thunk";
-import { Container, Block, Flex, Bold, Text, Button } from "@src/components/atoms";
+import { Container, Loading, Block, Flex, Bold, Text, Button } from "@src/components/atoms";
 import { Status } from "@src/components/molecules";
 import { FloatMenu } from "@src/components/organisms";
 import { CloseAppModal } from "@src/components/templates";
@@ -94,39 +94,41 @@ export const StatusScreen = () => {
     <>
       <CloseAppModal show={toggleCloseAppModal} close={closeCloseAppModal} exit={handleExitApp} />
 
-      <Container isLoad={isLoadUser || isLoad} position="relative" pt="40px">
-        <Block w="70%">
-          {name?.length > 0 && (
-            <>
-              <Flex d="row" justify="space-between" w="100%" mb="20px">
-                <Bold size="20px">{name}</Bold>
-                <Bold size="20px">Lv. {level}</Bold>
-              </Flex>
-
-              <Flex align="stretch" w="100%">
-                <Flex d="row" justify="space-between">
-                  <Bold mb="12px">Exp.</Bold>
-                  <Bold mb="12px">{Math.floor((experience / requiredExperience) * 100)} %</Bold>
+      <Container position="relative" pt="40px">
+        <Loading isLoad={isLoadUser || isLoad} w="100%" h="1005">
+          <Block w="70%">
+            {name?.length > 0 && (
+              <>
+                <Flex d="row" justify="space-between" w="100%" mb="20px">
+                  <Bold size="20px">{name}</Bold>
+                  <Bold size="20px">Lv. {level}</Bold>
                 </Flex>
 
-                <ProgressBar progress={experience / requiredExperience} color="#000000" />
-              </Flex>
-            </>
-          )}
+                <Flex align="stretch" w="100%">
+                  <Flex d="row" justify="space-between">
+                    <Bold mb="12px">Exp.</Bold>
+                    <Bold mb="12px">{Math.floor((experience / requiredExperience) * 100)} %</Bold>
+                  </Flex>
 
-          <Flex d="row" justify="flex-end" w="100%" m="24px 0 20px">
-            <Button variant="black" h="28px" px="8px" onPress={goToStatusInfo}>
-              <Icon name="info" color="white" size={16} />
-              <Text color="white" ml="6px">
-                Status Info
-              </Text>
-            </Button>
-          </Flex>
+                  <ProgressBar progress={experience / requiredExperience} color="#000000" />
+                </Flex>
+              </>
+            )}
 
-          {status.map((stat) => (
-            <Status key={stat.name} name={stat.name} value={stat.value} />
-          ))}
-        </Block>
+            <Flex d="row" justify="flex-end" w="100%" m="24px 0 20px">
+              <Button variant="black" h="28px" px="8px" onPress={goToStatusInfo}>
+                <Icon name="info" color="white" size={16} />
+                <Text color="white" ml="6px">
+                  Status Info
+                </Text>
+              </Button>
+            </Flex>
+
+            {status.map((stat) => (
+              <Status key={stat.name} name={stat.name} value={stat.value} />
+            ))}
+          </Block>
+        </Loading>
 
         <FloatMenu floatMenuOptions={floatMenuOptions} />
       </Container>

@@ -10,3 +10,4 @@ export * from "./DecimalNumber";
 export * from "./CircleMenu";
 export * from "./Button";
 export * from "./Input";
+export * from "./Loading";

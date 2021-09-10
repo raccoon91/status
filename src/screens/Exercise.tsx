@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from "react";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
-import { Dimensions } from "react-native";
 import Toast from "react-native-toast-message";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
 import { getExercises, postExercies } from "@src/store/thunk";
@@ -11,12 +10,21 @@ import {
   calculateUpdateStatus,
   clearExerciseState,
 } from "@src/store/slices/exercise";
-import { Container, ScrollBox, Flex, Block, Bold, Text, DecimalNumber, Button, Input } from "@src/components/atoms";
+import {
+  Container,
+  Loading,
+  ScrollBox,
+  Flex,
+  Block,
+  Bold,
+  Text,
+  DecimalNumber,
+  Button,
+  Input,
+} from "@src/components/atoms";
 import { AddExerciseModal } from "@src/components/templates";
 import { EXERCISES } from "@src/configs/exercises";
 import type { NativeSyntheticEvent, TextInputChangeEventData } from "react-native";
-
-const appWidth = Dimensions.get("window").width;
 
 export const ExerciseScreen = () => {
   const dispatch = useAppDispatch();
@@ -90,60 +98,70 @@ export const ExerciseScreen = () => {
         removeExercise={handleRemoveExercise}
       />
 
-      <Container isLoad={isLoad} position="relative" barTheme="white" p="20px 0 60px">
-        <ScrollBox px="40px">
-          {Object.keys(exercises).map((exerciseName) => (
-            <Flex key={`e-${exerciseName}`} d="row" justify="flex-start" mt="16px">
-              <Bold>{exerciseName}</Bold>
-              <Input
-                keyboardType="numeric"
-                w="120px"
-                h="40px"
-                px="8px"
-                ml="auto"
-                value={exercises[exerciseName].value}
-                onChange={handleChangeExerciseValue(exerciseName)}
-              />
-              <Text w="36px" m="10px 0 0 4px">
-                {EXERCISES?.[exerciseName]?.unit || ""}
-              </Text>
-            </Flex>
-          ))}
+      <Container position="relative" barTheme="white" p="20px 0 60px">
+        <Loading isLoad={isLoad} w="100%" h="100%">
+          <ScrollBox px="40px">
+            {Object.keys(exercises).map((exerciseName) => (
+              <Flex key={`e-${exerciseName}`} d="row" justify="flex-start" mt="16px">
+                <Bold>{exerciseName}</Bold>
+                <Input
+                  keyboardType="numeric"
+                  w="120px"
+                  h="40px"
+                  px="8px"
+                  ml="auto"
+                  value={exercises[exerciseName].value}
+                  onChange={handleChangeExerciseValue(exerciseName)}
+                />
+                <Text w="36px" m="10px 0 0 4px">
+                  {EXERCISES?.[exerciseName]?.unit || ""}
+                </Text>
+              </Flex>
+            ))}
 
-          <Button variant="black" w="100%" h="40px" size="16px" weight="bold" mt="30px" onPress={openAddExerciseModal}>
-            Edit Exercise
-          </Button>
+            <Button
+              variant="black"
+              w="100%"
+              h="40px"
+              size="16px"
+              weight="bold"
+              mt="30px"
+              onPress={openAddExerciseModal}
+            >
+              Edit Exercise
+            </Button>
 
-          {enableUpdate ? (
-            <Flex align="flex-start" mt="30px">
-              <Bold size="20px" mb="10px">
-                Status
-              </Bold>
+            {enableUpdate ? (
+              <Flex align="flex-start" mt="30px">
+                <Bold size="20px" mb="10px">
+                  Status
+                </Bold>
 
-              {updateStatus.map((stat) => {
-                if (stat.value) {
-                  return (
-                    <Flex key={`s-${stat.name}`} d="row" justify="space-between" mt="6px">
-                      <Text size="16px" w="80px">
-                        {stat.name}
-                      </Text>
-                      <DecimalNumber number={stat.value / 1000} fontSize="16px" fontWeight="normal" />
-                    </Flex>
-                  );
-                } else {
-                  return null;
-                }
-              })}
-            </Flex>
-          ) : null}
-        </ScrollBox>
+                {updateStatus.map((stat) => {
+                  if (stat.value) {
+                    return (
+                      <Flex key={`s-${stat.name}`} d="row" justify="space-between" mt="6px">
+                        <Text size="16px" w="80px">
+                          {stat.name}
+                        </Text>
+                        <DecimalNumber number={stat.value / 1000} fontSize="16px" fontWeight="normal" />
+                      </Flex>
+                    );
+                  } else {
+                    return null;
+                  }
+                })}
+              </Flex>
+            ) : null}
+          </ScrollBox>
+        </Loading>
 
         <Block position="absolute" left="0" bottom="0" w="100%" h="60px" p="8px">
           <Button
             variant={enableUpdate ? "black" : "disabled"}
             size="18px"
             weight="bold"
-            w={`${appWidth - 16}px`}
+            w="100%"
             h="100%"
             onPress={handleSaveUpdate}
           >
