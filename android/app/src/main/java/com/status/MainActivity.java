@@ -1,4 +1,4 @@
-package com.status;
+package com.raccoon.status;
 
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;

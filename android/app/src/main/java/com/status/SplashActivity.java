@@ -1,4 +1,4 @@
-package com.status;
+package com.raccoon.status;
 
 import android.content.Intent;
 import android.os.Bundle;
