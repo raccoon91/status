@@ -60,4 +60,5 @@ interface IText {
   size?: string;
   weight?: string;
   tAlign?: string;
+  line?: string;
 }

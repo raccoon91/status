@@ -77,4 +77,5 @@ export const styledText = (defaultStyle?: IText) => css<IText>`
   ${({ size }) => (size || defaultStyle?.size) && `font-size: ${size || defaultStyle?.size};`}
   ${({ weight }) => (weight || defaultStyle?.weight) && `font-weight: ${weight || defaultStyle?.weight};`}
   ${({ tAlign }) => tAlign && `text-align: ${tAlign};`}
+  ${({ line }) => line && `line-height: ${line};`}
 `;
