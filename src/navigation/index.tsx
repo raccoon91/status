@@ -4,7 +4,15 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { getFocusedRouteNameFromRoute, RouteProp } from "@react-navigation/native";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
 import { getUser, getStatus } from "@src/store/thunk";
-import { UserScreen, StatusInfoScreen, ExerciseScreen, ProfileScreen, AlarmScreen, VersionScreen } from "@src/screens";
+import {
+  UserScreen,
+  StatusInfoScreen,
+  ExerciseScreen,
+  ProfileScreen,
+  AlarmScreen,
+  PrivacyPolicyScreen,
+  VersionScreen,
+} from "@src/screens";
 import { headerStyle } from "@src/components/atoms";
 import { MainNavigation } from "./Main";
 
@@ -54,6 +62,11 @@ export const Navigations = () => {
           <Stack.Screen name="StatusInfo" options={headerStyle("StatusInfo", "dark")} component={StatusInfoScreen} />
           <Stack.Screen name="Profile" options={headerStyle("Profile", "light")} component={ProfileScreen} />
           <Stack.Screen name="Alarm" options={headerStyle("Alarm", "light")} component={AlarmScreen} />
+          <Stack.Screen
+            name="PrivacyPolicy"
+            options={headerStyle("PrivacyPolicy", "light")}
+            component={PrivacyPolicyScreen}
+          />
           <Stack.Screen name="Version" options={headerStyle("Version", "light")} component={VersionScreen} />
         </>
       )}

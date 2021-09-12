@@ -37,6 +37,19 @@ export const SettingScreen = () => {
         p="12px 16px"
         mt="10px"
         bgColor="white"
+        onPress={navigateTo("PrivacyPolicy")}
+      >
+        <Icon name="book" color="black" size={24} />
+        <Bold ml="20px">Privacy Policy</Bold>
+      </OpacityBox>
+
+      <OpacityBox
+        justify="flex-start"
+        w="100%"
+        h="60px"
+        p="12px 16px"
+        mt="10px"
+        bgColor="white"
         onPress={navigateTo("Version")}
       >
         <Icon name="info" color="black" size={24} />
