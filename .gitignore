@@ -31,6 +31,7 @@ local.properties
 
 # Firebase
 firebase.json
+google-services.json
 
 # Android Bundle
 index.android.bundle
