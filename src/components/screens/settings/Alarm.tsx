@@ -168,7 +168,7 @@ export const AlarmScreen = () => {
       )}
 
       <Block position="absolute" left="0" bottom="0" w="100%" h="60px" p="8px">
-        <Button variant="black" size="18px" weight="bold" w={`${appWidth - 16}px`} h="100%" onPress={handleSaveAlarm}>
+        <Button variant="black" size="lg" weight="bold" w={`${appWidth - 16}px`} h="100%" onPress={handleSaveAlarm}>
           SAVE
         </Button>
       </Block>

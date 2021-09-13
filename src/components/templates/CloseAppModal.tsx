@@ -21,7 +21,7 @@ export const CloseAppModal: FC<ICloseAppModalProps> = ({ show, close, exit }) =>
           border="1px solid #e8e8e8"
           radius="5px"
         >
-          <Bold size="20px">Confirm</Bold>
+          <Bold size="xl">Confirm</Bold>
           <Bold mt="20px">Do you want to Exit?</Bold>
 
           <Flex d="row" justify="flex-end" w="100%" mt="30px">

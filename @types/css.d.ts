@@ -1,4 +1,4 @@
-interface IPosition {
+interface IPositionCSS {
   position?: string;
   top?: string;
   right?: string;
@@ -7,7 +7,7 @@ interface IPosition {
   zIndex?: string;
 }
 
-interface IFlex {
+interface IFlexCSS {
   d?: string;
   f?: string | number;
   wrap?: string;
@@ -15,7 +15,7 @@ interface IFlex {
   justify?: string;
 }
 
-interface IDimension {
+interface IDimensionCSS {
   display?: string;
   w?: string;
   maxWidth?: string;
@@ -25,7 +25,7 @@ interface IDimension {
   minHeight?: string;
 }
 
-interface IPadding {
+interface IPaddingCSS {
   p?: string;
   pt?: string;
   pr?: string;
@@ -35,7 +35,7 @@ interface IPadding {
   py?: string;
 }
 
-interface IMargin {
+interface IMarginCSS {
   m?: string;
   mt?: string;
   mr?: string;
@@ -45,19 +45,23 @@ interface IMargin {
   my?: string;
 }
 
-interface IBorder {
+interface IBorderCSS {
   border?: string;
   radius?: string;
 }
 
-interface IBackground {
-  bgColor?: string;
+type IColor = "white" | "black" | "gray" | "gray50" | "gray100" | "gray200" | "gray300" | "gray400" | "gray500";
+
+interface IBackgroundCSS {
+  bgColor?: IColor;
   opacity?: string;
 }
 
-interface IText {
-  color?: string;
-  size?: string;
+type IFontSize = "xs" | "sm" | "md" | "lg" | "xl" | "xx" | "ti";
+
+interface ITextCSS {
+  size?: IFontSize;
+  color?: IColor;
   weight?: string;
   tAlign?: string;
   line?: string;

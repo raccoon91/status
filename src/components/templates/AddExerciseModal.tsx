@@ -29,7 +29,7 @@ export const AddExerciseModal: FC<IAddExerciseModalProps> = ({
           border="1px solid #e8e8e8"
           radius="5px"
         >
-          <Bold size="20px">Add Exercise</Bold>
+          <Bold size="xl">Add Exercise</Bold>
 
           <Flex d="row" wrap="wrap" justify="flex-start" w="100%" mt="20px">
             {exerciseNames.map((exerciseName) => (
@@ -59,7 +59,7 @@ export const AddExerciseModal: FC<IAddExerciseModalProps> = ({
                     w="100%"
                     h="40px"
                     my="3px"
-                    size="16px"
+                    size="md"
                     weight="bold"
                     onPress={removeExercise(exerciseName)}
                   >
@@ -74,7 +74,7 @@ export const AddExerciseModal: FC<IAddExerciseModalProps> = ({
                     w="100%"
                     h="40px"
                     my="3px"
-                    size="16px"
+                    size="md"
                     weight="bold"
                     onPress={addExercise(exerciseName)}
                   >

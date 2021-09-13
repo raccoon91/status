@@ -1,21 +1,6 @@
 import { css } from "styled-components/native";
-import type { StackNavigationOptions } from "@react-navigation/stack/lib/typescript/src/types";
 
-export const headerStyle = (title: string, theme = "light"): StackNavigationOptions => ({
-  title,
-  headerStyle: {
-    borderBottomWidth: 1,
-    borderBottomColor: "#e2e2e2",
-    backgroundColor: theme === "light" ? "white" : "black",
-  },
-  headerTintColor: theme === "light" ? "black" : "white",
-  headerTitleStyle: {
-    fontWeight: "bold",
-  },
-  headerTitleAlign: "left",
-});
-
-export const styledPosition = css<IPosition>`
+export const positionCSS = css<IPositionCSS>`
   ${({ position }) => position && `position: ${position};`}
   ${({ top }) => top && `top: ${top};`}
   ${({ right }) => right && `right: ${right};`}
@@ -24,7 +9,7 @@ export const styledPosition = css<IPosition>`
   ${({ zIndex }) => zIndex && `z-index: ${zIndex};`}
 `;
 
-export const styledFlex = (defaultStyle?: IFlex) => css<IFlex>`
+export const flexCSS = (defaultStyle?: IFlexCSS) => css<IFlexCSS>`
   ${({ f }) => (f || defaultStyle?.f) && `flex: ${f || defaultStyle?.f};`}
   ${({ d }) => (d || defaultStyle?.d) && `flex-direction: ${d || defaultStyle?.d};`}
   ${({ wrap }) => wrap && `flex-wrap: ${wrap};`}
@@ -32,7 +17,7 @@ export const styledFlex = (defaultStyle?: IFlex) => css<IFlex>`
   align-items: ${({ align }) => align || defaultStyle?.align || "center"};
 `;
 
-export const styledDimension = (defaultStyle?: IDimension) => css<IDimension>`
+export const dimensionCSS = (defaultStyle?: IDimensionCSS) => css<IDimensionCSS>`
   ${({ display }) => display && `display: ${display};`}
   ${({ w }) => (w || defaultStyle?.w) && `width: ${w || defaultStyle?.w};`}
   ${({ maxWidth }) => maxWidth && `max-width: ${maxWidth};`}
@@ -42,7 +27,7 @@ export const styledDimension = (defaultStyle?: IDimension) => css<IDimension>`
   ${({ minHeight }) => minHeight && `min-height: ${minHeight};`}
 `;
 
-export const styledMargin = css<IMargin>`
+export const marginCSS = css<IMarginCSS>`
   ${({ m }) => m && `margin: ${m};`}
   ${({ mt }) => mt && `margin-top: ${mt};`}
   ${({ mr }) => mr && `margin-right: ${mr};`}
@@ -52,7 +37,7 @@ export const styledMargin = css<IMargin>`
   ${({ my }) => my && `margin: ${my} 0;`}
 `;
 
-export const styledPadding = css<IPadding>`
+export const paddingCSS = css<IPaddingCSS>`
   ${({ p }) => p && `padding: ${p};`}
   ${({ pt }) => pt && `padding-top: ${pt};`}
   ${({ pr }) => pr && `padding-right: ${pr};`}
@@ -62,20 +47,25 @@ export const styledPadding = css<IPadding>`
   ${({ py }) => py && `padding: ${py} 0;`}
 `;
 
-export const styledBorder = (defaultStyle?: IBorder) => css<IBorder>`
+export const borderCSS = (defaultStyle?: IBorderCSS) => css<IBorderCSS>`
   ${({ border }) => (border || defaultStyle?.border) && `border: ${border || defaultStyle?.border};`}
   ${({ radius }) => (radius || defaultStyle?.radius) && `border-radius: ${radius || defaultStyle?.radius};`}
 `;
 
-export const styledBackground = (defaultStyle?: IBackground) => css<IBackground>`
-  ${({ bgColor }) => (bgColor || defaultStyle?.bgColor) && `background-color: ${bgColor || defaultStyle?.bgColor};`}
+export const backgroundCSS = (defaultStyle?: IBackgroundCSS) => css<IBackgroundCSS>`
+  ${({ theme, bgColor }) =>
+    (bgColor || defaultStyle?.bgColor) &&
+    `background-color: ${
+      bgColor ? theme.colors[bgColor] : defaultStyle?.bgColor ? theme.colors[defaultStyle.bgColor] : theme.colors.white
+    };`}
   ${({ opacity }) => opacity && `opacity: ${opacity};`}
 `;
 
-export const styledText = (defaultStyle?: IText) => css<IText>`
-  ${({ color }) => color && `color: ${color};`}
-  ${({ size }) => (size || defaultStyle?.size) && `font-size: ${size || defaultStyle?.size};`}
+export const textCSS = (defaultStyle?: ITextCSS) => css<ITextCSS>`
+  color: ${({ theme, color }) =>
+    color ? theme.colors[color] : defaultStyle?.color ? theme.colors[defaultStyle.color] : theme.colors.black};
+  font-size: ${({ theme, size }) =>
+    size ? theme.fonts[size] : defaultStyle?.size ? theme.fonts[defaultStyle.size] : theme.fonts.sm};
   ${({ weight }) => (weight || defaultStyle?.weight) && `font-weight: ${weight || defaultStyle?.weight};`}
-  ${({ tAlign }) => tAlign && `text-align: ${tAlign};`}
-  ${({ line }) => line && `line-height: ${line};`}
+  ${({ tAlign }) => tAlign && `text-align: ${tAlign};`} ${({ line }) => line && `line-height: ${line};`};
 `;

@@ -1,13 +1,13 @@
 import styled from "styled-components/native";
-import { styledPosition, styledDimension, styledMargin, styledPadding, styledBorder, styledBackground } from "./styled";
+import { positionCSS, dimensionCSS, marginCSS, paddingCSS, borderCSS, backgroundCSS } from "./css";
 
-interface IBlockProps extends IPosition, IDimension, IMargin, IPadding, IBorder, IBackground {}
+interface IBlockProps extends IPositionCSS, IDimensionCSS, IMarginCSS, IPaddingCSS, IBorderCSS, IBackgroundCSS {}
 
 export const Block = styled.View<IBlockProps>`
-  ${styledPosition}
-  ${styledDimension({ display: "block" })}
-  ${styledMargin}
-  ${styledPadding}
-  ${styledBorder()}
-  ${styledBackground()}
+  ${positionCSS}
+  ${dimensionCSS({ display: "block" })}
+  ${marginCSS}
+  ${paddingCSS}
+  ${borderCSS()}
+  ${backgroundCSS()}
 `;

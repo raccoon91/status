@@ -1,11 +1,11 @@
 import styled from "styled-components/native";
-import { styledDimension, styledMargin, styledPadding, styledBackground } from "./styled";
+import { dimensionCSS, marginCSS, paddingCSS, backgroundCSS } from "./css";
 
-interface IScrollBoxProps extends IFlex, IDimension, IMargin, IPadding, IBackground {}
+interface IScrollBoxProps extends IFlexCSS, IDimensionCSS, IMarginCSS, IPaddingCSS, IBackgroundCSS {}
 
 export const ScrollBox = styled.ScrollView<IScrollBoxProps>`
-  ${styledDimension({ w: "100%", h: "100%" })}
-  ${styledMargin}
-  ${styledPadding}
-  ${styledBackground()}
+  ${dimensionCSS({ w: "100%", h: "100%" })}
+  ${marginCSS}
+  ${paddingCSS}
+  ${backgroundCSS()}
 `;

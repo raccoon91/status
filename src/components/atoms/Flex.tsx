@@ -1,22 +1,21 @@
 import styled from "styled-components/native";
-import {
-  styledPosition,
-  styledFlex,
-  styledDimension,
-  styledMargin,
-  styledPadding,
-  styledBorder,
-  styledBackground,
-} from "./styled";
+import { positionCSS, flexCSS, dimensionCSS, marginCSS, paddingCSS, borderCSS, backgroundCSS } from "./css";
 
-interface IFlexProps extends IPosition, IFlex, IDimension, IMargin, IPadding, IBorder, IBackground {}
+interface IFlexProps
+  extends IPositionCSS,
+    IFlexCSS,
+    IDimensionCSS,
+    IMarginCSS,
+    IPaddingCSS,
+    IBorderCSS,
+    IBackgroundCSS {}
 
 export const Flex = styled.View<IFlexProps>`
-  ${styledPosition}
-  ${styledFlex()}
-  ${styledDimension()}
-  ${styledMargin}
-  ${styledPadding}
-  ${styledBorder()}
-  ${styledBackground()}
+  ${positionCSS}
+  ${flexCSS()}
+  ${dimensionCSS()}
+  ${marginCSS}
+  ${paddingCSS}
+  ${borderCSS()}
+  ${backgroundCSS()}
 `;

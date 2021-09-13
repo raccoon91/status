@@ -21,7 +21,7 @@ export const StatusInfoScreen = () => {
               {statInfo.exercises.map((exercise) => (
                 <Flex key={`ei-${statInfo.name}-${exercise}`} d="row" p="8px 16px">
                   <Feather name="chevron-right" color="black" size={28} />
-                  <Text size="16px" pl="4px">
+                  <Text size="md" pl="4px">
                     {exercise}
                   </Text>
                 </Flex>

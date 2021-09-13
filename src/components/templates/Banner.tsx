@@ -50,7 +50,7 @@ export const Banner = () => {
   }, []);
 
   return (
-    <Flex w="100%" h="50px" bgColor="#f8f8f8" mb="16px" radius="3px">
+    <Flex w="100%" h="50px" bgColor="gray100" mb="16px" radius="3px">
       <BannerAd unitId={adUnitId} size={BannerAdSize.BANNER} />
     </Flex>
   );

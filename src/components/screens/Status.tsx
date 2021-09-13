@@ -87,8 +87,8 @@ export const StatusScreen = () => {
             {name?.length > 0 && (
               <>
                 <Flex d="row" justify="space-between" w="100%" mb="20px">
-                  <Bold size="20px">{name}</Bold>
-                  <Bold size="20px">Lv. {level}</Bold>
+                  <Bold size="xl">{name}</Bold>
+                  <Bold size="xl">Lv. {level}</Bold>
                 </Flex>
 
                 <Flex align="stretch" w="100%">

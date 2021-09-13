@@ -1,23 +1,22 @@
 import styled from "styled-components/native";
 import { TouchableHighlight } from "react-native-gesture-handler";
-import {
-  styledPosition,
-  styledFlex,
-  styledDimension,
-  styledMargin,
-  styledPadding,
-  styledBorder,
-  styledBackground,
-} from "./styled";
+import { positionCSS, flexCSS, dimensionCSS, marginCSS, paddingCSS, borderCSS, backgroundCSS } from "./css";
 
-interface IHighlightBoxProps extends IPosition, IFlex, IDimension, IMargin, IPadding, IBorder, IBackground {}
+interface IHighlightBoxProps
+  extends IPositionCSS,
+    IFlexCSS,
+    IDimensionCSS,
+    IMarginCSS,
+    IPaddingCSS,
+    IBorderCSS,
+    IBackgroundCSS {}
 
 export const HighlightBox = styled(TouchableHighlight)<IHighlightBoxProps>`
-  ${styledPosition}
-  ${styledFlex()}
-  ${styledDimension()}
-  ${styledMargin}
-  ${styledPadding}
-  ${styledBorder()}
-  ${styledBackground()}
+  ${positionCSS}
+  ${flexCSS()}
+  ${dimensionCSS()}
+  ${marginCSS}
+  ${paddingCSS}
+  ${borderCSS()}
+  ${backgroundCSS()}
 `;

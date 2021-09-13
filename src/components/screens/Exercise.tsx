@@ -119,21 +119,13 @@ export const ExerciseScreen = () => {
               </Flex>
             ))}
 
-            <Button
-              variant="black"
-              w="100%"
-              h="40px"
-              size="16px"
-              weight="bold"
-              mt="30px"
-              onPress={openAddExerciseModal}
-            >
+            <Button variant="black" w="100%" h="40px" size="md" weight="bold" mt="30px" onPress={openAddExerciseModal}>
               Edit Exercise
             </Button>
 
             {enableUpdate ? (
               <Flex align="flex-start" mt="30px">
-                <Bold size="20px" mb="10px">
+                <Bold size="xl" mb="10px">
                   Status
                 </Bold>
 
@@ -141,7 +133,7 @@ export const ExerciseScreen = () => {
                   if (stat.value) {
                     return (
                       <Flex key={`s-${stat.name}`} d="row" justify="space-between" mt="6px">
-                        <Text size="16px" w="80px">
+                        <Text size="md" w="80px">
                           {stat.name}
                         </Text>
                         <DecimalNumber number={stat.value / 1000} fontSize="16px" fontWeight="normal" />
@@ -159,7 +151,7 @@ export const ExerciseScreen = () => {
         <Block position="absolute" left="0" bottom="0" w="100%" h="60px" p="8px">
           <Button
             variant={enableUpdate ? "black" : "disabled"}
-            size="18px"
+            size="lg"
             weight="bold"
             w="100%"
             h="100%"

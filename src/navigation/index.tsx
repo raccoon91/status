@@ -4,7 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
 import { getUser, getStatus } from "@src/store/thunk";
-import { headerStyle } from "@src/components/atoms";
+import { headerStyle } from "@src/configs";
 import {
   UserScreen,
   StatusInfoScreen,

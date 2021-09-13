@@ -2,9 +2,9 @@ import React, { FC } from "react";
 import { StatusBar } from "react-native";
 import styled from "styled-components/native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { styledPosition, styledFlex, styledDimension, styledMargin, styledPadding, styledBackground } from "./styled";
+import { positionCSS, flexCSS, dimensionCSS, marginCSS, paddingCSS, backgroundCSS } from "./css";
 
-interface IContainerStyleProps extends IPosition, IFlex, IDimension, IMargin, IPadding, IBackground {}
+interface IContainerStyleProps extends IPositionCSS, IFlexCSS, IDimensionCSS, IMarginCSS, IPaddingCSS, IBackgroundCSS {}
 interface IContainerProps extends IContainerStyleProps {
   barTheme?: string;
   children: React.ReactNode;
@@ -23,10 +23,10 @@ export const Container: FC<IContainerProps> = ({ barTheme, children, ...styles }
 };
 
 const ContainerBox = styled(SafeAreaView)<IContainerStyleProps>`
-  ${styledPosition}
-  ${styledFlex({ f: 1, justify: "flex-start" })}
-  ${styledDimension({ w: "100%" })}
-  ${styledMargin}
-  ${styledPadding}
-  ${styledBackground({ bgColor: "white" })}
+  ${positionCSS}
+  ${flexCSS({ f: 1, justify: "flex-start" })}
+  ${dimensionCSS({ w: "100%" })}
+  ${marginCSS}
+  ${paddingCSS}
+  ${backgroundCSS({ bgColor: "white" })}
 `;

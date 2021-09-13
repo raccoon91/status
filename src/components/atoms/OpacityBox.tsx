@@ -1,22 +1,22 @@
 import styled from "styled-components/native";
-import {
-  styledPosition,
-  styledFlex,
-  styledDimension,
-  styledPadding,
-  styledMargin,
-  styledBorder,
-  styledBackground,
-} from "./styled";
+import { positionCSS, flexCSS, dimensionCSS, paddingCSS, marginCSS, borderCSS, backgroundCSS } from "./css";
 
-interface IOpacityBoxProps extends IPosition, IFlex, IDimension, IMargin, IPadding, IBorder, IBackground, IText {}
+interface IOpacityBoxProps
+  extends IPositionCSS,
+    IFlexCSS,
+    IDimensionCSS,
+    IMarginCSS,
+    IPaddingCSS,
+    IBorderCSS,
+    IBackgroundCSS,
+    ITextCSS {}
 
 export const OpacityBox = styled.TouchableOpacity<IOpacityBoxProps>`
-  ${styledPosition}
-  ${styledFlex({ d: "row" })}
-  ${styledDimension({ display: "flex" })}
-  ${styledMargin}
-  ${styledPadding}
-  ${styledBorder({ radius: "3px" })}
-  ${styledBackground({ bgColor: "#f8f8f8" })}
+  ${positionCSS}
+  ${flexCSS({ d: "row" })}
+  ${dimensionCSS({ display: "flex" })}
+  ${marginCSS}
+  ${paddingCSS}
+  ${borderCSS({ radius: "3px" })}
+  ${backgroundCSS({ bgColor: "gray100" })}
 `;

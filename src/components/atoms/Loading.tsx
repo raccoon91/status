@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { ActivityIndicator } from "react-native";
 import { Flex } from "./Flex";
 
-interface ILoadingProps extends IDimension, IPadding, IMargin {
+interface ILoadingProps extends IDimensionCSS, IPaddingCSS, IMarginCSS {
   isLoad: boolean;
   children: React.ReactElement;
 }

@@ -10,7 +10,7 @@ export const SettingScreen = () => {
   };
 
   return (
-    <Container align="flex-start" p="10px" bgColor="#f8f8f8">
+    <Container align="flex-start" p="10px" bgColor="gray100">
       <OpacityBox justify="flex-start" w="100%" h="60px" p="12px 16px" bgColor="white" onPress={navigateTo("Profile")}>
         <Feather name="user" color="black" size={24} />
         <Bold ml="20px">Profile</Bold>

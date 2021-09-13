@@ -1,20 +1,20 @@
 import styled from "styled-components/native";
-import { styledDimension, styledMargin, styledPadding, styledBorder, styledText } from "./styled";
+import { dimensionCSS, marginCSS, paddingCSS, borderCSS, textCSS } from "./css";
 
-interface ITextProps extends IDimension, IMargin, IPadding, IBorder, IText {}
+interface ITextProps extends IDimensionCSS, IMarginCSS, IPaddingCSS, IBorderCSS, ITextCSS {}
 
 export const Bold = styled.Text<ITextProps>`
-  ${styledDimension()}
-  ${styledMargin}
-  ${styledPadding}
-  ${styledBorder()}
-  ${styledText({ size: "16px", weight: "bold" })}
+  ${dimensionCSS()}
+  ${marginCSS}
+  ${paddingCSS}
+  ${borderCSS()}
+  ${textCSS({ size: "md", weight: "bold" })}
 `;
 
 export const Text = styled.Text<ITextProps>`
-  ${styledDimension()}
-  ${styledMargin}
-  ${styledPadding}
-  ${styledBorder()}
-  ${styledText()}
+  ${dimensionCSS()}
+  ${marginCSS}
+  ${paddingCSS}
+  ${borderCSS()}
+  ${textCSS()}
 `;

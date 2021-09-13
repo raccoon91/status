@@ -1,13 +1,13 @@
 import styled from "styled-components/native";
 import { TouchableHighlight } from "react-native-gesture-handler";
-import { styledFlex, styledDimension, styledBorder, styledBackground, styledText } from "./styled";
+import { flexCSS, dimensionCSS, borderCSS, backgroundCSS, textCSS } from "./css";
 
-interface ICircleMunuProps extends IFlex, IDimension, IBorder, IBackground, IText {}
+interface ICircleMunuProps extends IFlexCSS, IDimensionCSS, IBorderCSS, IBackgroundCSS, ITextCSS {}
 
 export const CircleMenu = styled(TouchableHighlight)<ICircleMunuProps>`
-  ${styledFlex()}
-  ${styledDimension()}
-  ${styledBorder({ radius: "100px" })}
-  ${styledBackground()}
-  ${styledText()}
+  ${flexCSS()}
+  ${dimensionCSS()}
+  ${borderCSS({ radius: "100px" })}
+  ${backgroundCSS()}
+  ${textCSS()}
 `;

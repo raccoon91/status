@@ -1,13 +1,13 @@
 import styled from "styled-components/native";
 import { TextInput } from "react-native-gesture-handler";
-import { styledDimension, styledMargin, styledPadding, styledBorder, styledText } from "./styled";
+import { dimensionCSS, marginCSS, paddingCSS, borderCSS, textCSS } from "./css";
 
-interface IInputProps extends IDimension, IMargin, IPadding, IBorder, IText {}
+interface IInputProps extends IDimensionCSS, IMarginCSS, IPaddingCSS, IBorderCSS, ITextCSS {}
 
 export const Input = styled(TextInput)<IInputProps>`
-  ${styledDimension({ w: "100%" })}
-  ${styledMargin}
-  ${styledPadding}
-  ${styledBorder({ border: "1px solid gray", radius: "3px" })}
-  ${styledText()}
+  ${dimensionCSS({ w: "100%" })}
+  ${marginCSS}
+  ${paddingCSS}
+  ${borderCSS({ border: "1px solid gray", radius: "3px" })}
+  ${textCSS()}
 `;
