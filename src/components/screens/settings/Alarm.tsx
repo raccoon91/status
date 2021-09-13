@@ -1,10 +1,9 @@
 import React, { useState, useCallback } from "react";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { Dimensions, Switch } from "react-native";
-import Icon from "react-native-vector-icons/Feather";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import dayjs from "dayjs";
-import { Container, ScrollBox, Flex, Block, Bold, Button } from "@src/components/atoms";
+import { Container, ScrollBox, Flex, Block, Bold, Button, Feather } from "@src/components/atoms";
 import { WEEKS_NUMBER_TO_STRING, WEEKS_STRING_TO_NUMBER } from "@src/configs";
 import { getNotificationSchedule, registerLocalNotification, unregisterLocalNotification, storage } from "@src/utils";
 import type { Event } from "@react-native-community/datetimepicker";
@@ -153,7 +152,7 @@ export const AlarmScreen = () => {
           <Bold>{dayjs(schduleDate).format("A  hh : mm")}</Bold>
 
           <Button variant="black" h="30px" px="6px" onPress={handleOpenTimePicker}>
-            <Icon name="edit" color="white" size={18} />
+            <Feather name="edit" color="white" size={18} />
           </Button>
         </Flex>
       </ScrollBox>

@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useRef } from "react";
 import { Animated, StyleSheet } from "react-native";
-import Icon from "react-native-vector-icons/Feather";
-import { CircleMenu, Text } from "@src/components/atoms";
+import { CircleMenu, Text, Feather } from "@src/components/atoms";
 
 interface IFloatMenuSubButtonProps {
   index: number;
@@ -63,7 +62,7 @@ export const FloatMenuSubButton: FC<IFloatMenuSubButtonProps> = ({
         {name}
       </Text>
       <CircleMenu w={size} h={size} bgColor={color} onPress={pressSubMenu}>
-        <Icon name={iconName} color={iconColor} size={iconSize} />
+        <Feather name={iconName} color={iconColor} size={iconSize} />
       </CircleMenu>
     </Animated.View>
   );

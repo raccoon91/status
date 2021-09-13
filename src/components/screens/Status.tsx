@@ -2,9 +2,8 @@ import React, { useState, useCallback } from "react";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { BackHandler } from "react-native";
 import { ProgressBar } from "react-native-paper";
-import Icon from "react-native-vector-icons/Feather";
 import { useAppSelector } from "@src/hooks";
-import { Container, Loading, Block, Flex, Bold, Text, Button } from "@src/components/atoms";
+import { Container, Loading, Block, Flex, Bold, Text, Button, Feather } from "@src/components/atoms";
 import { Status } from "@src/components/molecules";
 import { FloatMenu } from "@src/components/organisms";
 import { CloseAppModal } from "@src/components/templates";
@@ -105,7 +104,7 @@ export const StatusScreen = () => {
 
             <Flex d="row" justify="flex-end" w="100%" m="24px 0 20px">
               <Button variant="black" h="28px" px="8px" onPress={goToStatusInfo}>
-                <Icon name="info" color="white" size={16} />
+                <Feather name="info" color="white" size={16} />
                 <Text color="white" ml="6px">
                   Status Info
                 </Text>

@@ -1,7 +1,6 @@
 import React, { FC, useRef, useEffect } from "react";
 import { Animated, StyleSheet } from "react-native";
-import Icon from "react-native-vector-icons/Feather";
-import { CircleMenu } from "@src/components/atoms";
+import { CircleMenu, Feather } from "@src/components/atoms";
 
 interface IFloatMenuMainButtonProps {
   size: string;
@@ -63,7 +62,7 @@ export const FloatMenuMainButton: FC<IFloatMenuMainButtonProps> = ({
   return (
     <Animated.View style={[styles.animatedView, { transform: transformAnimation }]}>
       <CircleMenu w={size} h={size} bgColor={bgColor} onPress={handlePressMainMenu}>
-        <Icon name={featherIconName} color={iconColor} size={iconSize} />
+        <Feather name={featherIconName} color={iconColor} size={iconSize} />
       </CircleMenu>
     </Animated.View>
   );

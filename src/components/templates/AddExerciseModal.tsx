@@ -1,7 +1,6 @@
 import React, { FC } from "react";
 import Modal from "react-native-modal";
-import Icon from "react-native-vector-icons/Feather";
-import { Block, Flex, Bold, Text, Button, ScrollBox } from "@src/components/atoms";
+import { Block, Flex, Bold, Text, Button, ScrollBox, Feather } from "@src/components/atoms";
 import { EXERCISE_NAMES } from "@src/configs";
 
 interface IAddExerciseModalProps {
@@ -45,7 +44,7 @@ export const AddExerciseModal: FC<IAddExerciseModalProps> = ({
                 <Text color="white" mr="4px">
                   {exerciseName}
                 </Text>
-                <Icon name="x" color="white" size={12} />
+                <Feather name="x" color="white" size={12} />
               </Button>
             ))}
           </Flex>

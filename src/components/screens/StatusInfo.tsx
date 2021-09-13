@@ -1,7 +1,6 @@
 import React from "react";
-import Icon from "react-native-vector-icons/Entypo";
 import { useAppSelector } from "@src/hooks";
-import { Flex, Container, ScrollBox, Text } from "@src/components/atoms";
+import { Flex, Container, ScrollBox, Text, Feather } from "@src/components/atoms";
 import { ArccodionGroup, Arccodion } from "@src/components/molecules";
 
 export const StatusInfoScreen = () => {
@@ -21,7 +20,7 @@ export const StatusInfoScreen = () => {
             >
               {statInfo.exercises.map((exercise) => (
                 <Flex key={`ei-${statInfo.name}-${exercise}`} d="row" p="8px 16px">
-                  <Icon name="dot-single" color="black" size={28} />
+                  <Feather name="chevron-right" color="black" size={28} />
                   <Text size="16px" pl="4px">
                     {exercise}
                   </Text>
