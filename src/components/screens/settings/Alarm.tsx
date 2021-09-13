@@ -1,9 +1,10 @@
 import React, { useState, useCallback } from "react";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { Dimensions, Switch } from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import dayjs from "dayjs";
-import { Container, ScrollBox, Flex, Block, Bold, Button, Feather } from "@src/components/atoms";
+import { Flex, Bold, Button, Feather } from "@src/components/atoms";
+import { DateTimePicker } from "@src/components/organisms";
+import { ScrollScreenTemplate } from "@src/components/templates";
 import { WEEKS_NUMBER_TO_STRING, WEEKS_STRING_TO_NUMBER } from "@src/configs";
 import { getNotificationSchedule, registerLocalNotification, unregisterLocalNotification, storage } from "@src/utils";
 import type { Event } from "@react-native-community/datetimepicker";
@@ -107,71 +108,63 @@ export const AlarmScreen = () => {
   };
 
   return (
-    <Container position="relative" p="20px 0 60px">
-      <ScrollBox px="20px">
-        <Flex d="row" justify="flex-start" w="100%">
-          <Bold>Alarm On / Off</Bold>
-        </Flex>
-
-        <Flex d="row" justify="space-between" w="100%" mt="20px">
-          <Bold>Alarm {alarmEnabled ? "ON" : "OFF"}</Bold>
-
-          <Switch
-            trackColor={{ false: "#f8f8f8", true: "black" }}
-            thumbColor={alarmEnabled ? "white" : "black"}
-            ios_backgroundColor="#f8f8f8"
-            onValueChange={handleToggleSwitch}
-            value={alarmEnabled}
-          />
-        </Flex>
-
-        <Flex d="row" justify="flex-start" w="100%" mt="40px">
-          <Bold>Alarm Weeks</Bold>
-        </Flex>
-
-        <Flex d="row" justify="space-between" w="100%" minHeight="30px" mt="20px">
-          {weeks.map((week, weekIndex) => (
-            <Button
-              key={week.text}
-              variant={week.selected ? "black" : "disabled"}
-              w="36px"
-              h="30px"
-              px="6px"
-              onPress={handleSelectWeek(weekIndex)}
-            >
-              {week.text}
-            </Button>
-          ))}
-        </Flex>
-
-        <Flex d="row" justify="flex-start" w="100%" mt="40px">
-          <Bold>Alarm Time</Bold>
-        </Flex>
-
-        <Flex d="row" justify="space-between" w="100%" minHeight="30px" mt="20px">
-          <Bold>{dayjs(schduleDate).format("A  hh : mm")}</Bold>
-
-          <Button variant="black" h="30px" px="6px" onPress={handleOpenTimePicker}>
-            <Feather name="edit" color="white" size={18} />
-          </Button>
-        </Flex>
-      </ScrollBox>
-
-      {schduleDate && isOpenTimePicker && (
-        <DateTimePicker
-          mode="time"
-          display="spinner"
-          value={schduleDate}
-          minuteInterval={30}
-          onChange={handleChangeTime}
-        />
-      )}
-
-      <Block position="absolute" left="0" bottom="0" w="100%" h="60px" p="8px">
+    <ScrollScreenTemplate
+      w="80%"
+      p="30px 0 60px"
+      modal={<DateTimePicker show={isOpenTimePicker} date={schduleDate} onChange={handleChangeTime} />}
+      bottomButton={
         <Button variant="black" size="lg" weight="bold" w={`${appWidth - 16}px`} h="100%" onPress={handleSaveAlarm}>
           SAVE
         </Button>
-      </Block>
-    </Container>
+      }
+    >
+      <Flex d="row" justify="flex-start" w="100%">
+        <Bold>Alarm On / Off</Bold>
+      </Flex>
+
+      <Flex d="row" justify="space-between" w="100%" mt="20px">
+        <Bold size="sm">Alarm {alarmEnabled ? "ON" : "OFF"}</Bold>
+
+        <Switch
+          trackColor={{ false: "#f8f8f8", true: "black" }}
+          thumbColor={alarmEnabled ? "white" : "black"}
+          ios_backgroundColor="#f8f8f8"
+          onValueChange={handleToggleSwitch}
+          value={alarmEnabled}
+        />
+      </Flex>
+
+      <Flex d="row" justify="flex-start" w="100%" mt="40px">
+        <Bold>Alarm Weeks</Bold>
+      </Flex>
+
+      <Flex d="row" justify="space-between" w="100%" minHeight="30px" mt="20px">
+        {weeks.map((week, weekIndex) => (
+          <Button
+            key={week.text}
+            variant={week.selected ? "black" : "disabled"}
+            size="xs"
+            w="36px"
+            h="30px"
+            px="6px"
+            onPress={handleSelectWeek(weekIndex)}
+          >
+            {week.text}
+          </Button>
+        ))}
+      </Flex>
+
+      <Flex d="row" justify="flex-start" w="100%" mt="40px">
+        <Bold>Alarm Time</Bold>
+      </Flex>
+
+      <Flex d="row" justify="space-between" w="100%" minHeight="30px" mt="20px">
+        <Bold size="sm">{dayjs(schduleDate).format("A  hh : mm")}</Bold>
+
+        <Button variant="black" h="30px" px="6px" onPress={handleOpenTimePicker}>
+          <Feather name="edit" color="white" size={16} />
+        </Button>
+      </Flex>
+    </ScrollScreenTemplate>
   );
 };

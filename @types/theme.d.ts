@@ -14,6 +14,7 @@ declare module "styled-components" {
     colors: {
       white: string;
       black: string;
+      blue: string;
       gray: string;
       gray50: string;
       gray100: string;

@@ -77,6 +77,7 @@ const fonts = {
 const colors = {
   white: "#ffffff",
   black: "#000000",
+  blue: "#00008b",
   gray: "#808080",
   gray50: "#f5f5f5",
   gray100: "#e9e9e9",

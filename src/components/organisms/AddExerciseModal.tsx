@@ -86,7 +86,7 @@ export const AddExerciseModal: FC<IAddExerciseModalProps> = ({
           </ScrollBox>
 
           <Flex d="row" justify="flex-end" w="100%" mt="30px">
-            <Button variant="black" h="30px" px="12px" onPress={close}>
+            <Button variant="black" w="100%" h="40px" px="12px" weight="bold" onPress={close}>
               OK
             </Button>
           </Flex>

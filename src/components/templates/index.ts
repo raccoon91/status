@@ -1,3 +1,2 @@
-export * from "./CloseAppModal";
-export * from "./AddExerciseModal";
-export * from "./Banner";
+export * from "./BasicScreen";
+export * from "./ScrollScreen";

@@ -1,4 +1,4 @@
-export * from "./styled";
+export * from "./css";
 export * from "./typography";
 export * from "./Container";
 export * from "./ScrollBox";

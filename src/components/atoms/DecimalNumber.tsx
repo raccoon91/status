@@ -3,16 +3,16 @@ import { Flex, Text } from "@src/components/atoms";
 
 interface IDecimalNumberProps {
   number: number;
-  fontSize?: string;
+  fontSize?: IFontSize;
   fontWeight?: string;
-  decimalSize?: string;
+  decimalSize?: IFontSize;
 }
 
 export const DecimalNumber: FC<IDecimalNumberProps> = ({
   number,
-  fontSize = "24px",
+  fontSize = "xl",
   fontWeight = "bold",
-  decimalSize = "16px",
+  decimalSize = "md",
 }) => {
   const integer = Math.floor(number);
   const decimal = (number % 1).toFixed(3).split(".")[1];

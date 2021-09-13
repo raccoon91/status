@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { Flex } from "@src/components/atoms";
 import {
   AdsConsent,
   AdsConsentStatus,
@@ -49,9 +48,5 @@ export const Banner = () => {
     getAdmobConsent();
   }, []);
 
-  return (
-    <Flex w="100%" h="50px" bgColor="gray100" mb="16px" radius="3px">
-      <BannerAd unitId={adUnitId} size={BannerAdSize.BANNER} />
-    </Flex>
-  );
+  return <BannerAd unitId={adUnitId} size={BannerAdSize.BANNER} />;
 };

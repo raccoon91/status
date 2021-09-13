@@ -8,8 +8,8 @@ interface IStatusProps {
 
 export const Status: FC<IStatusProps> = ({ name, value }) => {
   return (
-    <Flex d="row" justify="space-between" w="100%" mb="36px">
-      <Bold size="xx">{name}</Bold>
+    <Flex d="row" justify="space-between" w="100%" mb="30px">
+      <Bold size="xl">{name}</Bold>
 
       <DecimalNumber number={value / 1000} />
     </Flex>

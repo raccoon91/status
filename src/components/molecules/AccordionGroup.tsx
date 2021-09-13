@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 
 interface IAccordionGroup {
-  children: React.ReactElement[];
+  children: React.ReactChildren | React.ReactElement | React.ReactElement[];
 }
 
 export const ArccodionGroup: FC<IAccordionGroup> = ({ children }) => {
@@ -15,5 +15,15 @@ export const ArccodionGroup: FC<IAccordionGroup> = ({ children }) => {
     }
   };
 
-  return <>{React.Children.map(children, (child) => React.cloneElement(child, { activeKey, changeActvieKey }))}</>;
+  return (
+    <>
+      {React.Children.map(children, (child: any) => {
+        if (child) {
+          return React.cloneElement(child, { activeKey, changeActvieKey });
+        }
+
+        return null;
+      })}
+    </>
+  );
 };

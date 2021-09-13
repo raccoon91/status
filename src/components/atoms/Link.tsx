@@ -5,7 +5,7 @@ import { Text } from "./typography";
 interface ILinkProps {
   href: string;
   children: React.ReactNode;
-  color?: string;
+  color?: IColor;
   weight?: string;
   size?: string;
 }

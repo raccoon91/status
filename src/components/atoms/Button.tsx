@@ -8,7 +8,7 @@ interface IButtonProps extends IFlexCSS, IDimensionCSS, IMarginCSS, IPaddingCSS,
   size?: IFontSize;
   weight?: string;
   onPress?: () => void;
-  children: React.ReactNode | React.ReactNode[];
+  children: Element | Element[] | React.ReactChildren | React.ReactElement | React.ReactElement[];
 }
 
 export const Button: FC<IButtonProps> = ({ children, size, weight, variant, onPress, ...styles }) => {
@@ -21,7 +21,7 @@ export const Button: FC<IButtonProps> = ({ children, size, weight, variant, onPr
           {children}
         </Text>
       ) : (
-        React.Children.map(children, (child) => child)
+        children
       )}
     </OpacityBox>
   );

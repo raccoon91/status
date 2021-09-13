@@ -50,7 +50,17 @@ interface IBorderCSS {
   radius?: string;
 }
 
-type IColor = "white" | "black" | "gray" | "gray50" | "gray100" | "gray200" | "gray300" | "gray400" | "gray500";
+type IColor =
+  | "white"
+  | "black"
+  | "blue"
+  | "gray"
+  | "gray50"
+  | "gray100"
+  | "gray200"
+  | "gray300"
+  | "gray400"
+  | "gray500";
 
 interface IBackgroundCSS {
   bgColor?: IColor;

@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
-import { Container, Bold, OpacityBox, Feather } from "@src/components/atoms";
+import { Bold, OpacityBox, Feather } from "@src/components/atoms";
+import { ScrollScreenTemplate } from "@src/components/templates";
 
 export const SettingScreen = () => {
   const navigation = useNavigation();
@@ -10,7 +11,7 @@ export const SettingScreen = () => {
   };
 
   return (
-    <Container align="flex-start" p="10px" bgColor="gray100">
+    <ScrollScreenTemplate bgColor="gray100" w="100%">
       <OpacityBox justify="flex-start" w="100%" h="60px" p="12px 16px" bgColor="white" onPress={navigateTo("Profile")}>
         <Feather name="user" color="black" size={24} />
         <Bold ml="20px">Profile</Bold>
@@ -54,6 +55,6 @@ export const SettingScreen = () => {
         <Feather name="info" color="black" size={24} />
         <Bold ml="20px">Version</Bold>
       </OpacityBox>
-    </Container>
+    </ScrollScreenTemplate>
   );
 };

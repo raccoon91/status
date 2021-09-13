@@ -3,13 +3,13 @@ import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { BackHandler } from "react-native";
 import { ProgressBar } from "react-native-paper";
 import { useAppSelector } from "@src/hooks";
-import { Container, Loading, Block, Flex, Bold, Text, Button, Feather } from "@src/components/atoms";
+import { Flex, Bold, Text, Button, Feather } from "@src/components/atoms";
 import { Status } from "@src/components/molecules";
-import { FloatMenu } from "@src/components/organisms";
-import { CloseAppModal } from "@src/components/templates";
+import { FloatMenu, ExitAppModal } from "@src/components/organisms";
+import { ScrollScreenTemplate } from "@src/components/templates";
 
 const floatMenuOptions = {
-  position: { right: "30px", bottom: "30px" },
+  position: { right: "20px", bottom: "30px" },
   mainMenu: { color: "black", iconName: "plus" },
   subMenu: [
     { name: "Update", color: "gray", iconName: "user-plus", to: "Exercise" },
@@ -78,52 +78,50 @@ export const StatusScreen = () => {
   };
 
   return (
-    <>
-      <CloseAppModal show={isOpenExitAppModal} close={handleCloseExitAppModal} exit={handleExitApp} />
-
-      <Container position="relative" pt="40px">
-        <Loading isLoad={isLoad} w="100%" h="100%">
-          <Block w="70%">
-            {name?.length > 0 && (
-              <>
-                <Flex d="row" justify="space-between" w="100%" mb="20px">
-                  <Bold size="xl">{name}</Bold>
-                  <Bold size="xl">Lv. {level}</Bold>
-                </Flex>
-
-                <Flex align="stretch" w="100%">
-                  <Flex d="row" justify="space-between">
-                    <Bold mb="12px">Exp.</Bold>
-                    <Bold mb="12px">{Math.floor((experience / requiredExperience) * 100)} %</Bold>
-                  </Flex>
-
-                  <ProgressBar progress={experience / requiredExperience} color="#000000" />
-                </Flex>
-              </>
-            )}
-
-            <Flex d="row" justify="flex-end" w="100%" m="24px 0 20px">
-              <Button variant="black" h="28px" px="8px" onPress={goToStatusInfo}>
-                <Feather name="info" color="white" size={16} />
-                <Text color="white" ml="6px">
-                  Status Info
-                </Text>
-              </Button>
-            </Flex>
-
-            {status.map((stat) => (
-              <Status key={stat.name} name={stat.name} value={stat.value} />
-            ))}
-          </Block>
-        </Loading>
-
+    <ScrollScreenTemplate
+      isLoad={!name || isLoad}
+      w="80%"
+      p="20px 0"
+      modal={<ExitAppModal show={isOpenExitAppModal} close={handleCloseExitAppModal} exit={handleExitApp} />}
+      floatMenu={
         <FloatMenu
           show={isOpenMenu}
           open={handleOpenMenu}
           close={handleCloseMenu}
           floatMenuOptions={floatMenuOptions}
         />
-      </Container>
-    </>
+      }
+    >
+      <Flex d="row" justify="space-between" w="100%" mb="20px">
+        <Bold size="lg">{name}</Bold>
+        <Bold size="lg">Lv. {level}</Bold>
+      </Flex>
+
+      <Flex align="stretch" w="100%">
+        <Flex d="row" justify="space-between">
+          <Bold size="sm" mb="12px">
+            Exp.
+          </Bold>
+          <Bold size="sm" mb="12px">
+            {Math.floor((experience / requiredExperience) * 100)} %
+          </Bold>
+        </Flex>
+
+        <ProgressBar progress={experience / requiredExperience} color="#000000" />
+      </Flex>
+
+      <Flex d="row" justify="flex-end" w="100%" m="24px 0 20px">
+        <Button variant="black" h="28px" px="8px" onPress={goToStatusInfo}>
+          <Feather name="info" color="white" size={16} />
+          <Text size="xs" color="white" ml="6px">
+            Status Info
+          </Text>
+        </Button>
+      </Flex>
+
+      {status.map((stat) => (
+        <Status key={stat.name} name={stat.name} value={stat.value} />
+      ))}
+    </ScrollScreenTemplate>
   );
 };

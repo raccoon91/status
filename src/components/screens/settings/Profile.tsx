@@ -1,32 +1,33 @@
 import React from "react";
 import { useAppSelector } from "@src/hooks";
-import { Container, Flex, Bold } from "@src/components/atoms";
+import { Flex, Bold } from "@src/components/atoms";
+import { ScrollScreenTemplate } from "@src/components/templates";
 
 export const ProfileScreen = () => {
   const { name, level, experience, requiredExperience, totalExperience } = useAppSelector((state) => state.user);
 
   return (
-    <Container p="40px 60px">
+    <ScrollScreenTemplate w="70%" p="30px 0">
       <Flex d="row" justify="space-between" w="100%">
-        <Bold>User Name</Bold>
-        <Bold>{name}</Bold>
+        <Bold size="sm">User Name</Bold>
+        <Bold size="sm">{name}</Bold>
       </Flex>
       <Flex d="row" justify="space-between" w="100%" mt="30px">
-        <Bold>Level</Bold>
-        <Bold>{level}</Bold>
+        <Bold size="sm">Level</Bold>
+        <Bold size="sm">{level}</Bold>
       </Flex>
       <Flex d="row" justify="space-between" w="100%" mt="30px">
-        <Bold>Current Experience</Bold>
-        <Bold>{experience}</Bold>
+        <Bold size="sm">Current Experience</Bold>
+        <Bold size="sm">{experience}</Bold>
       </Flex>
       <Flex d="row" justify="space-between" w="100%" mt="30px">
-        <Bold>Required Experience</Bold>
-        <Bold>{requiredExperience}</Bold>
+        <Bold size="sm">Required Experience</Bold>
+        <Bold size="sm">{requiredExperience}</Bold>
       </Flex>
       <Flex d="row" justify="space-between" w="100%" mt="30px">
-        <Bold>Total Experience</Bold>
-        <Bold>{totalExperience}</Bold>
+        <Bold size="sm">Total Experience</Bold>
+        <Bold size="sm">{totalExperience}</Bold>
       </Flex>
-    </Container>
+    </ScrollScreenTemplate>
   );
 };
