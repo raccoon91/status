@@ -2,10 +2,12 @@ import React, { useRef, useEffect } from "react";
 import analytics from "@react-native-firebase/analytics";
 import Toast from "react-native-toast-message";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { ThemeProvider } from "styled-components";
 import { Provider } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { Navigations } from "@src/navigation";
 import { store } from "@src/store";
+import { theme } from "@src/configs";
 import { registerLocalNotificationEvent, unregisterLocalNotificationEvent } from "@src/utils";
 import type { NavigationContainerRef } from "@react-navigation/native";
 
@@ -48,11 +50,13 @@ const App = () => {
   return (
     <>
       <SafeAreaProvider>
-        <Provider store={store}>
-          <NavigationContainer ref={navigationRef} onReady={handleOnReady} onStateChange={handleOnStateChange}>
-            <Navigations />
-          </NavigationContainer>
-        </Provider>
+        <ThemeProvider theme={theme}>
+          <Provider store={store}>
+            <NavigationContainer ref={navigationRef} onReady={handleOnReady} onStateChange={handleOnStateChange}>
+              <Navigations />
+            </NavigationContainer>
+          </Provider>
+        </ThemeProvider>
       </SafeAreaProvider>
 
       <Toast ref={(ref) => Toast.setRef(ref)} />
