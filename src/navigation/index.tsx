@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import SplashScreen from "react-native-splash-screen";
 import { createStackNavigator } from "@react-navigation/stack";
-import { getFocusedRouteNameFromRoute, RouteProp } from "@react-navigation/native";
+import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
 import { getUser, getStatus } from "@src/store/thunk";
+import { headerStyle } from "@src/components/atoms";
 import {
   UserScreen,
   StatusInfoScreen,
@@ -12,9 +13,9 @@ import {
   AlarmScreen,
   PrivacyPolicyScreen,
   VersionScreen,
-} from "@src/screens";
-import { headerStyle } from "@src/components/atoms";
+} from "@src/components/screens";
 import { MainNavigation } from "./Main";
+import type { RouteProp } from "@react-navigation/native";
 
 const getTitleName = (route: RouteProp<Record<string, object | undefined>, string>) => {
   const name = getFocusedRouteNameFromRoute(route);
