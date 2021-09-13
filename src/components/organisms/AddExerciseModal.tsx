@@ -21,7 +21,7 @@ export const AddExerciseModal: FC<IAddExerciseModalProps> = ({
     <Modal isVisible={show} backdropTransitionOutTiming={0} onBackdropPress={close} onBackButtonPress={close}>
       <Flex w="100%" h="100%">
         <Block
-          w="50%"
+          w="60%"
           minWidth="300px"
           minHeight="150px"
           p="20px 30px"
@@ -86,7 +86,7 @@ export const AddExerciseModal: FC<IAddExerciseModalProps> = ({
           </ScrollBox>
 
           <Flex d="row" justify="flex-end" w="100%" mt="30px">
-            <Button variant="black" w="100%" h="40px" px="12px" weight="bold" onPress={close}>
+            <Button variant="black" w="100%" h="36px" px="12px" weight="bold" onPress={close}>
               OK
             </Button>
           </Flex>
