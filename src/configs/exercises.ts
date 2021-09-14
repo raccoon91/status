@@ -32,8 +32,8 @@ const EXERCISE_LIST: IExerciseConstant[] = [
     name: "plank",
     unit: "min",
     status: [
-      { name: "Strength", ...exercisePointAndRate(10) },
-      { name: "Stamina", ...exercisePointAndRate(10) },
+      { name: "Strength", ...exercisePointAndRate(4) },
+      { name: "Stamina", ...exercisePointAndRate(4) },
     ],
   },
   {
@@ -56,32 +56,32 @@ const EXERCISE_LIST: IExerciseConstant[] = [
     name: "burpees",
     unit: "count",
     status: [
-      { name: "Strength", ...exercisePointAndRate(2) },
-      { name: "Agility", ...exercisePointAndRate(2) },
+      { name: "Strength", ...exercisePointAndRate(1) },
+      { name: "Agility", ...exercisePointAndRate(1) },
       { name: "Stamina", ...exercisePointAndRate(2) },
     ],
   },
   {
     name: "walking",
     unit: "km",
-    status: [{ name: "Stamina", ...exercisePointAndRate(5) }],
+    status: [{ name: "Stamina", ...exercisePointAndRate(3) }],
   },
   {
     name: "running",
     unit: "km",
     status: [
-      { name: "Strength", ...exercisePointAndRate(10) },
-      { name: "Agility", ...exercisePointAndRate(10) },
-      { name: "Stamina", ...exercisePointAndRate(10) },
+      { name: "Strength", ...exercisePointAndRate(5) },
+      { name: "Agility", ...exercisePointAndRate(5) },
+      { name: "Stamina", ...exercisePointAndRate(5) },
     ],
   },
   {
     name: "cycle",
     unit: "km",
     status: [
-      { name: "Strength", ...exercisePointAndRate(10) },
-      { name: "Agility", ...exercisePointAndRate(10) },
-      { name: "Stamina", ...exercisePointAndRate(10) },
+      { name: "Strength", ...exercisePointAndRate(4) },
+      { name: "Agility", ...exercisePointAndRate(4) },
+      { name: "Stamina", ...exercisePointAndRate(4) },
     ],
   },
 ];
