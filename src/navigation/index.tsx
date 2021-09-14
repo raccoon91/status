@@ -48,6 +48,10 @@ export const Navigations = () => {
     }
   }, [isFetch, isLoad]);
 
+  if (!isFetch || isLoad) {
+    return null;
+  }
+
   return (
     <Stack.Navigator>
       {!name ? (
