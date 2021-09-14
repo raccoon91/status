@@ -22,7 +22,7 @@ export const dimensionCSS = (defaultStyle?: IDimensionCSS) => css<IDimensionCSS>
   ${({ w }) => (w || defaultStyle?.w) && `width: ${w || defaultStyle?.w};`}
   ${({ maxWidth }) => maxWidth && `max-width: ${maxWidth};`}
   ${({ minWidth }) => minWidth && `min-width: ${minWidth};`}
-  ${({ h }) => h && `height: ${h};`}
+  ${({ h }) => (h || defaultStyle?.h) && `height: ${h || defaultStyle?.h};`}
   ${({ maxHeight }) => maxHeight && `max-height: ${maxHeight};`}
   ${({ minHeight }) => minHeight && `min-height: ${minHeight};`}
 `;

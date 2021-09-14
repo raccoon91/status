@@ -11,10 +11,12 @@ export const SettingScreen = () => {
   };
 
   return (
-    <ScrollScreenTemplate bgColor="gray100" w="100%">
+    <ScrollScreenTemplate bgColor="gray50" w="100%">
       <OpacityBox justify="flex-start" w="100%" h="60px" p="12px 16px" bgColor="white" onPress={navigateTo("Profile")}>
         <Feather name="user" color="black" size={24} />
-        <Bold ml="20px">Profile</Bold>
+        <Bold size="sm" ml="20px">
+          Profile
+        </Bold>
       </OpacityBox>
 
       <OpacityBox
@@ -27,7 +29,9 @@ export const SettingScreen = () => {
         onPress={navigateTo("Alarm")}
       >
         <Feather name="bell" color="black" size={24} />
-        <Bold ml="20px">Alarm</Bold>
+        <Bold size="sm" ml="20px">
+          Alarm
+        </Bold>
       </OpacityBox>
 
       <OpacityBox
@@ -40,7 +44,9 @@ export const SettingScreen = () => {
         onPress={navigateTo("PrivacyPolicy")}
       >
         <Feather name="book" color="black" size={24} />
-        <Bold ml="20px">Privacy Policy</Bold>
+        <Bold size="sm" ml="20px">
+          Privacy Policy
+        </Bold>
       </OpacityBox>
 
       <OpacityBox
@@ -53,7 +59,9 @@ export const SettingScreen = () => {
         onPress={navigateTo("Version")}
       >
         <Feather name="info" color="black" size={24} />
-        <Bold ml="20px">Version</Bold>
+        <Bold size="sm" ml="20px">
+          Version
+        </Bold>
       </OpacityBox>
     </ScrollScreenTemplate>
   );
