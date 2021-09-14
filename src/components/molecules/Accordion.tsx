@@ -31,9 +31,9 @@ export const Arccodion: FC<IAccordion> = ({
 
   return (
     <>
-      <OpacityBox justify="space-between" p="12px 16px" mb="8px" onPress={handleChangeActvieKey}>
+      <OpacityBox justify="space-between" p="12px 16px" mb="8px" bgColor="gray50" onPress={handleChangeActvieKey}>
         {title && (
-          <Bold size="lg" color={arccordionKey === activeKey ? activeColor || "black" : initColor || "black"}>
+          <Bold size="md" color={arccordionKey === activeKey ? activeColor || "black" : initColor || "black"}>
             {title}
           </Bold>
         )}
