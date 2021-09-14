@@ -47,7 +47,7 @@ export const StatisticsScreen = () => {
       <StackBarChart
         chartLabels={labels}
         chartDatasets={datasets}
-        width={appWidth - 40}
+        width={appWidth}
         height={280}
         handleClickChart={handleClickChart}
       />

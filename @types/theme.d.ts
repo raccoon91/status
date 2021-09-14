@@ -3,6 +3,7 @@ import "styled-components";
 declare module "styled-components" {
   export interface DefaultTheme {
     fonts: {
+      [key: string]: string;
       xs: string;
       sm: string;
       md: string;
@@ -12,6 +13,7 @@ declare module "styled-components" {
       ti: string;
     };
     colors: {
+      [key: string]: string;
       white: string;
       black: string;
       blue: string;

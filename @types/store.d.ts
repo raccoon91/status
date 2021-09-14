@@ -50,7 +50,9 @@ interface IChartData {
   data: number[];
   backgroundColor: string;
   barThickness?: number;
-  borderRadius?: number;
+  barPercentage?: number;
+  hoverBorderColor?: string;
+  hoverBorderWidth?: number;
 }
 
 interface IExerciseState {

@@ -87,7 +87,7 @@ export const calculateStatistics = (statistics: IStatistics[]) => {
           label: stat.name,
           data: [],
           backgroundColor: STATUS_COLORS[stat.name],
-          barThickness: 12,
+          barThickness: 16,
         };
       }
 
