@@ -62,8 +62,6 @@ interface IExerciseState {
   exerciseNames: string[];
   updateStatus: IStatus[];
   enableUpdate: boolean;
-  chartLabels: string[] | null;
-  chartDatasets: IChartData[] | null;
   weekStatistics: { exercises: IExercises; updated: string }[];
   selectedChartIndex: string | null;
   selectedStatistics: {

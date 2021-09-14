@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { Dimensions } from "react-native";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
@@ -8,13 +8,16 @@ import { StackBarChart } from "@src/charts";
 import { Flex, Bold, Text } from "@src/components/atoms";
 import { Banner } from "@src/components/organisms";
 import { ScrollScreenTemplate } from "@src/components/templates";
+import { calculateStatistics } from "@src/utils";
 import type { WebViewMessageEvent } from "react-native-webview";
 
 const appWidth = Dimensions.get("window").width;
 
 export const StatisticsScreen = () => {
   const dispatch = useAppDispatch();
-  const { isFetch, isLoad, chartLabels, chartDatasets, selectedStatistics } = useAppSelector((state) => state.exercise);
+  const [labels, setLabels] = useState<string[] | null>(null);
+  const [datasets, setDatasets] = useState<IChartData[] | null>(null);
+  const { isFetch, isLoad, weekStatistics, selectedStatistics } = useAppSelector((state) => state.exercise);
 
   useFocusEffect(
     useCallback(() => {
@@ -24,6 +27,17 @@ export const StatisticsScreen = () => {
     }, [isFetch, dispatch]),
   );
 
+  useFocusEffect(
+    useCallback(() => {
+      if (weekStatistics?.length > 0) {
+        const { chartLabels, chartDatasets } = calculateStatistics(weekStatistics);
+
+        setLabels(chartLabels);
+        setDatasets(chartDatasets);
+      }
+    }, [weekStatistics]),
+  );
+
   const handleClickChart = (event: WebViewMessageEvent) => {
     dispatch(selectStatistics({ chartIndex: event.nativeEvent.data }));
   };
@@ -31,8 +45,8 @@ export const StatisticsScreen = () => {
   return (
     <ScrollScreenTemplate isLoad={isLoad} banner={<Banner />}>
       <StackBarChart
-        chartLabels={chartLabels}
-        chartDatasets={chartDatasets}
+        chartLabels={labels}
+        chartDatasets={datasets}
         width={appWidth - 40}
         height={280}
         handleClickChart={handleClickChart}

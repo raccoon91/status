@@ -13,8 +13,6 @@ const initialExerciseState: IExerciseState = {
   exerciseNames: [],
   updateStatus: [],
   enableUpdate: false,
-  chartLabels: null,
-  chartDatasets: null,
   weekStatistics: [],
   selectedChartIndex: null,
   selectedStatistics: null,

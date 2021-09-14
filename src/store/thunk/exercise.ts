@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import Toast from "react-native-toast-message";
 import dayjs from "dayjs";
-import { storage, calculateExperience, calculateStatistics } from "@src/utils";
+import { storage, calculateExperience } from "@src/utils";
 import { putUser } from "./user";
 import { postStatus } from "./status";
 import type { ActionReducerMapBuilder } from "@reduxjs/toolkit";
@@ -21,8 +21,8 @@ export const getExercises = createAsyncThunk<
 
     if (storageStatistics) {
       const exercises: IExercises = {};
-      const lastStatistics = storageStatistics.slice(-1)[0];
       const weekStatistics = storageStatistics.slice(-7);
+      const lastStatistics = weekStatistics[0] || [];
 
       Object.keys(lastStatistics.exercises).forEach((exerciseName: string) => {
         exercises[exerciseName] = {
@@ -96,13 +96,10 @@ export const exerciseExtraReducers = (builder: ActionReducerMapBuilder<IExercise
     })
     .addCase(getExercises.fulfilled, (state, action) => {
       const { exercises, exerciseNames, lastUpdated, weekStatistics } = action.payload;
-      const { labels, datasets } = calculateStatistics(weekStatistics);
 
       state.exercises = exercises;
       state.exerciseNames = exerciseNames;
       state.lastUpdated = lastUpdated;
-      state.chartLabels = labels;
-      state.chartDatasets = datasets;
       state.weekStatistics = weekStatistics;
       state.isLoad = false;
     })
@@ -115,13 +112,11 @@ export const exerciseExtraReducers = (builder: ActionReducerMapBuilder<IExercise
     })
     .addCase(postExercies.fulfilled, (state, action) => {
       const { updated, weekStatistics } = action.payload;
-      const { labels, datasets } = calculateStatistics(weekStatistics);
 
       state.lastUpdated = updated;
       state.updateStatus = [];
-      state.chartLabels = labels;
-      state.chartDatasets = datasets;
       state.weekStatistics = weekStatistics;
+      state.enableUpdate = false;
       state.isUpdate = true;
     })
     .addCase(postExercies.rejected, (_, action) => {

@@ -100,7 +100,7 @@ export const calculateStatistics = (statistics: IStatistics[]) => {
   }
 
   return {
-    labels,
-    datasets: Object.values(datasets),
+    chartLabels: labels,
+    chartDatasets: Object.values(datasets),
   };
 };
