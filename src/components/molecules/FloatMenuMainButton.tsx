@@ -4,7 +4,7 @@ import { CircleMenu, Feather } from "@src/components/atoms";
 
 interface IFloatMenuMainButtonProps {
   size: string;
-  bgColor: string;
+  bgColor: IColor;
   featherIconName: string;
   iconColor: string;
   iconSize: number;

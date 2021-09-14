@@ -18,7 +18,7 @@ interface IFloatMenu {
     };
     mainMenu: {
       size?: string;
-      color?: string;
+      color?: IColor;
       iconName: string;
       iconSize?: number;
       iconColor?: string;
@@ -26,7 +26,7 @@ interface IFloatMenu {
     subMenu: {
       name?: string;
       size?: string;
-      color?: string;
+      color?: IColor;
       iconName: string;
       iconSize?: number;
       iconColor?: string;

@@ -6,7 +6,7 @@ interface IFloatMenuSubButtonProps {
   index: number;
   name?: string;
   size?: string;
-  color?: string;
+  color?: IColor;
   iconName: string;
   iconSize?: number;
   iconColor?: string;
