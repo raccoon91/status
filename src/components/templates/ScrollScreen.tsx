@@ -46,9 +46,9 @@ export const ScrollScreenTemplate: FC<IScrollScreenTemplate> = ({
           {isLoad ? (
             <Loading w="100%" h="100%" minHeight="300px" />
           ) : (
-            <Block w={w || "90%"} minWidth="320px" px="10px" mx="auto">
+            <Flex align="stretch" justify="flex-start" w={w || "90%"} minWidth="320px" px="10px" mx="auto">
               {children}
-            </Block>
+            </Flex>
           )}
         </ScrollBox>
 
