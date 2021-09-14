@@ -12,8 +12,8 @@ const floatMenuOptions = {
   position: { right: "20px", bottom: "30px" },
   mainMenu: { color: "black", iconName: "plus" },
   subMenu: [
-    { name: "Update", color: "gray", iconName: "user-plus", to: "Exercise" },
-    { name: "Alarm", color: "gray", iconName: "bell", to: "Alarm" },
+    { name: "Update", color: "gray100", iconName: "user-plus", iconColor: "black", to: "Exercise" },
+    { name: "Alarm", color: "gray100", iconName: "bell", iconColor: "black", to: "Alarm" },
   ],
 };
 
