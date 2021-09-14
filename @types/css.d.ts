@@ -60,14 +60,15 @@ type IColor =
   | "gray200"
   | "gray300"
   | "gray400"
-  | "gray500";
+  | "gray500"
+  | string;
 
 interface IBackgroundCSS {
   bgColor?: IColor;
   opacity?: string;
 }
 
-type IFontSize = "xs" | "sm" | "md" | "lg" | "xl" | "xx" | "ti";
+type IFontSize = "xs" | "sm" | "md" | "lg" | "xl" | "xx" | "ti" | string;
 
 interface ITextCSS {
   size?: IFontSize;
