@@ -44,16 +44,20 @@ export const StatisticsScreen = () => {
   };
 
   return (
-    <ScrollScreenTemplate isLoad={isLoad} banner={<Banner />}>
-      <StackBarChart
-        chartLabels={labels}
-        chartDatasets={datasets}
-        width={appWidth}
-        height={Math.ceil(appHeight / 3)}
-        handleClickChart={handleClickChart}
-      />
-
-      {selectedStatistics && (
+    <ScrollScreenTemplate
+      isLoad={isLoad}
+      banner={<Banner />}
+      chart={
+        <StackBarChart
+          chartLabels={labels}
+          chartDatasets={datasets}
+          width={appWidth - 20}
+          height={Math.ceil(appHeight / 3)}
+          handleClickChart={handleClickChart}
+        />
+      }
+    >
+      {selectedStatistics ? (
         <>
           <Box d="row" align="flex-end" justify="flex-start" w="100%" mt="16px">
             <Bold w="100px">Date</Bold>
@@ -98,7 +102,7 @@ export const StatisticsScreen = () => {
             </Box>
           </Box>
         </>
-      )}
+      ) : null}
     </ScrollScreenTemplate>
   );
 };

@@ -10,7 +10,8 @@ interface IScrollScreenTemplate {
   modal?: React.ReactElement;
   banner?: React.ReactElement;
   isLoad?: boolean;
-  children: Element | Element[] | React.ReactChildren | React.ReactElement | React.ReactElement[];
+  chart?: React.ReactElement;
+  children: Element | Element[] | React.ReactChildren | React.ReactElement | React.ReactElement[] | null;
   floatMenu?: React.ReactElement;
   bottomButton?: React.ReactElement;
 }
@@ -22,6 +23,7 @@ export const ScrollScreenTemplate: FC<IScrollScreenTemplate> = ({
   modal,
   banner,
   isLoad,
+  chart,
   children,
   floatMenu,
   bottomButton,
@@ -40,6 +42,12 @@ export const ScrollScreenTemplate: FC<IScrollScreenTemplate> = ({
           {banner && (
             <Box w="100%" h="50px" bgColor="gray100" mb="16px" radius="3px">
               {banner}
+            </Box>
+          )}
+
+          {!isLoad && chart && (
+            <Box w="100%" bgColor="red">
+              {chart}
             </Box>
           )}
 
