@@ -1,6 +1,6 @@
 import React from "react";
 import { useAppSelector } from "@src/hooks";
-import { Flex, Text, Bold } from "@src/components/atoms";
+import { Box, Text, Bold } from "@src/components/atoms";
 import { ArccodionGroup, Arccodion } from "@src/components/molecules";
 import { ScrollScreenTemplate } from "@src/components/templates";
 
@@ -19,12 +19,12 @@ export const StatusInfoScreen = () => {
             activeColor="black"
           >
             {statInfo.exercises.map((exercise) => (
-              <Flex key={`ei-${statInfo.name}-${exercise}`} d="row" p="8px 16px">
+              <Box key={`ei-${statInfo.name}-${exercise}`} d="row" p="8px 16px">
                 <Bold mr="4px">·</Bold>
                 <Text size="sm" pl="4px">
                   {exercise}
                 </Text>
-              </Flex>
+              </Box>
             ))}
           </Arccodion>
         ))}

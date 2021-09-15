@@ -1,7 +1,7 @@
 import styled from "styled-components/native";
 import { positionCSS, flexCSS, dimensionCSS, marginCSS, paddingCSS, borderCSS, backgroundCSS } from "./css";
 
-interface IFlexProps
+interface IBoxProps
   extends IPositionCSS,
     IFlexCSS,
     IDimensionCSS,
@@ -10,7 +10,7 @@ interface IFlexProps
     IBorderCSS,
     IBackgroundCSS {}
 
-export const Flex = styled.View<IFlexProps>`
+export const Box = styled.View<IBoxProps>`
   ${positionCSS}
   ${flexCSS()}
   ${dimensionCSS()}

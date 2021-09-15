@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Flex, Bold, OpacityBox, Feather } from "@src/components/atoms";
+import { Box, Bold, OpacityBox, Feather } from "@src/components/atoms";
 
 interface IAccordion {
   arccordionKey: number;
@@ -43,9 +43,9 @@ export const Arccodion: FC<IAccordion> = ({
           <Feather name={arccordionKey === activeKey ? "chevron-up" : "chevron-down"} color="black" size={28} />
         )}
       </OpacityBox>
-      <Flex display={arccordionKey === activeKey ? "flex" : "none"} align="flex-start" mb="8px">
+      <Box display={arccordionKey === activeKey ? "flex" : "none"} align="flex-start" mb="8px">
         {children}
-      </Flex>
+      </Box>
     </>
   );
 };

@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import Modal from "react-native-modal";
-import { Block, Flex, Bold, Text, Button, ScrollBox, Feather } from "@src/components/atoms";
+import { Box, Bold, Text, Button, ScrollBox, Feather } from "@src/components/atoms";
 import { EXERCISE_NAMES } from "@src/configs";
 
 interface IAddExerciseModalProps {
@@ -19,9 +19,11 @@ export const AddExerciseModal: FC<IAddExerciseModalProps> = ({
 }) => {
   return (
     <Modal isVisible={show} backdropTransitionOutTiming={0} onBackdropPress={close} onBackButtonPress={close}>
-      <Flex w="100%" h="100%">
-        <Block
-          w="60%"
+      <Box w="100%" h="100%">
+        <Box
+          justify="flex-start"
+          align="flex-start"
+          w="80%"
           minWidth="300px"
           minHeight="150px"
           p="20px 30px"
@@ -31,7 +33,7 @@ export const AddExerciseModal: FC<IAddExerciseModalProps> = ({
         >
           <Bold size="xl">Add Exercise</Bold>
 
-          <Flex d="row" wrap="wrap" justify="flex-start" w="100%" mt="20px">
+          <Box d="row" wrap="wrap" justify="flex-start" w="100%" mt="20px">
             {exerciseNames.map((exerciseName) => (
               <Button
                 key={`s-${exerciseName}`}
@@ -47,9 +49,9 @@ export const AddExerciseModal: FC<IAddExerciseModalProps> = ({
                 <Feather name="x" color="white" size={12} />
               </Button>
             ))}
-          </Flex>
+          </Box>
 
-          <ScrollBox maxHeight="240px" mt="20px">
+          <ScrollBox h="40%" mt="20px">
             {EXERCISE_NAMES.map((exerciseName) => {
               if (exerciseNames.includes(exerciseName)) {
                 return (
@@ -85,13 +87,11 @@ export const AddExerciseModal: FC<IAddExerciseModalProps> = ({
             })}
           </ScrollBox>
 
-          <Flex d="row" justify="flex-end" w="100%" mt="30px">
-            <Button variant="black" w="100%" h="36px" px="12px" weight="bold" onPress={close}>
-              OK
-            </Button>
-          </Flex>
-        </Block>
-      </Flex>
+          <Button variant="black" w="100%" h="36px" px="12px" mt="30px" weight="bold" onPress={close}>
+            OK
+          </Button>
+        </Box>
+      </Box>
     </Modal>
   );
 };

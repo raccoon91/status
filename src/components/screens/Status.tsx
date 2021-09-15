@@ -3,7 +3,7 @@ import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { BackHandler } from "react-native";
 import { ProgressBar } from "react-native-paper";
 import { useAppSelector } from "@src/hooks";
-import { Flex, Bold, Text, Button, Feather } from "@src/components/atoms";
+import { Box, Bold, Text, Button, Feather } from "@src/components/atoms";
 import { Status } from "@src/components/molecules";
 import { FloatMenu, ExitAppModal } from "@src/components/organisms";
 import { ScrollScreenTemplate } from "@src/components/templates";
@@ -92,32 +92,32 @@ export const StatusScreen = () => {
         />
       }
     >
-      <Flex d="row" justify="space-between" w="100%" mb="20px">
+      <Box d="row" justify="space-between" w="100%" mb="20px">
         <Bold size="lg">{name}</Bold>
         <Bold size="lg">Lv. {level}</Bold>
-      </Flex>
+      </Box>
 
-      <Flex align="stretch" w="100%">
-        <Flex d="row" justify="space-between">
+      <Box align="stretch" w="100%">
+        <Box d="row" justify="space-between">
           <Bold size="sm" mb="12px">
             Exp.
           </Bold>
           <Bold size="sm" mb="12px">
             {Math.floor((experience / requiredExperience) * 100)} %
           </Bold>
-        </Flex>
+        </Box>
 
         <ProgressBar progress={experience / requiredExperience} color="#000000" />
-      </Flex>
+      </Box>
 
-      <Flex d="row" justify="flex-end" w="100%" m="36px 0 24px">
+      <Box d="row" justify="flex-end" w="100%" m="36px 0 24px">
         <Button variant="black" h="28px" px="8px" onPress={goToStatusInfo}>
           <Feather name="info" color="white" size={16} />
           <Text size="xs" color="white" ml="6px">
             Status Info
           </Text>
         </Button>
-      </Flex>
+      </Box>
 
       {status.map((stat) => (
         <Status key={stat.name} name={stat.name} value={stat.value} />

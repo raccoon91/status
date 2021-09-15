@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { StatusBar } from "react-native";
-import { Container, ScrollBox, Loading, Flex, Block } from "@src/components/atoms";
+import { Container, ScrollBox, Loading, Box } from "@src/components/atoms";
 
 interface IScrollScreenTemplate {
   barTheme?: string;
@@ -38,26 +38,26 @@ export const ScrollScreenTemplate: FC<IScrollScreenTemplate> = ({
       <Container position="relative" p={p ? p : bottomButton ? "10px 0 60px" : "10px 0"} bgColor={bgColor}>
         <ScrollBox>
           {banner && (
-            <Flex w="100%" h="50px" bgColor="gray100" mb="16px" radius="3px">
+            <Box w="100%" h="50px" bgColor="gray100" mb="16px" radius="3px">
               {banner}
-            </Flex>
+            </Box>
           )}
 
           {isLoad ? (
             <Loading w="100%" h="100%" minHeight="300px" />
           ) : (
-            <Flex align="stretch" justify="flex-start" w={w || "90%"} minWidth="320px" px="10px" mx="auto">
+            <Box align="stretch" justify="flex-start" w={w || "90%"} minWidth="320px" px="10px" mx="auto">
               {children}
-            </Flex>
+            </Box>
           )}
         </ScrollBox>
 
         {floatMenu && floatMenu}
 
         {bottomButton && (
-          <Block position="absolute" left="0" bottom="0" w="100%" h="60px" p="8px">
+          <Box position="absolute" left="0" bottom="0" w="100%" h="60px" p="8px">
             {bottomButton}
-          </Block>
+          </Box>
         )}
       </Container>
     </>

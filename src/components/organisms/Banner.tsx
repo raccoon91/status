@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
-import {
+import admob, {
+  MaxAdContentRating,
   AdsConsent,
   AdsConsentStatus,
   AdsConsentDebugGeography,
@@ -9,11 +10,16 @@ import {
 } from "@react-native-firebase/admob";
 
 const firebase = require("../../../firebase.json")["react-native"];
-const adUnitId = __DEV__ ? TestIds.BANNER : firebase.admob_android_app_id;
+const publisherId = firebase.admob_publisher_id;
+const adUnitId = __DEV__ ? TestIds.BANNER : firebase.admob_banner_unit_id;
 
 const getAdmobConsent = async () => {
   try {
-    const publisherId = firebase.admob_publisher_id;
+    await admob().setRequestConfiguration({
+      maxAdContentRating: MaxAdContentRating.G,
+      tagForUnderAgeOfConsent: true,
+    });
+
     await AdsConsent.setDebugGeography(AdsConsentDebugGeography.EEA);
     const consentInfo = await AdsConsent.requestInfoUpdate([publisherId]);
 
@@ -21,22 +27,18 @@ const getAdmobConsent = async () => {
 
     if (consentInfo.isRequestLocationInEeaOrUnknown && consentInfo.status === AdsConsentStatus.UNKNOWN) {
       const formResult = await AdsConsent.showForm({
-        privacyPolicy: "https://invertase.io/privacy-policy",
+        privacyPolicy: "https://raccoon91.github.io",
         withPersonalizedAds: true,
         withNonPersonalizedAds: true,
-        withAdFree: true,
       });
 
-      if (formResult.userPrefersAdFree) {
-        // Handle the users request, e.g. redirect to a paid for version of the app
-        console.log("ad free");
+      console.log("status", formResult.status);
+
+      if (formResult.status === AdsConsentStatus.NON_PERSONALIZED) {
+        AdsConsent.setStatus(AdsConsentStatus.NON_PERSONALIZED);
+      } else if (formResult.status === AdsConsentStatus.PERSONALIZED) {
+        AdsConsent.setStatus(AdsConsentStatus.PERSONALIZED);
       }
-
-      // The user requested non-personalized or personalized ads
-      const status = formResult.status;
-      console.log("status", status);
-
-      // await AdsConsent.setStatus(AdsConsentStatus.PERSONALIZED);
     }
   } catch (err) {
     console.error(err);
@@ -48,5 +50,5 @@ export const Banner = () => {
     getAdmobConsent();
   }, []);
 
-  return <BannerAd unitId={adUnitId} size={BannerAdSize.BANNER} />;
+  return <BannerAd unitId={adUnitId} size={BannerAdSize.SMART_BANNER} />;
 };

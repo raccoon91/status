@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 import Modal from "react-native-modal";
-import { Block } from "@src/components/atoms";
+import { Box } from "@src/components/atoms";
 import { FloatMenuMainButton, FloatMenuSubButton } from "@src/components/molecules";
 import { useNavigation } from "@react-navigation/native";
 
@@ -44,7 +44,7 @@ export const FloatMenu: FC<IFloatMenu> = ({ show, open, close, floatMenuOptions:
 
   return (
     <>
-      <Block position="absolute" right={position.right || "0"} bottom={position.bottom || "0"} w="50px" h="50px">
+      <Box position="absolute" right={position.right || "0"} bottom={position.bottom || "0"} w="50px" h="50px">
         <FloatMenuMainButton
           size={mainMenu.size || "48px"}
           bgColor={mainMenu.color || "black"}
@@ -55,7 +55,7 @@ export const FloatMenu: FC<IFloatMenu> = ({ show, open, close, floatMenuOptions:
           openMenu={open}
           closeMenu={close}
         />
-      </Block>
+      </Box>
 
       <Modal
         isVisible={show}
@@ -67,7 +67,7 @@ export const FloatMenu: FC<IFloatMenu> = ({ show, open, close, floatMenuOptions:
         onBackButtonPress={close}
         style={styles.modal}
       >
-        <Block position="absolute" right={position.right || "0"} bottom={position.bottom || "0"} w="50px" h="50px">
+        <Box position="absolute" right={position.right || "0"} bottom={position.bottom || "0"} w="50px" h="50px">
           {subMenu &&
             subMenu.length !== 0 &&
             subMenu.map((sub, index) => (
@@ -84,7 +84,7 @@ export const FloatMenu: FC<IFloatMenu> = ({ show, open, close, floatMenuOptions:
                 pressSubMenu={handlePressSubMenu(sub.to)}
               />
             ))}
-        </Block>
+        </Box>
       </Modal>
     </>
   );

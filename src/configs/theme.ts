@@ -13,6 +13,29 @@ const fontSizeNormalize = (size: number) => {
   }
 };
 
+const fonts = {
+  xs: `${fontSizeNormalize(12)}px`,
+  sm: `${fontSizeNormalize(14)}px`,
+  md: `${fontSizeNormalize(16)}px`,
+  lg: `${fontSizeNormalize(18)}px`,
+  xl: `${fontSizeNormalize(20)}px`,
+  xx: `${fontSizeNormalize(22)}px`,
+  ti: `${fontSizeNormalize(24)}px`,
+};
+
+const colors = {
+  white: "#ffffff",
+  black: "#000000",
+  blue: "#00008b",
+  gray: "#808080",
+  gray50: "#f5f5f5",
+  gray100: "#e9e9e9",
+  gray200: "#d9d9d9",
+  gray300: "#c4c4c4",
+  gray400: "#9d9d9d",
+  gray500: "#7b7b7b",
+};
+
 export const headerStyle = (title: string, theme = "light"): StackNavigationOptions => ({
   title,
   headerStyle: {
@@ -62,29 +85,6 @@ export const getButtonVariant = (variant?: string): { bgColor: IColor; color: IC
         color: "white",
       };
   }
-};
-
-const fonts = {
-  xs: `${fontSizeNormalize(12)}px`,
-  sm: `${fontSizeNormalize(14)}px`,
-  md: `${fontSizeNormalize(16)}px`,
-  lg: `${fontSizeNormalize(18)}px`,
-  xl: `${fontSizeNormalize(20)}px`,
-  xx: `${fontSizeNormalize(22)}px`,
-  ti: `${fontSizeNormalize(24)}px`,
-};
-
-const colors = {
-  white: "#ffffff",
-  black: "#000000",
-  blue: "#00008b",
-  gray: "#808080",
-  gray50: "#f5f5f5",
-  gray100: "#e9e9e9",
-  gray200: "#d9d9d9",
-  gray300: "#c4c4c4",
-  gray400: "#9d9d9d",
-  gray500: "#7b7b7b",
 };
 
 export const theme = {

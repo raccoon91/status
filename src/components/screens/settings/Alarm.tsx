@@ -2,7 +2,7 @@ import React, { useState, useCallback } from "react";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { Dimensions, Switch } from "react-native";
 import dayjs from "dayjs";
-import { Flex, Bold, Button, Feather } from "@src/components/atoms";
+import { Box, Bold, Button, Feather } from "@src/components/atoms";
 import { DateTimePicker } from "@src/components/organisms";
 import { ScrollScreenTemplate } from "@src/components/templates";
 import { WEEKS_NUMBER_TO_STRING, WEEKS_STRING_TO_NUMBER } from "@src/configs";
@@ -118,11 +118,11 @@ export const AlarmScreen = () => {
         </Button>
       }
     >
-      <Flex d="row" justify="flex-start" w="100%">
+      <Box d="row" justify="flex-start" w="100%">
         <Bold>Alarm On / Off</Bold>
-      </Flex>
+      </Box>
 
-      <Flex d="row" justify="space-between" w="100%" mt="20px">
+      <Box d="row" justify="space-between" w="100%" mt="20px">
         <Bold size="sm">Alarm {alarmEnabled ? "ON" : "OFF"}</Bold>
 
         <Switch
@@ -132,13 +132,13 @@ export const AlarmScreen = () => {
           onValueChange={handleToggleSwitch}
           value={alarmEnabled}
         />
-      </Flex>
+      </Box>
 
-      <Flex d="row" justify="flex-start" w="100%" mt="40px">
+      <Box d="row" justify="flex-start" w="100%" mt="40px">
         <Bold>Alarm Weeks</Bold>
-      </Flex>
+      </Box>
 
-      <Flex d="row" justify="space-between" w="100%" minHeight="30px" mt="20px">
+      <Box d="row" justify="space-between" w="100%" minHeight="30px" mt="20px">
         {weeks.map((week, weekIndex) => (
           <Button
             key={week.text}
@@ -152,19 +152,19 @@ export const AlarmScreen = () => {
             {week.text}
           </Button>
         ))}
-      </Flex>
+      </Box>
 
-      <Flex d="row" justify="flex-start" w="100%" mt="40px">
+      <Box d="row" justify="flex-start" w="100%" mt="40px">
         <Bold>Alarm Time</Bold>
-      </Flex>
+      </Box>
 
-      <Flex d="row" justify="space-between" w="100%" minHeight="30px" mt="20px">
+      <Box d="row" justify="space-between" w="100%" minHeight="30px" mt="20px">
         <Bold size="sm">{dayjs(schduleDate).format("A  hh : mm")}</Bold>
 
         <Button variant="black" h="30px" px="6px" onPress={handleOpenTimePicker}>
           <Feather name="edit" color="white" size={16} />
         </Button>
-      </Flex>
+      </Box>
     </ScrollScreenTemplate>
   );
 };

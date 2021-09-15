@@ -10,7 +10,7 @@ import {
   calculateUpdateStatus,
   clearExerciseState,
 } from "@src/store/slices/exercise";
-import { Flex, Bold, Text, DecimalNumber, Button, Input } from "@src/components/atoms";
+import { Box, Bold, Text, DecimalNumber, Button, Input } from "@src/components/atoms";
 import { AddExerciseModal } from "@src/components/organisms";
 import { ScrollScreenTemplate } from "@src/components/templates";
 import { EXERCISES } from "@src/configs/exercises";
@@ -105,7 +105,7 @@ export const ExerciseScreen = () => {
       }
     >
       {Object.keys(exercises).map((exerciseName) => (
-        <Flex key={`e-${exerciseName}`} d="row" justify="flex-start" mt="16px">
+        <Box key={`e-${exerciseName}`} d="row" justify="flex-start" mt="16px">
           <Bold>{exerciseName}</Bold>
           <Input
             keyboardType="numeric"
@@ -119,7 +119,7 @@ export const ExerciseScreen = () => {
           <Text w="48px" m="10px 0 0 8px">
             {EXERCISES?.[exerciseName]?.unit || ""}
           </Text>
-        </Flex>
+        </Box>
       ))}
 
       <Button variant="black" w="100%" h="40px" size="sm" weight="bold" mt="30px" onPress={openAddExerciseModal}>
@@ -127,7 +127,7 @@ export const ExerciseScreen = () => {
       </Button>
 
       {enableUpdate ? (
-        <Flex align="flex-start" mt="30px">
+        <Box align="flex-start" mt="30px">
           <Bold size="md" mb="10px">
             Status
           </Bold>
@@ -135,18 +135,18 @@ export const ExerciseScreen = () => {
           {updateStatus.map((stat) => {
             if (stat.value) {
               return (
-                <Flex key={`s-${stat.name}`} d="row" justify="space-between" mt="6px">
+                <Box key={`s-${stat.name}`} d="row" justify="space-between" mt="6px">
                   <Text size="sm" w="80px">
                     {stat.name}
                   </Text>
                   <DecimalNumber number={stat.value / 1000} fontSize="md" fontWeight="normal" />
-                </Flex>
+                </Box>
               );
             } else {
               return null;
             }
           })}
-        </Flex>
+        </Box>
       ) : null}
     </ScrollScreenTemplate>
   );

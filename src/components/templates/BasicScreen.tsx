@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { StatusBar } from "react-native";
-import { Container, Loading, Flex, Block } from "@src/components/atoms";
+import { Container, Loading, Box } from "@src/components/atoms";
 
 interface IBasicScreenTemplate {
   barTheme?: string;
@@ -27,23 +27,23 @@ export const BasicScreenTemplate: FC<IBasicScreenTemplate> = ({
 
       <Container position="relative" p={bottomButton ? "20px 0 60px" : "20px"} bgColor={bgColor}>
         {banner && (
-          <Flex w="100%" h="50px" bgColor="gray100" mb="16px" radius="3px">
+          <Box w="100%" h="50px" bgColor="gray100" mb="16px" radius="3px">
             {banner}
-          </Flex>
+          </Box>
         )}
 
         {isLoad ? (
           <Loading w="100%" h="100%" minHeight="300px" />
         ) : (
-          <Flex f="1" w="90%" minWidth="320px" px="10px" mx="auto">
+          <Box f="1" align="stretch" w="90%" minWidth="320px" px="10px" mx="auto">
             {children}
-          </Flex>
+          </Box>
         )}
 
         {bottomButton && (
-          <Block position="absolute" left="0" bottom="0" w="100%" h="60px" p="8px">
+          <Box position="absolute" left="0" bottom="0" w="100%" h="60px" p="8px">
             {bottomButton}
-          </Block>
+          </Box>
         )}
       </Container>
     </>
