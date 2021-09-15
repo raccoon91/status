@@ -15,15 +15,9 @@ const adUnitId = __DEV__ ? TestIds.BANNER : firebase.admob_banner_unit_id;
 
 const getAdmobConsent = async () => {
   try {
-    await admob().setRequestConfiguration({
-      maxAdContentRating: MaxAdContentRating.G,
-      tagForUnderAgeOfConsent: true,
-    });
-
+    await admob().setRequestConfiguration({ maxAdContentRating: MaxAdContentRating.G });
     await AdsConsent.setDebugGeography(AdsConsentDebugGeography.EEA);
     const consentInfo = await AdsConsent.requestInfoUpdate([publisherId]);
-
-    console.log("consentInfo", consentInfo);
 
     if (consentInfo.isRequestLocationInEeaOrUnknown && consentInfo.status === AdsConsentStatus.UNKNOWN) {
       const formResult = await AdsConsent.showForm({
@@ -31,8 +25,6 @@ const getAdmobConsent = async () => {
         withPersonalizedAds: true,
         withNonPersonalizedAds: true,
       });
-
-      console.log("status", formResult.status);
 
       if (formResult.status === AdsConsentStatus.NON_PERSONALIZED) {
         AdsConsent.setStatus(AdsConsentStatus.NON_PERSONALIZED);
