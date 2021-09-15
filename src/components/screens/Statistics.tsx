@@ -12,6 +12,7 @@ import { calculateStatistics } from "@src/utils";
 import type { WebViewMessageEvent } from "react-native-webview";
 
 const appWidth = Dimensions.get("window").width;
+const appHeight = Dimensions.get("window").height;
 
 export const StatisticsScreen = () => {
   const dispatch = useAppDispatch();
@@ -48,7 +49,7 @@ export const StatisticsScreen = () => {
         chartLabels={labels}
         chartDatasets={datasets}
         width={appWidth}
-        height={280}
+        height={Math.ceil(appHeight / 3)}
         handleClickChart={handleClickChart}
       />
 

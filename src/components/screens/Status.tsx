@@ -119,8 +119,13 @@ export const StatusScreen = () => {
         </Button>
       </Box>
 
-      {status.map((stat) => (
-        <Status key={stat.name} name={stat.name} value={stat.value} />
+      {status.map((stat, index) => (
+        <Status
+          key={stat.name}
+          name={stat.name}
+          value={stat.value}
+          mb={index === status.length - 1 ? "80px" : undefined}
+        />
       ))}
     </ScrollScreenTemplate>
   );
