@@ -12,7 +12,7 @@ export const SettingScreen = () => {
 
   return (
     <ScrollScreenTemplate bgColor="gray50" w="100%">
-      <OpacityBox justify="flex-start" w="100%" h="60px" p="12px 16px" bgColor="white" onPress={navigateTo("Profile")}>
+      <OpacityBox justify="flex-start" w="100%" h="50px" p="12px 16px" bgColor="white" onPress={navigateTo("Profile")}>
         <Feather name="user" color="black" size={24} />
         <Bold size="sm" ml="20px">
           Profile
@@ -22,7 +22,7 @@ export const SettingScreen = () => {
       <OpacityBox
         justify="flex-start"
         w="100%"
-        h="60px"
+        h="50px"
         p="12px 16px"
         mt="10px"
         bgColor="white"
@@ -37,7 +37,7 @@ export const SettingScreen = () => {
       <OpacityBox
         justify="flex-start"
         w="100%"
-        h="60px"
+        h="50px"
         p="12px 16px"
         mt="10px"
         bgColor="white"
@@ -52,7 +52,7 @@ export const SettingScreen = () => {
       <OpacityBox
         justify="flex-start"
         w="100%"
-        h="60px"
+        h="50px"
         p="12px 16px"
         mt="10px"
         bgColor="white"
