@@ -60,12 +60,15 @@ export const postExercies = createAsyncThunk<
     const { exercises, lastUpdated } = state.exercise;
     const currentDate = dayjs().format("YYYY-MM-DD HH:mm");
 
-    if (lastUpdated && !dayjs(lastUpdated).isBefore(dayjs(currentDate), "day")) {
-      return rejectWithValue({ type: "info", message: "you can update status tomorrow" });
-    }
-
-    if (lastUpdated && !dayjs(lastUpdated).isBefore(dayjs(currentDate).subtract(6, "hour"), "hour")) {
-      return rejectWithValue({ type: "info", message: "you can update status after six hour" });
+    if (
+      lastUpdated &&
+      !dayjs(lastUpdated).isBefore(dayjs(currentDate), "day") &&
+      !dayjs(lastUpdated).isBefore(dayjs(currentDate).subtract(6, "hour"), "hour")
+    ) {
+      return rejectWithValue({
+        type: "info",
+        message: "you can update status once a day and 6 hours after last update",
+      });
     }
 
     const storageStatistics = await storage.getItem<IStatistics[]>("@statistics", []);
