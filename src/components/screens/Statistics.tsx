@@ -22,10 +22,11 @@ export const StatisticsScreen = () => {
     if (weekStatistics?.length > 0) {
       const { chartLabels, chartDatasets } = calculateStatistics(weekStatistics);
 
+      dispatch(selectStatistics({ chartIndex: null }));
       setLabels(chartLabels);
       setDatasets(chartDatasets);
     }
-  }, [weekStatistics]);
+  }, [weekStatistics, dispatch]);
 
   const handleClickChart = (event: WebViewMessageEvent) => {
     const chartIndex = event.nativeEvent.data;

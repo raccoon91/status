@@ -60,6 +60,7 @@ interface IExerciseState {
   isLoad: boolean;
   isUpdate: boolean;
   lastUpdated: string;
+  nextUpdate: string | null;
   exercises: IExercises;
   exerciseNames: string[];
   updateStatus: IStatus[];
@@ -82,6 +83,7 @@ interface IRootState {
 interface IRejectValue {
   rejectValue: {
     type: string;
+    title?: string;
     message: string;
   };
 }

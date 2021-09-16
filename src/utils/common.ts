@@ -17,6 +17,34 @@ export const calculateUserLevel = (
   }
 };
 
+export const validateExerciseHour = (last: string | null | undefined, current: string) => {
+  if (
+    last &&
+    dayjs(current).isAfter(dayjs(last), "day") &&
+    dayjs(current).isAfter(dayjs(last).subtract(8, "hour"), "hour")
+  ) {
+    return true;
+  }
+
+  return false;
+};
+
+export const calculateNextUpdateHour = (last: string | null | undefined) => {
+  const current = dayjs().format("YYYY-MM-DD HH:mm");
+
+  if (validateExerciseHour(last, current)) {
+    return null;
+  }
+
+  const after8Hours = dayjs(last).add(8, "hour");
+
+  if (dayjs(after8Hours).isAfter(dayjs(last), "day")) {
+    return after8Hours.format("MM-DD  A hh:mm");
+  }
+
+  return dayjs(last).add(1, "day").format("MM-DD  A 00:00");
+};
+
 export const exerciseToStatus = (exercises: IExercises) => {
   const status: IStatus[] = [
     { name: "Hit Point", value: 0 },

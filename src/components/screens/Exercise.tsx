@@ -19,9 +19,8 @@ import type { NativeSyntheticEvent, TextInputChangeEventData } from "react-nativ
 export const ExerciseScreen = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
-  const { isFetch, isLoad, isUpdate, exercises, exerciseNames, updateStatus, enableUpdate } = useAppSelector(
-    (state) => state.exercise,
-  );
+  const { isFetch, isLoad, isUpdate, exercises, exerciseNames, updateStatus, enableUpdate, nextUpdate } =
+    useAppSelector((state) => state.exercise);
   const [toggleAddExerciseModal, setToggleAddExerciseModal] = useState(false);
 
   useEffect(() => {
@@ -91,16 +90,22 @@ export const ExerciseScreen = () => {
         />
       }
       bottomButton={
-        <Button
-          variant={enableUpdate ? "black" : "disabled"}
-          size="lg"
-          weight="bold"
-          w="100%"
-          h="100%"
-          onPress={handleSaveUpdate}
-        >
-          SAVE
-        </Button>
+        nextUpdate ? (
+          <Button variant="disabled" w="100%" h="100%" size="sm" weight="bold" onPress={handleSaveUpdate}>
+            {nextUpdate}
+          </Button>
+        ) : (
+          <Button
+            variant={enableUpdate ? "black" : "disabled"}
+            w="100%"
+            h="100%"
+            size="lg"
+            weight="bold"
+            onPress={handleSaveUpdate}
+          >
+            SAVE
+          </Button>
+        )
       }
     >
       {Object.keys(exercises).map((exerciseName) => (

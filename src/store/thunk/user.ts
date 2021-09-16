@@ -28,7 +28,7 @@ export const postUser = createAsyncThunk<typeof USER, void, IRejectValue>(
       const { newName } = state.user;
 
       if (newName.length === 0 || newName.length > 10) {
-        return rejectWithValue({ type: "info", message: "user name should be 1 ~ 10 character" });
+        return rejectWithValue({ type: "info", title: "Info", message: "user name should be 1 ~ 10 character" });
       }
 
       storageUser.name = newName;
@@ -93,9 +93,9 @@ export const userExtraReducers = (builder: ActionReducerMapBuilder<IUserState>) 
     })
     .addCase(getUser.rejected, (_, action) => {
       if (action?.payload) {
-        const { type, message } = action.payload;
+        const { type, title, message } = action.payload;
 
-        Toast.show({ type, text1: "Error", text2: message });
+        Toast.show({ type, text1: title || "Error", text2: message });
       }
     })
     .addCase(postUser.fulfilled, (state, action) => {
@@ -106,9 +106,9 @@ export const userExtraReducers = (builder: ActionReducerMapBuilder<IUserState>) 
     })
     .addCase(postUser.rejected, (_, action) => {
       if (action?.payload) {
-        const { type, message } = action.payload;
+        const { type, title, message } = action.payload;
 
-        Toast.show({ type, text1: "Error", text2: message });
+        Toast.show({ type, text1: title || "Error", text2: message });
       }
     })
     .addCase(putUser.fulfilled, (state, action) => {
@@ -121,9 +121,9 @@ export const userExtraReducers = (builder: ActionReducerMapBuilder<IUserState>) 
     })
     .addCase(putUser.rejected, (_, action) => {
       if (action?.payload) {
-        const { type, message } = action.payload;
+        const { type, title, message } = action.payload;
 
-        Toast.show({ type, text1: "Error", text2: message });
+        Toast.show({ type, text1: title || "Error", text2: message });
       }
     });
 };

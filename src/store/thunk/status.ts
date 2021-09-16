@@ -55,9 +55,9 @@ export const statusExtraReducers = (builder: ActionReducerMapBuilder<IStatusStat
     })
     .addCase(getStatus.rejected, (_, action) => {
       if (action?.payload) {
-        const { type, message } = action.payload;
+        const { type, title, message } = action.payload;
 
-        Toast.show({ type, text1: "Error", text2: message });
+        Toast.show({ type, text1: title || "Error", text2: message });
       }
     })
     .addCase(postStatus.fulfilled, (state, action) => {
@@ -67,9 +67,9 @@ export const statusExtraReducers = (builder: ActionReducerMapBuilder<IStatusStat
     })
     .addCase(postStatus.rejected, (_, action) => {
       if (action?.payload) {
-        const { type, message } = action.payload;
+        const { type, title, message } = action.payload;
 
-        Toast.show({ type, text1: "Error", text2: message });
+        Toast.show({ type, text1: title || "Error", text2: message });
       }
     });
 };

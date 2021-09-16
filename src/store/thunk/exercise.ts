@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import Toast from "react-native-toast-message";
 import dayjs from "dayjs";
-import { storage, calculateExperience } from "@src/utils";
+import { storage, calculateNextUpdateHour, validateExerciseHour, calculateExperience } from "@src/utils";
 import { putUser } from "./user";
 import { postStatus } from "./status";
 import type { ActionReducerMapBuilder } from "@reduxjs/toolkit";
@@ -23,6 +23,8 @@ export const getExercises = createAsyncThunk<
       const exercises: IExercises = {};
       const weekStatistics = storageStatistics.slice(-7);
       const lastStatistics = weekStatistics[0] || [];
+      const exerciseNames = Object.keys(lastStatistics.exercises);
+      const lastUpdated = lastStatistics.updated;
 
       Object.keys(lastStatistics.exercises).forEach((exerciseName: string) => {
         exercises[exerciseName] = {
@@ -31,14 +33,9 @@ export const getExercises = createAsyncThunk<
         };
       });
 
-      return {
-        lastUpdated: lastStatistics.updated,
-        exercises,
-        exerciseNames: Object.keys(lastStatistics.exercises),
-        weekStatistics,
-      };
+      return { lastUpdated, exercises, exerciseNames, weekStatistics };
     } else {
-      return { lastUpdated: "", exercises: {}, exerciseNames: [], statisticsData: [], weekStatistics: [] };
+      return { lastUpdated: "", exercises: {}, exerciseNames: [], weekStatistics: [] };
     }
   } catch (err) {
     console.error(err);
@@ -60,14 +57,11 @@ export const postExercies = createAsyncThunk<
     const { exercises, lastUpdated } = state.exercise;
     const currentDate = dayjs().format("YYYY-MM-DD HH:mm");
 
-    if (
-      lastUpdated &&
-      !dayjs(lastUpdated).isBefore(dayjs(currentDate), "day") &&
-      !dayjs(lastUpdated).isBefore(dayjs(currentDate).subtract(6, "hour"), "hour")
-    ) {
+    if (!validateExerciseHour(lastUpdated, currentDate)) {
       return rejectWithValue({
         type: "info",
-        message: "you can update status once a day and 6 hours after last update",
+        title: "Info",
+        message: "you can update status once a day and 8 hours after last update",
       });
     }
 
@@ -103,14 +97,15 @@ export const exerciseExtraReducers = (builder: ActionReducerMapBuilder<IExercise
       state.exercises = exercises;
       state.exerciseNames = exerciseNames;
       state.lastUpdated = lastUpdated;
+      state.nextUpdate = calculateNextUpdateHour(lastUpdated);
       state.weekStatistics = weekStatistics;
       state.isLoad = false;
     })
     .addCase(getExercises.rejected, (_, action) => {
       if (action?.payload) {
-        const { type, message } = action.payload;
+        const { type, title, message } = action.payload;
 
-        Toast.show({ type, text1: "Error", text2: message });
+        Toast.show({ type, text1: title || "Error", text2: message });
       }
     })
     .addCase(postExercies.fulfilled, (state, action) => {
@@ -120,13 +115,14 @@ export const exerciseExtraReducers = (builder: ActionReducerMapBuilder<IExercise
       state.updateStatus = [];
       state.weekStatistics = weekStatistics;
       state.enableUpdate = false;
+      state.nextUpdate = calculateNextUpdateHour(updated);
       state.isUpdate = true;
     })
     .addCase(postExercies.rejected, (_, action) => {
       if (action?.payload) {
-        const { type, message } = action.payload;
+        const { type, title, message } = action.payload;
 
-        Toast.show({ type, text1: "Error", text2: message });
+        Toast.show({ type, text1: title || "Error", text2: message });
       }
     });
 };

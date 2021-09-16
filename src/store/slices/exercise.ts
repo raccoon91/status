@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { exerciseExtraReducers } from "@src/store/thunk";
-import { exerciseToStatus } from "@src/utils";
+import { exerciseToStatus, calculateNextUpdateHour } from "@src/utils";
 import { EXERCISES } from "@src/configs";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
@@ -9,6 +9,7 @@ const initialExerciseState: IExerciseState = {
   isLoad: false,
   isUpdate: false,
   lastUpdated: "",
+  nextUpdate: null,
   exercises: {},
   exerciseNames: [],
   updateStatus: [],
@@ -42,9 +43,11 @@ export const exerciseSlice = createSlice({
     calculateUpdateStatus: (state) => {
       const updateStatus = exerciseToStatus(state.exercises);
       const enableUpdate = updateStatus.some((stat) => stat.value);
+      const nextUpdate = calculateNextUpdateHour(state.lastUpdated);
 
-      state.enableUpdate = enableUpdate;
       state.updateStatus = updateStatus;
+      state.enableUpdate = enableUpdate;
+      state.nextUpdate = nextUpdate;
     },
     clearExerciseState: (state) => {
       const { exercises } = state;
