@@ -1,11 +1,9 @@
-import React, { useState, useCallback } from "react";
-import { useNavigation, useFocusEffect } from "@react-navigation/native";
-import { BackHandler } from "react-native";
-import { ProgressBar } from "react-native-paper";
+import React from "react";
+import { useNavigation } from "@react-navigation/native";
 import { useAppSelector } from "@src/hooks";
-import { Box, Bold, Text, Button, Feather } from "@src/components/atoms";
+import { Box, Bold, Text, Button, Feather, ProgressBar } from "@src/components/atoms";
 import { Status } from "@src/components/molecules";
-import { FloatMenu, ExitAppModal } from "@src/components/organisms";
+import { FloatMenu } from "@src/components/organisms";
 import { ScrollScreenTemplate } from "@src/components/templates";
 
 const floatMenuOptions = {
@@ -19,78 +17,19 @@ const floatMenuOptions = {
 
 export const StatusScreen = () => {
   const navigation = useNavigation();
-  const [exitApp, setExitApp] = useState(0);
-  const [isOpenMenu, setIsOpenMenu] = useState(false);
-  const [isOpenExitAppModal, setIsOpenExitAppModal] = useState(false);
   const { name, level, experience, requiredExperience } = useAppSelector((state) => state.user);
   const { isLoad, status } = useAppSelector((state) => state.status);
-
-  const handleBackButton = useCallback(() => {
-    if (isOpenMenu) {
-      return false;
-    }
-
-    setTimeout(() => {
-      setExitApp(0);
-    }, 1000);
-
-    if (exitApp === 0) {
-      setExitApp(exitApp + 1);
-    } else if (exitApp === 1) {
-      handleOpenExitAppModal();
-    }
-
-    return true;
-  }, [exitApp, isOpenMenu, setExitApp]);
-
-  useFocusEffect(
-    useCallback(() => {
-      BackHandler.addEventListener("hardwareBackPress", handleBackButton);
-
-      return () => {
-        BackHandler.removeEventListener("hardwareBackPress", handleBackButton);
-      };
-    }, [handleBackButton]),
-  );
 
   const goToStatusInfo = () => {
     navigation.navigate("StatusInfo");
   };
 
-  const handleOpenMenu = () => {
-    setIsOpenMenu(true);
-  };
-
-  const handleCloseMenu = () => {
-    setIsOpenMenu(false);
-  };
-
-  const handleOpenExitAppModal = () => {
-    setIsOpenExitAppModal(true);
-  };
-
-  const handleCloseExitAppModal = () => {
-    setIsOpenExitAppModal(false);
-  };
-
-  const handleExitApp = () => {
-    BackHandler.exitApp();
-  };
-
   return (
     <ScrollScreenTemplate
-      isLoad={!name || isLoad}
+      isLoad={isLoad}
       w="80%"
       p="20px 10px 80px"
-      modal={<ExitAppModal show={isOpenExitAppModal} close={handleCloseExitAppModal} exit={handleExitApp} />}
-      floatMenu={
-        <FloatMenu
-          show={isOpenMenu}
-          open={handleOpenMenu}
-          close={handleCloseMenu}
-          floatMenuOptions={floatMenuOptions}
-        />
-      }
+      floatMenu={<FloatMenu floatMenuOptions={floatMenuOptions} />}
     >
       <Box d="row" justify="space-between" mb="20px">
         <Bold size="lg">{name}</Bold>
@@ -107,7 +46,7 @@ export const StatusScreen = () => {
           </Bold>
         </Box>
 
-        <ProgressBar progress={experience / requiredExperience} color="#000000" />
+        <ProgressBar progress={Math.floor((experience / requiredExperience) * 100)} />
       </Box>
 
       <Box d="row" justify="flex-end" m="36px 0 24px">

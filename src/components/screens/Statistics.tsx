@@ -1,8 +1,6 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { useFocusEffect } from "@react-navigation/native";
+import React, { useState, useEffect } from "react";
 import { Dimensions } from "react-native";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
-import { getExercises } from "@src/store/thunk";
 import { selectStatistics } from "@src/store/slices/exercise";
 import { StackBarChart } from "@src/charts";
 import { Box, Bold, Text, DecimalNumber } from "@src/components/atoms";
@@ -18,24 +16,16 @@ export const StatisticsScreen = () => {
   const dispatch = useAppDispatch();
   const [labels, setLabels] = useState<string[] | null>(null);
   const [datasets, setDatasets] = useState<IChartData[] | null>(null);
-  const { isFetch, isLoad, weekStatistics, selectedStatistics } = useAppSelector((state) => state.exercise);
+  const { isLoad, weekStatistics, selectedStatistics } = useAppSelector((state) => state.exercise);
 
   useEffect(() => {
-    if (!isFetch) {
-      dispatch(getExercises());
+    if (weekStatistics?.length > 0) {
+      const { chartLabels, chartDatasets } = calculateStatistics(weekStatistics);
+
+      setLabels(chartLabels);
+      setDatasets(chartDatasets);
     }
-  }, [isFetch, dispatch]);
-
-  useFocusEffect(
-    useCallback(() => {
-      if (weekStatistics?.length > 0) {
-        const { chartLabels, chartDatasets } = calculateStatistics(weekStatistics);
-
-        setLabels(chartLabels);
-        setDatasets(chartDatasets);
-      }
-    }, [weekStatistics]),
-  );
+  }, [weekStatistics]);
 
   const handleClickChart = (event: WebViewMessageEvent) => {
     const chartIndex = event.nativeEvent.data;

@@ -3,7 +3,7 @@ import SplashScreen from "react-native-splash-screen";
 import { createStackNavigator } from "@react-navigation/stack";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
-import { getUser, getStatus } from "@src/store/thunk";
+import { getUser, getStatus, getExercises } from "@src/store/thunk";
 import { Loading } from "@src/components/atoms";
 import {
   UserScreen,
@@ -29,19 +29,12 @@ const Stack = createStackNavigator();
 export const Navigations = () => {
   const dispatch = useAppDispatch();
   const { isFetch, isLoad, name } = useAppSelector((state) => state.user);
-  const { isFetch: isFetchStatus } = useAppSelector((state) => state.status);
 
   useEffect(() => {
-    if (!isFetch) {
-      dispatch(getUser());
-    }
-  }, [isFetch, dispatch]);
-
-  useEffect(() => {
-    if (!isFetchStatus) {
-      dispatch(getStatus());
-    }
-  }, [isFetchStatus, dispatch]);
+    dispatch(getUser());
+    dispatch(getStatus());
+    dispatch(getExercises());
+  }, [dispatch]);
 
   useEffect(() => {
     if (isFetch && !isLoad) {
