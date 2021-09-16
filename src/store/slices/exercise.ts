@@ -63,27 +63,25 @@ export const exerciseSlice = createSlice({
       state.exerciseNames = newExerciseNames;
       state.enableUpdate = false;
     },
-    selectStatistics: (state, action: PayloadAction<{ chartIndex: string }>) => {
+    selectStatistics: (state, action: PayloadAction<{ chartIndex: string | null }>) => {
       const { chartIndex } = action.payload;
 
-      if (chartIndex) {
-        if (chartIndex !== state.selectedChartIndex) {
-          const selected = state.weekStatistics[Number(chartIndex)];
+      if (chartIndex && chartIndex !== state.selectedChartIndex) {
+        const selected = state.weekStatistics[Number(chartIndex)];
 
-          state.selectedStatistics = {
-            exercises: Object.keys(selected.exercises).map((exerciseName) => ({
-              name: exerciseName,
-              value: selected.exercises[exerciseName].value,
-              unit: EXERCISES[exerciseName].unit,
-            })),
-            status: exerciseToStatus(selected.exercises),
-            updated: selected.updated,
-          };
-          state.selectedChartIndex = chartIndex;
-        } else {
-          state.selectedStatistics = null;
-          state.selectedChartIndex = null;
-        }
+        state.selectedStatistics = {
+          exercises: Object.keys(selected.exercises).map((exerciseName) => ({
+            name: exerciseName,
+            value: selected.exercises[exerciseName].value,
+            unit: EXERCISES[exerciseName].unit,
+          })),
+          status: exerciseToStatus(selected.exercises),
+          updated: selected.updated,
+        };
+        state.selectedChartIndex = chartIndex;
+      } else {
+        state.selectedStatistics = null;
+        state.selectedChartIndex = null;
       }
     },
   },

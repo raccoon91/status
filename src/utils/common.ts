@@ -88,6 +88,8 @@ export const calculateStatistics = (statistics: IStatistics[]) => {
           data: [],
           backgroundColor: STATUS_COLORS[stat.name],
           barThickness: 12,
+          hoverBorderWidth: 1.5,
+          hoverBorderColor: "black",
         };
       }
 

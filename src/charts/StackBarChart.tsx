@@ -65,6 +65,8 @@ export const StackBarChart: FC<IStackBarChartProps> = ({
           var elementIndex = element.index;
   
           window.ReactNativeWebView.postMessage(JSON.stringify(elementIndex))
+        } else {
+          window.ReactNativeWebView.postMessage(JSON.stringify(null))
         }
       };
     `);
