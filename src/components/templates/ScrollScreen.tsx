@@ -37,7 +37,7 @@ export const ScrollScreenTemplate: FC<IScrollScreenTemplate> = ({
 
       {modal && modal}
 
-      <Container position="relative" pb={bottomButton ? "60px" : "10px"} bgColor={bgColor}>
+      <Container position="relative" pb={bottomButton ? "60px" : "0"} bgColor={bgColor}>
         <ScrollBox>
           {banner && (
             <Box w="90%" minWidth="320px" h="60px" bgColor="gray100" m="10px auto 16px" radius="3px">

@@ -33,14 +33,14 @@ export const Arccodion: FC<IAccordion> = ({
     <>
       <OpacityBox justify="space-between" p="12px 16px" mb="8px" bgColor="gray50" onPress={handleChangeActvieKey}>
         {title && (
-          <Bold size="md" color={arccordionKey === activeKey ? activeColor || "black" : initColor || "black"}>
+          <Bold size="sm" color={arccordionKey === activeKey ? activeColor || "black" : initColor || "black"}>
             {title}
           </Bold>
         )}
         {right ? (
           right
         ) : (
-          <Feather name={arccordionKey === activeKey ? "chevron-up" : "chevron-down"} color="black" size={28} />
+          <Feather name={arccordionKey === activeKey ? "chevron-up" : "chevron-down"} color="black" size={20} />
         )}
       </OpacityBox>
       <Box display={arccordionKey === activeKey ? "flex" : "none"} align="flex-start" mb="8px">

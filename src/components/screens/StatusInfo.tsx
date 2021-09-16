@@ -8,7 +8,7 @@ export const StatusInfoScreen = () => {
   const { statusInfo } = useAppSelector((state) => state.status);
 
   return (
-    <ScrollScreenTemplate p="10px">
+    <ScrollScreenTemplate p="20px 10px">
       <ArccodionGroup>
         {statusInfo.map((statInfo, index) => (
           <Arccodion
@@ -19,7 +19,7 @@ export const StatusInfoScreen = () => {
             activeColor="black"
           >
             {statInfo.exercises.map((exercise) => (
-              <Box key={`ei-${statInfo.name}-${exercise}`} d="row" p="8px 16px">
+              <Box key={`ei-${statInfo.name}-${exercise}`} d="row" p="6px 16px">
                 <Bold mr="4px">·</Bold>
                 <Text size="sm" pl="4px">
                   {exercise}
