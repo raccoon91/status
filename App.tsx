@@ -11,6 +11,10 @@ import { theme } from "@src/configs";
 import { registerLocalNotificationEvent, unregisterLocalNotificationEvent } from "@src/utils";
 import type { NavigationContainerRef } from "@react-navigation/native";
 
+if (__DEV__) {
+  analytics().setAnalyticsCollectionEnabled(false);
+}
+
 const App = () => {
   const navigationRef = useRef<NavigationContainerRef>(null);
   const routeNameRef = useRef<string | undefined>();
