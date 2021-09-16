@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
@@ -24,6 +24,12 @@ export const ExerciseScreen = () => {
   );
   const [toggleAddExerciseModal, setToggleAddExerciseModal] = useState(false);
 
+  useEffect(() => {
+    if (!isFetch) {
+      dispatch(getExercises());
+    }
+  }, [isFetch, dispatch]);
+
   useFocusEffect(
     useCallback(() => {
       if (isUpdate) {
@@ -34,14 +40,6 @@ export const ExerciseScreen = () => {
         };
       }
     }, [isUpdate, navigation, dispatch]),
-  );
-
-  useFocusEffect(
-    useCallback(() => {
-      if (!isFetch) {
-        dispatch(getExercises());
-      }
-    }, [isFetch, dispatch]),
   );
 
   const openAddExerciseModal = () => {

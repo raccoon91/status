@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { Dimensions } from "react-native";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
@@ -20,13 +20,11 @@ export const StatisticsScreen = () => {
   const [datasets, setDatasets] = useState<IChartData[] | null>(null);
   const { isFetch, isLoad, weekStatistics, selectedStatistics } = useAppSelector((state) => state.exercise);
 
-  useFocusEffect(
-    useCallback(() => {
-      if (!isFetch) {
-        dispatch(getExercises());
-      }
-    }, [isFetch, dispatch]),
-  );
+  useEffect(() => {
+    if (!isFetch) {
+      dispatch(getExercises());
+    }
+  }, [isFetch, dispatch]);
 
   useFocusEffect(
     useCallback(() => {
@@ -35,6 +33,11 @@ export const StatisticsScreen = () => {
 
         setLabels(chartLabels);
         setDatasets(chartDatasets);
+
+        return () => {
+          setLabels([]);
+          setDatasets([]);
+        };
       }
     }, [weekStatistics]),
   );
