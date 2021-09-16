@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 import Modal from "react-native-modal";
 import { Box } from "@src/components/atoms";
@@ -8,9 +8,6 @@ import { useNavigation } from "@react-navigation/native";
 const app = Dimensions.get("window");
 
 interface IFloatMenu {
-  show: boolean;
-  open: () => void;
-  close: () => void;
   floatMenuOptions: {
     position: {
       right?: string;
@@ -34,11 +31,20 @@ interface IFloatMenu {
     }[];
   };
 }
-export const FloatMenu: FC<IFloatMenu> = ({ show, open, close, floatMenuOptions: { position, mainMenu, subMenu } }) => {
+export const FloatMenu: FC<IFloatMenu> = ({ floatMenuOptions: { position, mainMenu, subMenu } }) => {
   const navigation = useNavigation();
+  const [isOpenMenu, setIsOpenMenu] = useState(false);
+
+  const handleOpenMenu = () => {
+    setIsOpenMenu(true);
+  };
+
+  const handleCloseMenu = () => {
+    setIsOpenMenu(false);
+  };
 
   const handlePressSubMenu = (to: string) => () => {
-    close();
+    handleCloseMenu();
     navigation.navigate(to);
   };
 
@@ -51,20 +57,20 @@ export const FloatMenu: FC<IFloatMenu> = ({ show, open, close, floatMenuOptions:
           featherIconName={mainMenu.iconName}
           iconColor={mainMenu.iconColor || "white"}
           iconSize={mainMenu.iconSize || 32}
-          isOpenMenu={show}
-          openMenu={open}
-          closeMenu={close}
+          isOpenMenu={isOpenMenu}
+          openMenu={handleOpenMenu}
+          closeMenu={handleCloseMenu}
         />
       </Box>
 
       <Modal
-        isVisible={show}
+        isVisible={isOpenMenu}
         coverScreen={false}
         deviceWidth={app.width}
         deviceHeight={app.height}
         backdropTransitionOutTiming={0}
-        onBackdropPress={close}
-        onBackButtonPress={close}
+        onBackdropPress={handleCloseMenu}
+        onBackButtonPress={handleCloseMenu}
         style={styles.modal}
       >
         <Box position="absolute" right={position.right || "0"} bottom={position.bottom || "0"} w="50px" h="50px">
@@ -80,7 +86,7 @@ export const FloatMenu: FC<IFloatMenu> = ({ show, open, close, floatMenuOptions:
                 iconName={sub.iconName}
                 iconSize={sub.iconSize || 20}
                 iconColor={sub.iconColor || "white"}
-                isOpenMenu={show}
+                isOpenMenu={isOpenMenu}
                 pressSubMenu={handlePressSubMenu(sub.to)}
               />
             ))}
