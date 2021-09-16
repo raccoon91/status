@@ -5,7 +5,7 @@ import { useAppSelector, useAppDispatch } from "@src/hooks";
 import { postUser } from "@src/store/thunk";
 import { changeUserName } from "@src/store/slices/user";
 import { Bold, Input, Button } from "@src/components/atoms";
-import { ScrollScreenTemplate } from "@src/components/templates";
+import { BasicScreenTemplate } from "@src/components/templates";
 import type { NativeSyntheticEvent, TextInputChangeEventData } from "react-native";
 
 const appWidth = Dimensions.get("window").width;
@@ -32,7 +32,7 @@ export const UserScreen = () => {
   };
 
   return (
-    <ScrollScreenTemplate
+    <BasicScreenTemplate
       p="20px 10px"
       isLoad={isLoad}
       bottomButton={
@@ -59,6 +59,6 @@ export const UserScreen = () => {
           <Input value={newName} h="50px" pl="16px" onChange={handleChangeUser} autoFocus />
         </>
       )}
-    </ScrollScreenTemplate>
+    </BasicScreenTemplate>
   );
 };
