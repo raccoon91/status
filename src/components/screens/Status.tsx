@@ -92,12 +92,12 @@ export const StatusScreen = () => {
         />
       }
     >
-      <Box d="row" justify="space-between" w="100%" mb="20px">
+      <Box d="row" justify="space-between" mb="20px">
         <Bold size="lg">{name}</Bold>
         <Bold size="lg">Lv. {level}</Bold>
       </Box>
 
-      <Box align="stretch" w="100%">
+      <Box align="stretch">
         <Box d="row" justify="space-between">
           <Bold size="sm" mb="12px">
             Exp.
@@ -110,7 +110,7 @@ export const StatusScreen = () => {
         <ProgressBar progress={experience / requiredExperience} color="#000000" />
       </Box>
 
-      <Box d="row" justify="flex-end" w="100%" m="36px 0 24px">
+      <Box d="row" justify="flex-end" m="36px 0 24px">
         <Button variant="black" h="28px" px="8px" onPress={goToStatusInfo}>
           <Feather name="info" color="white" size={16} />
           <Text size="xs" color="white" ml="6px">

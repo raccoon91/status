@@ -118,11 +118,11 @@ export const AlarmScreen = () => {
         </Button>
       }
     >
-      <Box d="row" justify="flex-start" w="100%">
+      <Box d="row" justify="flex-start">
         <Bold>Alarm On / Off</Bold>
       </Box>
 
-      <Box d="row" justify="space-between" w="100%" mt="20px">
+      <Box d="row" justify="space-between" mt="20px">
         <Bold size="sm">Alarm {alarmEnabled ? "ON" : "OFF"}</Bold>
 
         <Switch
@@ -134,11 +134,11 @@ export const AlarmScreen = () => {
         />
       </Box>
 
-      <Box d="row" justify="flex-start" w="100%" mt="40px">
+      <Box d="row" justify="flex-start" mt="40px">
         <Bold>Alarm Weeks</Bold>
       </Box>
 
-      <Box d="row" justify="space-between" w="100%" minHeight="30px" mt="20px">
+      <Box d="row" justify="space-between" minHeight="30px" mt="20px">
         {weeks.map((week, weekIndex) => (
           <Button
             key={week.text}
@@ -154,11 +154,11 @@ export const AlarmScreen = () => {
         ))}
       </Box>
 
-      <Box d="row" justify="flex-start" w="100%" mt="40px">
+      <Box d="row" justify="flex-start" mt="40px">
         <Bold>Alarm Time</Bold>
       </Box>
 
-      <Box d="row" justify="space-between" w="100%" minHeight="30px" mt="20px">
+      <Box d="row" justify="space-between" minHeight="30px" mt="20px">
         <Bold size="sm">{dayjs(schduleDate).format("A  hh : mm")}</Bold>
 
         <Button variant="black" h="30px" px="6px" onPress={handleOpenTimePicker}>

@@ -12,22 +12,14 @@ export const SettingScreen = () => {
 
   return (
     <ScrollScreenTemplate bgColor="gray50" w="100%" p="20px 10px">
-      <OpacityBox justify="flex-start" w="100%" h="50px" p="12px 16px" bgColor="white" onPress={navigateTo("Profile")}>
+      <OpacityBox justify="flex-start" h="50px" p="12px 16px" bgColor="white" onPress={navigateTo("Profile")}>
         <Feather name="user" color="black" size={24} />
         <Bold size="sm" ml="20px">
           Profile
         </Bold>
       </OpacityBox>
 
-      <OpacityBox
-        justify="flex-start"
-        w="100%"
-        h="50px"
-        p="12px 16px"
-        mt="10px"
-        bgColor="white"
-        onPress={navigateTo("Alarm")}
-      >
+      <OpacityBox justify="flex-start" h="50px" p="12px 16px" mt="10px" bgColor="white" onPress={navigateTo("Alarm")}>
         <Feather name="bell" color="black" size={24} />
         <Bold size="sm" ml="20px">
           Alarm
@@ -36,7 +28,6 @@ export const SettingScreen = () => {
 
       <OpacityBox
         justify="flex-start"
-        w="100%"
         h="50px"
         p="12px 16px"
         mt="10px"
@@ -49,15 +40,7 @@ export const SettingScreen = () => {
         </Bold>
       </OpacityBox>
 
-      <OpacityBox
-        justify="flex-start"
-        w="100%"
-        h="50px"
-        p="12px 16px"
-        mt="10px"
-        bgColor="white"
-        onPress={navigateTo("Version")}
-      >
+      <OpacityBox justify="flex-start" h="50px" p="12px 16px" mt="10px" bgColor="white" onPress={navigateTo("Version")}>
         <Feather name="info" color="black" size={24} />
         <Bold size="sm" ml="20px">
           Version

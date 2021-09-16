@@ -66,12 +66,12 @@ export const StatisticsScreen = () => {
     >
       {selectedStatistics ? (
         <>
-          <Box d="row" align="flex-end" justify="flex-start" w="100%" mt="16px">
+          <Box d="row" align="flex-end" justify="flex-start" mt="16px">
             <Bold w="100px">Date</Bold>
             <Text>{selectedStatistics.updated}</Text>
           </Box>
 
-          <Box d="row" align="flex-start" justify="flex-start" w="100%" mt="20px">
+          <Box d="row" align="flex-start" justify="flex-start" mt="20px">
             <Bold w="100px">Exercises</Bold>
 
             <Box align="flex-start">
@@ -90,7 +90,7 @@ export const StatisticsScreen = () => {
             </Box>
           </Box>
 
-          <Box d="row" align="flex-start" justify="flex-start" w="100%" mt="12px">
+          <Box d="row" align="flex-start" justify="flex-start" mt="12px">
             <Bold w="100px">Status</Bold>
 
             <Box align="flex-start">

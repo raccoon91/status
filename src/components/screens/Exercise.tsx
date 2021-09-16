@@ -121,7 +121,7 @@ export const ExerciseScreen = () => {
         </Box>
       ))}
 
-      <Button variant="black" w="100%" h="40px" size="sm" weight="bold" mt="30px" onPress={openAddExerciseModal}>
+      <Button variant="black" h="40px" size="sm" weight="bold" mt="30px" onPress={openAddExerciseModal}>
         Edit Exercise
       </Button>
 
