@@ -33,11 +33,6 @@ export const StatisticsScreen = () => {
 
         setLabels(chartLabels);
         setDatasets(chartDatasets);
-
-        return () => {
-          setLabels([]);
-          setDatasets([]);
-        };
       }
     }, [weekStatistics]),
   );

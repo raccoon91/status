@@ -66,19 +66,21 @@ export const exerciseSlice = createSlice({
     selectStatistics: (state, action: PayloadAction<{ chartIndex: string | null }>) => {
       const { chartIndex } = action.payload;
 
-      if (chartIndex && chartIndex !== state.selectedChartIndex) {
-        const selected = state.weekStatistics[Number(chartIndex)];
+      if (chartIndex) {
+        if (chartIndex !== state.selectedChartIndex) {
+          const selected = state.weekStatistics[Number(chartIndex)];
 
-        state.selectedStatistics = {
-          exercises: Object.keys(selected.exercises).map((exerciseName) => ({
-            name: exerciseName,
-            value: selected.exercises[exerciseName].value,
-            unit: EXERCISES[exerciseName].unit,
-          })),
-          status: exerciseToStatus(selected.exercises),
-          updated: selected.updated,
-        };
-        state.selectedChartIndex = chartIndex;
+          state.selectedStatistics = {
+            exercises: Object.keys(selected.exercises).map((exerciseName) => ({
+              name: exerciseName,
+              value: selected.exercises[exerciseName].value,
+              unit: EXERCISES[exerciseName].unit,
+            })),
+            status: exerciseToStatus(selected.exercises),
+            updated: selected.updated,
+          };
+          state.selectedChartIndex = chartIndex;
+        }
       } else {
         state.selectedStatistics = null;
         state.selectedChartIndex = null;

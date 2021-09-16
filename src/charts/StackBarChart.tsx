@@ -9,7 +9,7 @@ const config = {
   data: { labels: [], dataset: [] },
   options: {
     responsive: true,
-    animation: { delay: 300 },
+    animation: false,
     plugins: {
       legend: { position: "bottom", reverse: true, align: "start", labels: { boxWidth: 14 } },
       tooltip: { enabled: false },
