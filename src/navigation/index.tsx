@@ -4,7 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
 import { getUser, getStatus } from "@src/store/thunk";
-import { headerStyle } from "@src/configs";
+import { Loading } from "@src/components/atoms";
 import {
   UserScreen,
   StatusInfoScreen,
@@ -14,6 +14,7 @@ import {
   PrivacyPolicyScreen,
   VersionScreen,
 } from "@src/components/screens";
+import { headerStyle } from "@src/configs";
 import { MainNavigation } from "./Main";
 import type { RouteProp } from "@react-navigation/native";
 
@@ -49,7 +50,7 @@ export const Navigations = () => {
   }, [isFetch, isLoad]);
 
   if (!isFetch || isLoad) {
-    return null;
+    return <Loading w="100%" h="100%" />;
   }
 
   return (
