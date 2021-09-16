@@ -12,3 +12,4 @@ export * from "./Input";
 export * from "./Loading";
 export * from "./Link";
 export * from "./Feather";
+export * from "./ProgressBar";
