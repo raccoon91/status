@@ -42,5 +42,5 @@ export const Banner = () => {
     getAdmobConsent();
   }, []);
 
-  return <BannerAd unitId={adUnitId} size={BannerAdSize.SMART_BANNER} />;
+  return <BannerAd unitId={adUnitId} size={BannerAdSize.BANNER} />;
 };

@@ -5,7 +5,7 @@ import { useAppSelector, useAppDispatch } from "@src/hooks";
 import { getExercises } from "@src/store/thunk";
 import { selectStatistics } from "@src/store/slices/exercise";
 import { StackBarChart } from "@src/charts";
-import { Box, Bold, Text } from "@src/components/atoms";
+import { Box, Bold, Text, DecimalNumber } from "@src/components/atoms";
 import { Banner } from "@src/components/organisms";
 import { ScrollScreenTemplate } from "@src/components/templates";
 import { calculateStatistics } from "@src/utils";
@@ -40,7 +40,11 @@ export const StatisticsScreen = () => {
   );
 
   const handleClickChart = (event: WebViewMessageEvent) => {
-    dispatch(selectStatistics({ chartIndex: event.nativeEvent.data }));
+    const chartIndex = event.nativeEvent.data;
+
+    if (chartIndex) {
+      dispatch(selectStatistics({ chartIndex: chartIndex === "null" ? null : chartIndex }));
+    }
   };
 
   return (
@@ -92,7 +96,7 @@ export const StatisticsScreen = () => {
                   return (
                     <Box key={`s-e-${stat.name}`} d="row" justify="flex-start" mb="8px">
                       <Text w="80px">{stat.name}</Text>
-                      <Text>{stat.value / 1000}</Text>
+                      <DecimalNumber fontSize="sm" fontWeight="normal" decimalSize="sm" number={stat.value / 1000} />
                     </Box>
                   );
                 } else {
