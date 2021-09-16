@@ -49,15 +49,15 @@ const App = () => {
 
   return (
     <>
-      <SafeAreaProvider>
+      <Provider store={store}>
         <ThemeProvider theme={theme}>
-          <Provider store={store}>
+          <SafeAreaProvider>
             <NavigationContainer ref={navigationRef} onReady={handleOnReady} onStateChange={handleOnStateChange}>
               <Navigations />
             </NavigationContainer>
-          </Provider>
+          </SafeAreaProvider>
         </ThemeProvider>
-      </SafeAreaProvider>
+      </Provider>
 
       <Toast ref={(ref) => Toast.setRef(ref)} />
     </>
