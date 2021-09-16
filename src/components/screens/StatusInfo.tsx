@@ -8,7 +8,7 @@ export const StatusInfoScreen = () => {
   const { statusInfo } = useAppSelector((state) => state.status);
 
   return (
-    <ScrollScreenTemplate>
+    <ScrollScreenTemplate p="10px">
       <ArccodionGroup>
         {statusInfo.map((statInfo, index) => (
           <Arccodion

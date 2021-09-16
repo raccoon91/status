@@ -110,7 +110,7 @@ export const AlarmScreen = () => {
   return (
     <ScrollScreenTemplate
       w="80%"
-      p="30px 0 60px"
+      p="20px 10px"
       modal={<DateTimePicker show={isOpenTimePicker} date={schduleDate} onChange={handleChangeTime} />}
       bottomButton={
         <Button variant="black" size="lg" weight="bold" w={`${appWidth - 16}px`} h="100%" onPress={handleSaveAlarm}>

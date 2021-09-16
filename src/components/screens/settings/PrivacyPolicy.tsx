@@ -5,7 +5,7 @@ import { privacyPolicy } from "@src/configs";
 
 export const PrivacyPolicyScreen = () => {
   return (
-    <ScrollScreenTemplate w="80%" p="20px 0">
+    <ScrollScreenTemplate w="80%" p="20px 10px">
       {privacyPolicy.split("\n").map((text, index) => {
         if (text.slice(0, 2) === "**" && text.slice(-2) === "**") {
           return <Bold key={`p-${index}`}>{text.slice(2, -2)}</Bold>;

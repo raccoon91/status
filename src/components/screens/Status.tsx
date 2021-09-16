@@ -81,7 +81,7 @@ export const StatusScreen = () => {
     <ScrollScreenTemplate
       isLoad={!name || isLoad}
       w="80%"
-      p="20px 0"
+      p="20px 10px 80px"
       modal={<ExitAppModal show={isOpenExitAppModal} close={handleCloseExitAppModal} exit={handleExitApp} />}
       floatMenu={
         <FloatMenu
@@ -119,13 +119,8 @@ export const StatusScreen = () => {
         </Button>
       </Box>
 
-      {status.map((stat, index) => (
-        <Status
-          key={stat.name}
-          name={stat.name}
-          value={stat.value}
-          mb={index === status.length - 1 ? "80px" : undefined}
-        />
+      {status.map((stat) => (
+        <Status key={stat.name} name={stat.name} value={stat.value} />
       ))}
     </ScrollScreenTemplate>
   );

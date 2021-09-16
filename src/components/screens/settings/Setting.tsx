@@ -11,7 +11,7 @@ export const SettingScreen = () => {
   };
 
   return (
-    <ScrollScreenTemplate bgColor="gray50" w="100%">
+    <ScrollScreenTemplate bgColor="gray50" w="100%" p="20px 10px">
       <OpacityBox justify="flex-start" w="100%" h="50px" p="12px 16px" bgColor="white" onPress={navigateTo("Profile")}>
         <Feather name="user" color="black" size={24} />
         <Bold size="sm" ml="20px">

@@ -5,7 +5,7 @@ const { version } = require("../../../../package.json");
 
 export const VersionScreen = () => {
   return (
-    <ScrollScreenTemplate w="70%" p="30px 0">
+    <ScrollScreenTemplate w="70%" p="30px 10px">
       <Box d="row" justify="space-between" w="100%">
         <Bold size="sm">App Name</Bold>
         <Bold size="sm">Status</Bold>

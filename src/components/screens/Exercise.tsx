@@ -80,6 +80,7 @@ export const ExerciseScreen = () => {
 
   return (
     <ScrollScreenTemplate
+      p="10px"
       isLoad={isLoad}
       barTheme="white"
       modal={

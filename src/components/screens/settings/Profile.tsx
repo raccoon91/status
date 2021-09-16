@@ -7,7 +7,7 @@ export const ProfileScreen = () => {
   const { name, level, experience, requiredExperience, totalExperience } = useAppSelector((state) => state.user);
 
   return (
-    <ScrollScreenTemplate w="70%" p="30px 0">
+    <ScrollScreenTemplate w="70%" p="30px 10px">
       <Box d="row" justify="space-between" w="100%">
         <Bold size="sm">User Name</Bold>
         <Bold size="sm">{name}</Bold>
