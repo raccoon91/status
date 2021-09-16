@@ -38,27 +38,27 @@ export const ScrollScreenTemplate: FC<IScrollScreenTemplate> = ({
       {modal && modal}
 
       <Container position="relative" pb={bottomButton ? "60px" : "0"} bgColor={bgColor}>
-        <ScrollBox>
-          {banner && (
-            <Box w="90%" minWidth="320px" h="60px" bgColor="gray100" m="10px auto 16px" radius="3px">
-              {banner}
-            </Box>
-          )}
+        {isLoad ? (
+          <Loading w="100%" h="100%" />
+        ) : (
+          <ScrollBox>
+            {banner && (
+              <Box w="90%" minWidth="320px" h="60px" bgColor="gray100" m="10px auto 16px" radius="3px">
+                {banner}
+              </Box>
+            )}
 
-          {!isLoad && chart && (
-            <Box w="100%" bgColor="red">
-              {chart}
-            </Box>
-          )}
+            {chart && (
+              <Box w="100%" bgColor="red">
+                {chart}
+              </Box>
+            )}
 
-          {isLoad ? (
-            <Loading w="100%" h="100%" minHeight="300px" />
-          ) : (
             <Box align="stretch" justify="flex-start" w={w || "90%"} minWidth="320px" p={p || "0 10px"} mx="auto">
               {children}
             </Box>
-          )}
-        </ScrollBox>
+          </ScrollBox>
+        )}
 
         {floatMenu && floatMenu}
 
