@@ -65,6 +65,8 @@ export const FloatMenu: FC<IFloatMenu> = ({ floatMenuOptions: { position, mainMe
 
       <Modal
         isVisible={isOpenMenu}
+        animationIn="fadeIn"
+        animationOut="fadeOut"
         coverScreen={false}
         deviceWidth={app.width}
         deviceHeight={app.height}
