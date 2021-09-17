@@ -8,10 +8,10 @@ const config = {
   type: "bar",
   data: { labels: [], dataset: [] },
   options: {
-    responsive: true,
     animation: false,
+    responsive: true,
     plugins: {
-      legend: { position: "bottom", reverse: true, align: "start", labels: { boxWidth: 14 } },
+      legend: { position: "bottom", reverse: true, align: "start", labels: { boxWidth: 12 } },
       tooltip: { enabled: false },
     },
     scales: {
