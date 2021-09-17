@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Dimensions } from "react-native";
+import dayjs from "dayjs";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
 import { selectStatistics } from "@src/store/slices/exercise";
 import { StackBarChart } from "@src/charts";
@@ -54,7 +55,7 @@ export const StatisticsScreen = () => {
         <>
           <Box d="row" align="flex-end" justify="flex-start" mt="16px">
             <Bold w="100px">Date</Bold>
-            <Text>{selectedStatistics.updated}</Text>
+            <Text>{dayjs(selectedStatistics.updated).format("YYYY/MM/DD   A hh:mm")}</Text>
           </Box>
 
           <Box d="row" align="flex-start" justify="flex-start" mt="20px">
