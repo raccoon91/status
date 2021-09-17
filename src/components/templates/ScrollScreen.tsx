@@ -43,7 +43,7 @@ export const ScrollScreenTemplate: FC<IScrollScreenTemplate> = ({
         ) : (
           <ScrollBox>
             {banner && (
-              <Box w="90%" minWidth="320px" h="60px" bgColor="gray50" m="10px auto 16px" radius="3px">
+              <Box w="90%" minWidth="320px" h="60px" bgColor="gray50" m="10px auto" radius="3px">
                 {banner}
               </Box>
             )}
