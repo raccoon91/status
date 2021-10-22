@@ -14,8 +14,7 @@ export const DecimalNumber: FC<IDecimalNumberProps> = ({
   fontWeight = "bold",
   decimalSize = "md",
 }) => {
-  const integer = Math.floor(number);
-  const decimal = (number % 1).toFixed(3).split(".")[1];
+  const [integer, decimal] = String(number).split(".");
 
   return (
     <Box d="row" align="flex-end">
@@ -25,7 +24,7 @@ export const DecimalNumber: FC<IDecimalNumberProps> = ({
       <Text size={decimalSize} mx="2px">
         .
       </Text>
-      <Text size={decimalSize}>{decimal}</Text>
+      <Text size={decimalSize}>{decimal || "000"}</Text>
     </Box>
   );
 };

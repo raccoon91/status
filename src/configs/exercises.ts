@@ -1,6 +1,6 @@
-const exercisePointAndRate = (point: number) => ({
-  point,
-  rate: point / 10,
+const expAndRate = (value: number) => ({
+  exp: value,
+  rate: value / 10,
 });
 
 const EXERCISE_LIST: IExerciseConstant[] = [
@@ -8,80 +8,80 @@ const EXERCISE_LIST: IExerciseConstant[] = [
     name: "push up",
     unit: "count",
     status: [
-      { name: "Hit Point", ...exercisePointAndRate(1) },
-      { name: "Strength", ...exercisePointAndRate(1) },
+      { name: "Hit Point", ...expAndRate(1) },
+      { name: "Strength", ...expAndRate(1) },
     ],
   },
   {
     name: "pull up",
     unit: "count",
     status: [
-      { name: "Hit Point", ...exercisePointAndRate(5) },
-      { name: "Strength", ...exercisePointAndRate(5) },
+      { name: "Hit Point", ...expAndRate(5) },
+      { name: "Strength", ...expAndRate(5) },
     ],
   },
   {
     name: "crunch",
     unit: "count",
     status: [
-      { name: "Hit Point", ...exercisePointAndRate(1) },
-      { name: "Strength", ...exercisePointAndRate(1) },
+      { name: "Hit Point", ...expAndRate(1) },
+      { name: "Strength", ...expAndRate(1) },
     ],
   },
   {
     name: "plank",
     unit: "min",
     status: [
-      { name: "Strength", ...exercisePointAndRate(4) },
-      { name: "Stamina", ...exercisePointAndRate(4) },
+      { name: "Strength", ...expAndRate(4) },
+      { name: "Stamina", ...expAndRate(4) },
     ],
   },
   {
     name: "squat",
     unit: "count",
     status: [
-      { name: "Strength", ...exercisePointAndRate(1) },
-      { name: "Agility", ...exercisePointAndRate(1) },
+      { name: "Strength", ...expAndRate(1) },
+      { name: "Agility", ...expAndRate(1) },
     ],
   },
   {
     name: "lunge",
     unit: "count",
     status: [
-      { name: "Strength", ...exercisePointAndRate(1) },
-      { name: "Agility", ...exercisePointAndRate(1) },
+      { name: "Strength", ...expAndRate(1) },
+      { name: "Agility", ...expAndRate(1) },
     ],
   },
   {
     name: "burpees",
     unit: "count",
     status: [
-      { name: "Strength", ...exercisePointAndRate(1) },
-      { name: "Agility", ...exercisePointAndRate(1) },
-      { name: "Stamina", ...exercisePointAndRate(2) },
+      { name: "Strength", ...expAndRate(1) },
+      { name: "Agility", ...expAndRate(1) },
+      { name: "Stamina", ...expAndRate(2) },
     ],
   },
   {
     name: "walking",
     unit: "km",
-    status: [{ name: "Stamina", ...exercisePointAndRate(3) }],
+    status: [{ name: "Stamina", ...expAndRate(3) }],
   },
   {
     name: "running",
     unit: "km",
     status: [
-      { name: "Strength", ...exercisePointAndRate(5) },
-      { name: "Agility", ...exercisePointAndRate(5) },
-      { name: "Stamina", ...exercisePointAndRate(5) },
+      { name: "Strength", ...expAndRate(5) },
+      { name: "Agility", ...expAndRate(5) },
+      { name: "Stamina", ...expAndRate(5) },
     ],
   },
   {
     name: "cycle",
     unit: "km",
     status: [
-      { name: "Strength", ...exercisePointAndRate(4) },
-      { name: "Agility", ...exercisePointAndRate(4) },
-      { name: "Stamina", ...exercisePointAndRate(4) },
+      { name: "Strength", ...expAndRate(4) },
+      { name: "Agility", ...expAndRate(4) },
+      { name: "Stamina", ...expAndRate(4) },
     ],
   },
 ];

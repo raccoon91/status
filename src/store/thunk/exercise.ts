@@ -22,7 +22,7 @@ export const getExercises = createAsyncThunk<
     if (storageStatistics) {
       const exercises: IExercises = {};
       const weekStatistics = storageStatistics.slice(-7);
-      const lastStatistics = weekStatistics[0] || [];
+      const lastStatistics = weekStatistics[weekStatistics.length - 1] || [];
       const exerciseNames = Object.keys(lastStatistics.exercises);
       const lastUpdated = lastStatistics.updated;
 

@@ -3,6 +3,7 @@ import { useAppSelector } from "@src/hooks";
 import { Box, Text, Bold } from "@src/components/atoms";
 import { ArccodionGroup, Arccodion } from "@src/components/molecules";
 import { ScrollScreenTemplate } from "@src/components/templates";
+import { fixedNumber } from "@src/utils";
 
 export const StatusInfoScreen = () => {
   const { statusInfo } = useAppSelector((state) => state.status);
@@ -10,20 +11,39 @@ export const StatusInfoScreen = () => {
   return (
     <ScrollScreenTemplate p="20px 10px">
       <ArccodionGroup>
-        {statusInfo.map((statInfo, index) => (
+        {statusInfo.map((statInfo, statusIndex) => (
           <Arccodion
             key={`si-${statInfo.name}`}
-            arccordionKey={index + 1}
+            arccordionKey={statusIndex + 1}
             title={statInfo.name}
             initColor="gray400"
             activeColor="black"
           >
-            {statInfo.exercises.map((exercise) => (
-              <Box key={`ei-${statInfo.name}-${exercise}`} d="row" p="6px 16px">
-                <Bold mr="4px">·</Bold>
-                <Text size="sm" pl="4px">
-                  {exercise}
-                </Text>
+            {statInfo.exercises.map((exercise: any, exerciseIndex) => (
+              <Box
+                key={`ei-${statInfo.name}-${exerciseIndex}`}
+                d="row"
+                justify="space-between"
+                w="100%"
+                p="6px 24px 6px 16px"
+              >
+                <Box d="row">
+                  <Bold mr="4px">·</Bold>
+                  <Text size="sm" pl="4px">
+                    {exercise.name}
+                  </Text>
+                </Box>
+                <Box d="row">
+                  <Text size="sm" pl="4px">
+                    {fixedNumber(exercise.rate / 1000)}
+                  </Text>
+                  <Text size="sm" pl="4px">
+                    {"/"}
+                  </Text>
+                  <Text size="sm" pl="4px">
+                    {exercise.unit}
+                  </Text>
+                </Box>
               </Box>
             ))}
           </Arccodion>

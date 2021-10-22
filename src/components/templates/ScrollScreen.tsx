@@ -48,11 +48,7 @@ export const ScrollScreenTemplate: FC<IScrollScreenTemplate> = ({
               </Box>
             )}
 
-            {chart && (
-              <Box w="100%" bgColor="red">
-                {chart}
-              </Box>
-            )}
+            {chart && <Box w="100%">{chart}</Box>}
 
             <Box align="stretch" justify="flex-start" w={w || "90%"} minWidth="320px" p={p || "0 10px"} mx="auto">
               {children}

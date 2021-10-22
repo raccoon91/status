@@ -14,6 +14,7 @@ import { Box, Bold, Text, DecimalNumber, Button, Input } from "@src/components/a
 import { AddExerciseModal } from "@src/components/organisms";
 import { ScrollScreenTemplate } from "@src/components/templates";
 import { EXERCISES } from "@src/configs/exercises";
+import { fixedNumber } from "@src/utils";
 import type { NativeSyntheticEvent, TextInputChangeEventData } from "react-native";
 
 export const ExerciseScreen = () => {
@@ -143,7 +144,7 @@ export const ExerciseScreen = () => {
                   <Text size="sm" w="80px">
                     {stat.name}
                   </Text>
-                  <DecimalNumber number={stat.value / 1000} fontSize="md" fontWeight="normal" />
+                  <DecimalNumber number={fixedNumber(stat.value / 1000, 3)} fontSize="md" fontWeight="normal" />
                 </Box>
               );
             } else {

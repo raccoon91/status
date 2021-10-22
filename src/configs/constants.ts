@@ -10,17 +10,7 @@ export const NOTIFICATION_SCHEDULE = {
   minute: 0,
 };
 
-export const WEEKS_NUMBER_TO_STRING: { [key: number]: string } = {
-  0: "SU",
-  1: "MO",
-  2: "TU",
-  3: "WE",
-  4: "TH",
-  5: "FI",
-  6: "SA",
-};
-
-export const WEEKS_STRING_TO_NUMBER: { [key: string]: number } = {
+export const WEEKS: { [key: string]: number } = {
   SU: 0,
   MO: 1,
   TU: 2,
@@ -29,6 +19,10 @@ export const WEEKS_STRING_TO_NUMBER: { [key: string]: number } = {
   FI: 5,
   SA: 6,
 };
+
+export const WEEKS_NAMES = Object.keys(WEEKS);
+
+export const MAX_UPDATE_EXPERIENCE_VALUE = 1000;
 
 export const USER = {
   version,
@@ -41,18 +35,11 @@ export const USER = {
 
 export const MAX_UPDATE_STATUS_VALUE = 50;
 
-export const STATUS_COLORS: { [key: string]: string } = {
-  "Hit Point": "#9d9d9d",
-  Strength: "#c4c4c4",
-  Agility: "#d9d9d9",
-  Stamina: "#e9e9e9",
-};
-
-export const STATUS_INDEX: { [key: string]: number } = {
-  "Hit Point": 0,
-  Strength: 1,
-  Agility: 2,
-  Stamina: 3,
+export const STATUS_CONFIG: { [key: string]: { index: number; color: string } } = {
+  "Hit Point": { index: 0, color: "#9d9d9d" },
+  Strength: { index: 1, color: "#c4c4c4" },
+  Agility: { index: 2, color: "#d9d9d9" },
+  Stamina: { index: 3, color: "#e9e9e9" },
 };
 
 export const STATUS: IStatus[] = [
@@ -64,17 +51,21 @@ export const STATUS: IStatus[] = [
 
 export const EXERCISE_NAMES = Object.keys(EXERCISES) as string[];
 
-const MAP_STATUS_WITH_EXERCISE: { [key: string]: string[] } = {};
+const MAP_STATUS_WITH_EXERCISE: { [key: string]: { name: string; unit: string; rate: number }[] } = {};
 
 EXERCISE_NAMES.forEach((exerciseName) => {
   const exercise = EXERCISES[exerciseName];
 
   exercise?.status?.forEach((status) => {
-    if (MAP_STATUS_WITH_EXERCISE[status.name]) {
-      MAP_STATUS_WITH_EXERCISE[status.name]?.push(exercise.name);
-    } else {
-      MAP_STATUS_WITH_EXERCISE[status.name] = [exercise.name];
+    if (!MAP_STATUS_WITH_EXERCISE[status.name]) {
+      MAP_STATUS_WITH_EXERCISE[status.name] = [];
     }
+
+    MAP_STATUS_WITH_EXERCISE[status.name].push({
+      name: exercise.name,
+      unit: exercise.unit,
+      rate: status.rate,
+    });
   });
 });
 

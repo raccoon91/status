@@ -7,7 +7,7 @@ import { StackBarChart } from "@src/charts";
 import { Box, Bold, Text, DecimalNumber } from "@src/components/atoms";
 import { Banner } from "@src/components/organisms";
 import { ScrollScreenTemplate } from "@src/components/templates";
-import { calculateStatistics } from "@src/utils";
+import { calculateStatistics, fixedNumber } from "@src/utils";
 import type { WebViewMessageEvent } from "react-native-webview";
 
 const appWidth = Dimensions.get("window").width;
@@ -86,7 +86,12 @@ export const StatisticsScreen = () => {
                   return (
                     <Box key={`s-e-${stat.name}`} d="row" justify="flex-start" mb="8px">
                       <Text w="80px">{stat.name}</Text>
-                      <DecimalNumber fontSize="sm" fontWeight="normal" decimalSize="sm" number={stat.value / 1000} />
+                      <DecimalNumber
+                        fontSize="sm"
+                        fontWeight="normal"
+                        decimalSize="sm"
+                        number={fixedNumber(stat.value / 1000, 3)}
+                      />
                     </Box>
                   );
                 } else {

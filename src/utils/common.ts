@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { EXERCISES, STATUS_INDEX, MAX_UPDATE_STATUS_VALUE, STATUS_COLORS } from "@src/configs";
+import { EXERCISES, STATUS_CONFIG, MAX_UPDATE_STATUS_VALUE, MAX_UPDATE_EXPERIENCE_VALUE } from "@src/configs";
 
 export const calculateUserLevel = (
   totalExperience: number,
@@ -45,6 +45,10 @@ export const calculateNextUpdateHour = (last: string | null | undefined) => {
   return dayjs(last).add(1, "day").format("MM-DD  A 00:00");
 };
 
+export const fixedNumber = (number: number, digits = 4) => {
+  return Number(number.toFixed(digits));
+};
+
 export const exerciseToStatus = (exercises: IExercises) => {
   const status: IStatus[] = [
     { name: "Hit Point", value: 0 },
@@ -56,24 +60,20 @@ export const exerciseToStatus = (exercises: IExercises) => {
   Object.keys(exercises).forEach((exerciseName) => {
     const exerciseStatus = EXERCISES?.[exerciseName]?.status || [];
 
-    exerciseStatus.forEach((stat) => {
-      const updateValue = Number(exercises[exerciseName].value) * stat.rate;
+    exerciseStatus.forEach(({ name: statName, rate: statRate }) => {
+      const { index: statIndex } = STATUS_CONFIG[statName];
+      const updateValue = Number(exercises[exerciseName].value) * statRate;
 
-      if (status?.[STATUS_INDEX[stat.name]]) {
-        status[STATUS_INDEX[stat.name]].value += updateValue;
-      } else {
-        status[STATUS_INDEX[stat.name]] = {
-          name: stat.name,
-          value: updateValue,
-        };
+      if (status[statIndex]) {
+        status[statIndex].value += updateValue;
       }
 
-      if (status[STATUS_INDEX[stat.name]].value < 0) {
-        status[STATUS_INDEX[stat.name]].value = 0;
+      if (status[statIndex].value < 0) {
+        status[statIndex].value = 0;
       }
 
-      if (status[STATUS_INDEX[stat.name]].value > MAX_UPDATE_STATUS_VALUE) {
-        status[STATUS_INDEX[stat.name]].value = MAX_UPDATE_STATUS_VALUE;
+      if (status[statIndex].value > MAX_UPDATE_STATUS_VALUE) {
+        status[statIndex].value = MAX_UPDATE_STATUS_VALUE;
       }
     });
   });
@@ -87,13 +87,13 @@ export const calculateExperience = (exercises: IExercises) => {
   Object.keys(exercises).forEach((exerciseName) => {
     const exerciseStatus = EXERCISES?.[exerciseName]?.status || [];
 
-    exerciseStatus.forEach((stat) => {
-      experience += Number(exercises[exerciseName].value) * stat.point;
+    exerciseStatus.forEach(({ exp: statusEXP }) => {
+      experience += Number(exercises[exerciseName].value) * statusEXP;
     });
   });
 
-  if (experience > 1000) {
-    return 1000;
+  if (experience > MAX_UPDATE_EXPERIENCE_VALUE) {
+    return MAX_UPDATE_EXPERIENCE_VALUE;
   }
 
   return experience;
@@ -109,22 +109,24 @@ export const calculateStatistics = (statistics: IStatistics[]) => {
 
     labels.push(dayjs(updated).format("MM-DD"));
 
-    status.reverse().forEach((stat) => {
-      if (!datasets[stat.name]) {
-        datasets[stat.name] = {
-          label: stat.name,
+    status.reverse().forEach(({ name: statName, value: statValue }) => {
+      const { color: statColor } = STATUS_CONFIG[statName];
+
+      if (!datasets[statName]) {
+        datasets[statName] = {
+          label: statName,
           data: [],
-          backgroundColor: STATUS_COLORS[stat.name],
+          backgroundColor: statColor,
           barThickness: 12,
           hoverBorderWidth: 1.5,
           hoverBorderColor: "black",
         };
       }
 
-      if (stat.value) {
-        datasets[stat.name].data.push(stat.value / 1000);
+      if (statValue) {
+        datasets[statName].data.push(statValue / 1000);
       } else {
-        datasets[stat.name].data.push(0);
+        datasets[statName].data.push(0);
       }
     });
   }

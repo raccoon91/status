@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import { Box, Bold, Button, Feather } from "@src/components/atoms";
 import { DateTimePicker } from "@src/components/organisms";
 import { ScrollScreenTemplate } from "@src/components/templates";
-import { WEEKS_NUMBER_TO_STRING, WEEKS_STRING_TO_NUMBER } from "@src/configs";
+import { WEEKS, WEEKS_NAMES } from "@src/configs";
 import { getNotificationSchedule, registerLocalNotification, unregisterLocalNotification, storage } from "@src/utils";
 import type { Event } from "@react-native-community/datetimepicker";
 
@@ -15,23 +15,23 @@ export const AlarmScreen = () => {
   const navigation = useNavigation();
   const [schedule, setSchedule] = useState({});
   const [alarmEnabled, setAlarmEnabled] = useState(true);
-  const [weeks, setWeeks] = useState<{ text: string; selected: boolean }[]>([]);
+  const [weeks, setWeeks] = useState<{ name: string; selected: boolean }[]>([]);
   const [schduleDate, setScheduleDate] = useState<Date | null>(null);
   const [isOpenTimePicker, setIsOpenTimePicker] = useState(false);
 
   const getSchedule = useCallback(async () => {
     const storageSchedule = await getNotificationSchedule();
-    const allWeeks = [];
+    const allWeeks: { name: string; selected: boolean }[] = [];
 
-    for (let i = 0; i < 7; i++) {
-      const week = { text: WEEKS_NUMBER_TO_STRING[i], selected: false };
+    WEEKS_NAMES.forEach((weeksName) => {
+      const week = { name: weeksName, selected: false };
 
-      if (storageSchedule.weeks.includes(i)) {
+      if (storageSchedule.weeks.includes(WEEKS[weeksName])) {
         week.selected = true;
       }
 
       allWeeks.push(week);
-    }
+    });
 
     const scheduleDate = dayjs().hour(storageSchedule.hour).minute(storageSchedule.minute).toDate();
 
@@ -90,7 +90,7 @@ export const AlarmScreen = () => {
 
       weeks.forEach((week) => {
         if (week.selected) {
-          selectedWeeks.push(WEEKS_STRING_TO_NUMBER[week.text]);
+          selectedWeeks.push(WEEKS[week.name]);
         }
       });
 
@@ -141,7 +141,7 @@ export const AlarmScreen = () => {
       <Box d="row" justify="space-between" minHeight="30px" mt="20px">
         {weeks.map((week, weekIndex) => (
           <Button
-            key={week.text}
+            key={week.name}
             variant={week.selected ? "black" : "disabled"}
             size="xs"
             w="36px"
@@ -149,7 +149,7 @@ export const AlarmScreen = () => {
             px="6px"
             onPress={handleSelectWeek(weekIndex)}
           >
-            {week.text}
+            {week.name}
           </Button>
         ))}
       </Box>
