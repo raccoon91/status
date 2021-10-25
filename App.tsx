@@ -8,6 +8,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { Navigations } from "@src/navigation";
 import { store } from "@src/store";
 import { theme } from "@src/configs";
+import { initAdmobConsent } from "@src/components/organisms";
 import { registerLocalNotificationEvent, unregisterLocalNotificationEvent } from "@src/utils";
 import type { NavigationContainerRef } from "@react-navigation/native";
 
@@ -20,6 +21,7 @@ const App = () => {
   const routeNameRef = useRef<string | undefined>();
 
   useEffect(() => {
+    initAdmobConsent();
     registerLocalNotificationEvent();
 
     return () => {

@@ -2,6 +2,7 @@ import React from "react";
 import { useAppSelector } from "@src/hooks";
 import { Box, Text, Bold } from "@src/components/atoms";
 import { ArccodionGroup, Arccodion } from "@src/components/molecules";
+import { Banner } from "@src/components/organisms";
 import { ScrollScreenTemplate } from "@src/components/templates";
 import { fixedNumber } from "@src/utils";
 
@@ -9,7 +10,7 @@ export const StatusInfoScreen = () => {
   const { statusInfo } = useAppSelector((state) => state.status);
 
   return (
-    <ScrollScreenTemplate p="20px 10px">
+    <ScrollScreenTemplate p="10px 10px 20px" banner={<Banner />}>
       <ArccodionGroup>
         {statusInfo.map((statInfo, statusIndex) => (
           <Arccodion

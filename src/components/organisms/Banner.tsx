@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import admob, {
   MaxAdContentRating,
   AdsConsent,
   AdsConsentStatus,
-  AdsConsentDebugGeography,
   BannerAd,
   BannerAdSize,
   TestIds,
@@ -13,10 +12,10 @@ const firebase = require("../../../firebase.json")["react-native"];
 const publisherId = firebase.admob_publisher_id;
 const adUnitId = __DEV__ ? TestIds.BANNER : firebase.admob_banner_unit_id;
 
-const getAdmobConsent = async () => {
+export const initAdmobConsent = async () => {
   try {
     await admob().setRequestConfiguration({ maxAdContentRating: MaxAdContentRating.G });
-    await AdsConsent.setDebugGeography(AdsConsentDebugGeography.EEA);
+    // await AdsConsent.setDebugGeography(AdsConsentDebugGeography.EEA);
     const consentInfo = await AdsConsent.requestInfoUpdate([publisherId]);
 
     if (consentInfo.isRequestLocationInEeaOrUnknown && consentInfo.status === AdsConsentStatus.UNKNOWN) {
@@ -38,9 +37,5 @@ const getAdmobConsent = async () => {
 };
 
 export const Banner = () => {
-  useEffect(() => {
-    getAdmobConsent();
-  }, []);
-
   return <BannerAd unitId={adUnitId} size={BannerAdSize.BANNER} />;
 };

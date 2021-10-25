@@ -11,7 +11,7 @@ import {
   clearExerciseState,
 } from "@src/store/slices/exercise";
 import { Box, Bold, Text, DecimalNumber, Button, Input } from "@src/components/atoms";
-import { AddExerciseModal } from "@src/components/organisms";
+import { AddExerciseModal, Banner } from "@src/components/organisms";
 import { ScrollScreenTemplate } from "@src/components/templates";
 import { EXERCISES } from "@src/configs/exercises";
 import { fixedNumber } from "@src/utils";
@@ -78,7 +78,7 @@ export const ExerciseScreen = () => {
 
   return (
     <ScrollScreenTemplate
-      p="10px"
+      p="0 10px 10px"
       isLoad={isLoad}
       barTheme="white"
       modal={
@@ -90,6 +90,7 @@ export const ExerciseScreen = () => {
           removeExercise={handleRemoveExercise}
         />
       }
+      banner={<Banner />}
       bottomButton={
         nextUpdate ? (
           <Button variant="disabled" w="100%" h="100%" size="sm" weight="bold" onPress={handleSaveUpdate}>
