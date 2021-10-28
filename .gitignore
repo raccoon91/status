@@ -37,6 +37,7 @@ google-services.json
 index.android.bundle
 android/app/src/main/res/drawable-*
 android/app/src/main/res/raw
+android/java_*
 
 # node.js
 node_modules/
