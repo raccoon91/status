@@ -6,7 +6,7 @@ const expAndRate = (value: number) => ({
 const EXERCISE_LIST: IExerciseConstant[] = [
   {
     name: "push up",
-    unit: "count",
+    unit: "reps",
     status: [
       { name: "Hit Point", ...expAndRate(1) },
       { name: "Strength", ...expAndRate(1) },
@@ -14,7 +14,7 @@ const EXERCISE_LIST: IExerciseConstant[] = [
   },
   {
     name: "pull up",
-    unit: "count",
+    unit: "reps",
     status: [
       { name: "Hit Point", ...expAndRate(5) },
       { name: "Strength", ...expAndRate(5) },
@@ -22,7 +22,7 @@ const EXERCISE_LIST: IExerciseConstant[] = [
   },
   {
     name: "crunch",
-    unit: "count",
+    unit: "reps",
     status: [
       { name: "Hit Point", ...expAndRate(1) },
       { name: "Strength", ...expAndRate(1) },
@@ -38,7 +38,7 @@ const EXERCISE_LIST: IExerciseConstant[] = [
   },
   {
     name: "squat",
-    unit: "count",
+    unit: "reps",
     status: [
       { name: "Strength", ...expAndRate(1) },
       { name: "Agility", ...expAndRate(1) },
@@ -46,7 +46,7 @@ const EXERCISE_LIST: IExerciseConstant[] = [
   },
   {
     name: "lunge",
-    unit: "count",
+    unit: "reps",
     status: [
       { name: "Strength", ...expAndRate(1) },
       { name: "Agility", ...expAndRate(1) },
@@ -54,7 +54,7 @@ const EXERCISE_LIST: IExerciseConstant[] = [
   },
   {
     name: "burpees",
-    unit: "count",
+    unit: "reps",
     status: [
       { name: "Strength", ...expAndRate(1) },
       { name: "Agility", ...expAndRate(1) },
