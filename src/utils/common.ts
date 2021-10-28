@@ -13,7 +13,7 @@ export const calculateUserLevel = (
       newRequiredExperience: requiredExperience,
     };
   } else {
-    return calculateUserLevel(totalExperience - requiredExperience, level + 1, requiredExperience + 100);
+    return calculateUserLevel(totalExperience - requiredExperience, level + 1, requiredExperience + 1000);
   }
 };
 

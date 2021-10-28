@@ -43,11 +43,15 @@ export const exerciseSlice = createSlice({
     calculateUpdateStatus: (state) => {
       const updateStatus = exerciseToStatus(state.exercises);
       const enableUpdate = updateStatus.some((stat) => stat.value);
-      const nextUpdate = calculateNextUpdateHour(state.lastUpdated);
 
       state.updateStatus = updateStatus;
       state.enableUpdate = enableUpdate;
-      state.nextUpdate = nextUpdate;
+
+      if (state.lastUpdated) {
+        const nextUpdate = calculateNextUpdateHour(state.lastUpdated);
+
+        state.nextUpdate = nextUpdate;
+      }
     },
     clearExerciseState: (state) => {
       const { exercises } = state;
@@ -61,10 +65,10 @@ export const exerciseSlice = createSlice({
 
       const newExerciseNames = Object.keys(newExercises);
 
-      state.isUpdate = false;
       state.exercises = newExercises;
       state.exerciseNames = newExerciseNames;
       state.enableUpdate = false;
+      state.isUpdate = false;
     },
     selectStatistics: (state, action: PayloadAction<{ chartIndex: string | null }>) => {
       const { chartIndex } = action.payload;
