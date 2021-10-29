@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import Toast from "react-native-toast-message";
 import dayjs from "dayjs";
 import { storage, calculateNextUpdateHour, validateExerciseHour, calculateExperience } from "@src/utils";
+import { LIMIT_FREQUENT_UPDATE } from "@src/configs";
 import { putUser } from "./user";
 import { postStatus } from "./status";
 import type { ActionReducerMapBuilder } from "@reduxjs/toolkit";
@@ -32,7 +33,12 @@ export const getExercises = createAsyncThunk<
 
       return { lastUpdated, exercises, exerciseNames, weekStatistics };
     } else {
-      return { lastUpdated: "", exercises: {}, exerciseNames: [], weekStatistics: [] };
+      return {
+        lastUpdated: "",
+        exercises: { "push up": { value: "" } },
+        exerciseNames: ["push up"],
+        weekStatistics: [],
+      };
     }
   } catch (err) {
     console.error(err);
@@ -55,7 +61,7 @@ export const postExercies = createAsyncThunk<
     const filteredExercises: IExercises = {};
     const currentDate = dayjs().format("YYYY-MM-DD HH:mm");
 
-    if (lastUpdated && !validateExerciseHour(lastUpdated, currentDate)) {
+    if (LIMIT_FREQUENT_UPDATE && lastUpdated && !validateExerciseHour(lastUpdated, currentDate)) {
       return rejectWithValue({
         type: "info",
         title: "Info",
@@ -98,7 +104,7 @@ export const exerciseExtraReducers = (builder: ActionReducerMapBuilder<IExercise
     .addCase(getExercises.fulfilled, (state, action) => {
       const { exercises, exerciseNames, lastUpdated, weekStatistics } = action.payload;
 
-      if (lastUpdated) {
+      if (LIMIT_FREQUENT_UPDATE && lastUpdated) {
         state.nextUpdate = calculateNextUpdateHour(lastUpdated);
       }
 
@@ -118,10 +124,13 @@ export const exerciseExtraReducers = (builder: ActionReducerMapBuilder<IExercise
     .addCase(postExercies.fulfilled, (state, action) => {
       const { updated, weekStatistics } = action.payload;
 
+      if (LIMIT_FREQUENT_UPDATE) {
+        state.nextUpdate = calculateNextUpdateHour(updated);
+      }
+
       state.lastUpdated = updated;
       state.updateStatus = [];
       state.weekStatistics = weekStatistics;
-      state.nextUpdate = calculateNextUpdateHour(updated);
       state.enableUpdate = false;
       state.isUpdate = true;
     })

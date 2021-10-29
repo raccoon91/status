@@ -1,19 +1,13 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import React, { useState, useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
 import { getExercises, postExercies } from "@src/store/thunk";
-import {
-  selectExercise,
-  removeExercise,
-  changeExercise,
-  calculateUpdateStatus,
-  clearExerciseState,
-} from "@src/store/slices/exercise";
+import { selectExercise, removeExercise, changeExercise, calculateUpdateStatus } from "@src/store/slices/exercise";
 import { Box, Bold, Text, DecimalNumber, Button, Input } from "@src/components/atoms";
 import { AddExerciseModal, Banner } from "@src/components/organisms";
 import { ScrollScreenTemplate } from "@src/components/templates";
-import { EXERCISES } from "@src/configs/exercises";
+import { EXERCISES, LIMIT_FREQUENT_UPDATE } from "@src/configs";
 import { fixedNumber } from "@src/utils";
 import type { NativeSyntheticEvent, TextInputChangeEventData } from "react-native";
 
@@ -30,17 +24,11 @@ export const ExerciseScreen = () => {
     }
   }, [isFetch, dispatch]);
 
-  useFocusEffect(
-    useCallback(() => {
-      if (isUpdate) {
-        navigation.navigate("Statistics");
-
-        return () => {
-          dispatch(clearExerciseState());
-        };
-      }
-    }, [isUpdate, navigation, dispatch]),
-  );
+  useEffect(() => {
+    if (isUpdate) {
+      navigation.navigate("Statistics");
+    }
+  }, [isUpdate, navigation]);
 
   const openAddExerciseModal = () => {
     setToggleAddExerciseModal(true);
@@ -92,7 +80,7 @@ export const ExerciseScreen = () => {
       }
       banner={<Banner />}
       bottomButton={
-        nextUpdate ? (
+        LIMIT_FREQUENT_UPDATE && nextUpdate ? (
           <Button variant="disabled" w="100%" h="100%" size="sm" weight="bold" onPress={handleSaveUpdate}>
             {nextUpdate}
           </Button>

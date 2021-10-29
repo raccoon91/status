@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { exerciseExtraReducers } from "@src/store/thunk";
 import { exerciseToStatus, calculateNextUpdateHour } from "@src/utils";
-import { EXERCISES } from "@src/configs";
+import { EXERCISES, LIMIT_FREQUENT_UPDATE } from "@src/configs";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 const initialExerciseState: IExerciseState = {
@@ -47,7 +47,7 @@ export const exerciseSlice = createSlice({
       state.updateStatus = updateStatus;
       state.enableUpdate = enableUpdate;
 
-      if (state.lastUpdated) {
+      if (LIMIT_FREQUENT_UPDATE && state.lastUpdated) {
         const nextUpdate = calculateNextUpdateHour(state.lastUpdated);
 
         state.nextUpdate = nextUpdate;
