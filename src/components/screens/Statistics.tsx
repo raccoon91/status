@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Dimensions } from "react-native";
 import dayjs from "dayjs";
 import { useAppSelector, useAppDispatch } from "@src/hooks";
-import { selectStatistics } from "@src/store/slices/exercise";
+import { selectStatistics, clearExerciseState } from "@src/store/slices/exercise";
 import { StackBarChart } from "@src/charts";
 import { Box, Bold, Text, DecimalNumber } from "@src/components/atoms";
 import { Banner } from "@src/components/organisms";
@@ -17,7 +17,13 @@ export const StatisticsScreen = () => {
   const dispatch = useAppDispatch();
   const [labels, setLabels] = useState<string[] | null>(null);
   const [datasets, setDatasets] = useState<IChartData[] | null>(null);
-  const { isLoad, weekStatistics, selectedStatistics } = useAppSelector((state) => state.exercise);
+  const { isLoad, isUpdate, weekStatistics, selectedStatistics } = useAppSelector((state) => state.exercise);
+
+  useEffect(() => {
+    if (isUpdate) {
+      dispatch(clearExerciseState());
+    }
+  }, [isUpdate, dispatch]);
 
   useEffect(() => {
     if (weekStatistics?.length > 0) {
@@ -55,14 +61,16 @@ export const StatisticsScreen = () => {
         <>
           <Box d="row" align="flex-end" justify="flex-start" mt="16px">
             <Bold w="100px">Date</Bold>
-            <Text>{dayjs(selectedStatistics.updated).format("YYYY/MM/DD   A hh:mm")}</Text>
+            <Text>
+              {selectedStatistics?.updated && dayjs(selectedStatistics.updated).format("YYYY/MM/DD   A hh:mm")}
+            </Text>
           </Box>
 
           <Box d="row" align="flex-start" justify="flex-start" mt="20px">
             <Bold w="100px">Exercises</Bold>
 
             <Box align="flex-start">
-              {selectedStatistics.exercises.map((exercises) => {
+              {selectedStatistics?.exercises?.map((exercises) => {
                 if (exercises.value) {
                   return (
                     <Box key={`s-e-${exercises.name}`} d="row" justify="flex-start" mb="8px">
@@ -81,7 +89,7 @@ export const StatisticsScreen = () => {
             <Bold w="100px">Status</Bold>
 
             <Box align="flex-start">
-              {selectedStatistics.status.map((stat) => {
+              {selectedStatistics?.status?.map((stat) => {
                 if (stat.value) {
                   return (
                     <Box key={`s-e-${stat.name}`} d="row" justify="flex-start" mb="8px">

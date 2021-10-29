@@ -1,5 +1,5 @@
-import React, { useState, useCallback } from "react";
-import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import React, { useState, useEffect, useCallback } from "react";
+import { useNavigation } from "@react-navigation/native";
 import { Dimensions, Switch } from "react-native";
 import dayjs from "dayjs";
 import { Box, Bold, Button, Feather } from "@src/components/atoms";
@@ -41,11 +41,9 @@ export const AlarmScreen = () => {
     setScheduleDate(scheduleDate);
   }, []);
 
-  useFocusEffect(
-    useCallback(() => {
-      getSchedule();
-    }, [getSchedule]),
-  );
+  useEffect(() => {
+    getSchedule();
+  }, [getSchedule]);
 
   const handleToggleSwitch = () => {
     if (alarmEnabled) {
