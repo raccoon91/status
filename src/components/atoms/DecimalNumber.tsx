@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { Box, Text } from "@src/components/atoms";
 
 interface IDecimalNumberProps {
-  number: number;
+  number: number | string;
   fontSize?: IFontSize;
   fontWeight?: string;
   decimalSize?: IFontSize;

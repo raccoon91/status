@@ -46,7 +46,7 @@ export const calculateNextUpdateHour = (last: string | null | undefined) => {
 };
 
 export const fixedNumber = (number: number, digits = 4) => {
-  return Number(number.toFixed(digits));
+  return number.toFixed(digits);
 };
 
 export const exerciseToStatus = (exercises: IExercises) => {
