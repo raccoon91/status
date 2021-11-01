@@ -84,6 +84,7 @@ export const StackBarChart: FC<IStackBarChartProps> = ({
       source={chartHtml}
       onMessage={handleClickChart}
       onLoadEnd={handleLoadEnd}
+      androidHardwareAccelerationDisabled={true}
       style={webviewStyle(width, height)}
     />
   );
