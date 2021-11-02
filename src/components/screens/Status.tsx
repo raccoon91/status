@@ -5,8 +5,9 @@ import { Box, Bold, Text, Button, Feather, ProgressBar } from "@src/components/a
 import { Status } from "@src/components/molecules";
 import { FloatMenu } from "@src/components/organisms";
 import { ScrollScreenTemplate } from "@src/components/templates";
+import type { IFloatMenuOption } from "@src/components/organisms";
 
-const floatMenuOptions = {
+const floatMenuOptions: IFloatMenuOption = {
   position: { right: "20px", bottom: "30px" },
   mainMenu: { color: "black", iconName: "plus" },
   subMenu: [
@@ -17,7 +18,7 @@ const floatMenuOptions = {
 
 export const StatusScreen = () => {
   const navigation = useNavigation();
-  const { name, level, experience, requiredExperience } = useAppSelector((state) => state.user);
+  const { name, level, experienceProgress } = useAppSelector((state) => state.user);
   const { isLoad, status } = useAppSelector((state) => state.status);
 
   const goToStatusInfo = () => {
@@ -42,11 +43,11 @@ export const StatusScreen = () => {
             Exp.
           </Bold>
           <Bold size="sm" mb="12px">
-            {Math.floor((experience / requiredExperience) * 100)} %
+            {experienceProgress} %
           </Bold>
         </Box>
 
-        <ProgressBar progress={Math.floor((experience / requiredExperience) * 100)} />
+        <ProgressBar progress={experienceProgress} />
       </Box>
 
       <Box d="row" justify="flex-end" m="36px 0 24px">

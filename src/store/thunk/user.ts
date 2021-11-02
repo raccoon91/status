@@ -83,12 +83,14 @@ export const userExtraReducers = (builder: ActionReducerMapBuilder<IUserState>) 
     })
     .addCase(getUser.fulfilled, (state, action) => {
       const { name, level, experience, requiredExperience, totalExperience } = action.payload;
+      const remainExperience = requiredExperience - totalExperience;
 
       state.name = name;
       state.level = level;
       state.experience = experience;
       state.requiredExperience = requiredExperience;
       state.totalExperience = totalExperience;
+      state.experienceProgress = Math.floor(((1000 - remainExperience) / 1000) * 100);
       state.isLoad = false;
     })
     .addCase(getUser.rejected, (_, action) => {
@@ -113,11 +115,13 @@ export const userExtraReducers = (builder: ActionReducerMapBuilder<IUserState>) 
     })
     .addCase(putUser.fulfilled, (state, action) => {
       const { level, experience, requiredExperience, totalExperience } = action.payload;
+      const remainExperience = requiredExperience - totalExperience;
 
       state.level = level;
       state.experience = experience;
       state.requiredExperience = requiredExperience;
       state.totalExperience = totalExperience;
+      state.experienceProgress = Math.floor(((1000 - remainExperience) / 1000) * 100);
     })
     .addCase(putUser.rejected, (_, action) => {
       if (action?.payload) {

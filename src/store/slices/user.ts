@@ -11,6 +11,7 @@ const initialUserState: IUserState = {
   experience: 0,
   requiredExperience: 1000,
   totalExperience: 0,
+  experienceProgress: 0,
 };
 
 export const userSlice = createSlice({
