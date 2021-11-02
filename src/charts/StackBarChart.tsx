@@ -93,4 +93,6 @@ export const StackBarChart: FC<IStackBarChartProps> = ({
 const webviewStyle = (width: number, height: number) => ({
   width,
   height: height + 10,
+  opacity: 0.99,
+  minHeight: 1,
 });
