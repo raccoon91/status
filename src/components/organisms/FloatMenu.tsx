@@ -7,29 +7,31 @@ import { useNavigation } from "@react-navigation/native";
 
 const app = Dimensions.get("window");
 
-interface IFloatMenu {
-  floatMenuOptions: {
-    position: {
-      right?: string;
-      bottom?: string;
-    };
-    mainMenu: {
-      size?: string;
-      color?: IColor;
-      iconName: string;
-      iconSize?: number;
-      iconColor?: string;
-    };
-    subMenu: {
-      name?: string;
-      size?: string;
-      color?: IColor;
-      iconName: string;
-      iconSize?: number;
-      iconColor?: string;
-      to: string;
-    }[];
+export interface IFloatMenuOption {
+  position: {
+    right?: string;
+    bottom?: string;
   };
+  mainMenu: {
+    size?: string;
+    color?: IColor;
+    iconName: string;
+    iconSize?: number;
+    iconColor?: string;
+  };
+  subMenu: {
+    name?: string;
+    size?: string;
+    color?: IColor;
+    iconName: string;
+    iconSize?: number;
+    iconColor?: string;
+    to: string;
+  }[];
+}
+
+interface IFloatMenu {
+  floatMenuOptions: IFloatMenuOption;
 }
 export const FloatMenu: FC<IFloatMenu> = ({ floatMenuOptions: { position, mainMenu, subMenu } }) => {
   const navigation = useNavigation();
