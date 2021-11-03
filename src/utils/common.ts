@@ -2,18 +2,18 @@ import dayjs from "dayjs";
 import { EXERCISES, STATUS_CONFIG, MAX_UPDATE_STATUS_VALUE, MAX_UPDATE_EXPERIENCE_VALUE } from "@src/configs";
 
 export const calculateUserLevel = (
-  totalExperience: number,
   level = 1,
+  experience: number,
   requiredExperience = 1000,
 ): { newLevel: number; newExperience: number; newRequiredExperience: number } => {
-  if (totalExperience < requiredExperience) {
+  if (experience < requiredExperience) {
     return {
       newLevel: level,
-      newExperience: totalExperience,
+      newExperience: experience,
       newRequiredExperience: requiredExperience,
     };
   } else {
-    return calculateUserLevel(totalExperience - requiredExperience, level + 1, requiredExperience + 1000);
+    return calculateUserLevel(level + 1, experience - requiredExperience, requiredExperience);
   }
 };
 

@@ -18,7 +18,7 @@ const floatMenuOptions: IFloatMenuOption = {
 
 export const StatusScreen = () => {
   const navigation = useNavigation();
-  const { name, level, experienceProgress } = useAppSelector((state) => state.user);
+  const { name, level, experience } = useAppSelector((state) => state.user);
   const { isLoad, status } = useAppSelector((state) => state.status);
 
   const goToStatusInfo = () => {
@@ -43,11 +43,11 @@ export const StatusScreen = () => {
             Exp.
           </Bold>
           <Bold size="sm" mb="12px">
-            {experienceProgress} %
+            {Math.floor((experience / 1000) * 100)} %
           </Bold>
         </Box>
 
-        <ProgressBar progress={experienceProgress} />
+        <ProgressBar progress={Math.floor((experience / 1000) * 100)} />
       </Box>
 
       <Box d="row" justify="flex-end" m="36px 0 24px">
