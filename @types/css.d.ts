@@ -71,7 +71,7 @@ type IFontSize = "xs" | "sm" | "md" | "lg" | "xl" | "xx" | "ti";
 
 interface ITextCSS {
   size?: IFontSize;
-  color?: IColor;
+  color?: IColor | string;
   weight?: string;
   tAlign?: string;
   line?: string;

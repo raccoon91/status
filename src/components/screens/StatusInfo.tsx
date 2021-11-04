@@ -10,7 +10,7 @@ export const StatusInfoScreen = () => {
   const { statusInfo } = useAppSelector((state) => state.status);
 
   return (
-    <ScrollScreenTemplate p="10px 10px 20px" banner={<Banner />}>
+    <ScrollScreenTemplate p="20px 0" banner={<Banner />}>
       <ArccodionGroup>
         {statusInfo.map((statInfo, statusIndex) => (
           <Arccodion
@@ -26,7 +26,7 @@ export const StatusInfoScreen = () => {
                 d="row"
                 justify="space-between"
                 w="100%"
-                p="6px 24px 6px 16px"
+                p="8px 24px 8px 16px"
               >
                 <Box d="row">
                   <Bold mr="4px">·</Bold>
