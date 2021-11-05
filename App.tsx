@@ -7,7 +7,7 @@ import { Provider } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { Navigations } from "@src/navigation";
 import { store } from "@src/store";
-import { theme } from "@src/configs";
+import { theme, toastConfig } from "@src/configs";
 import { initAdmobConsent } from "@src/components/organisms";
 import { registerLocalNotificationEvent, unregisterLocalNotificationEvent } from "@src/utils";
 import type { NavigationContainerRef } from "@react-navigation/native";
@@ -54,19 +54,17 @@ const App = () => {
   };
 
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <Provider store={store}>
-        <ThemeProvider theme={theme}>
-          <SafeAreaProvider>
-            <NavigationContainer ref={navigationRef} onReady={handleOnReady} onStateChange={handleOnStateChange}>
-              <Navigations />
-            </NavigationContainer>
-          </SafeAreaProvider>
-        </ThemeProvider>
+        <SafeAreaProvider>
+          <NavigationContainer ref={navigationRef} onReady={handleOnReady} onStateChange={handleOnStateChange}>
+            <Navigations />
+          </NavigationContainer>
+        </SafeAreaProvider>
       </Provider>
 
-      <Toast ref={(ref) => Toast.setRef(ref)} />
-    </>
+      <Toast ref={(ref) => Toast.setRef(ref)} config={toastConfig} autoHide={false} />
+    </ThemeProvider>
   );
 };
 

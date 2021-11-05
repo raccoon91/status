@@ -54,7 +54,7 @@ export const ExerciseScreen = () => {
     if (exerciseNames.length < 6) {
       dispatch(selectExercise({ name: exercise }));
     } else {
-      Toast.show({ type: "info", text1: "Error", text2: "you can select max 6 exercises" });
+      Toast.show({ type: "info", text1: "Info", text2: "you can select max 6 exercises" });
     }
   };
 
