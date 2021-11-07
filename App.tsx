@@ -63,7 +63,7 @@ const App = () => {
         </SafeAreaProvider>
       </Provider>
 
-      <Toast ref={(ref) => Toast.setRef(ref)} config={toastConfig} autoHide={false} />
+      <Toast ref={(ref) => Toast.setRef(ref)} config={toastConfig} />
     </ThemeProvider>
   );
 };

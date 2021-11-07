@@ -1,7 +1,7 @@
 import { EXERCISES } from "./exercises";
 const { version } = require("../../package.json");
 
-export const LIMIT_FREQUENT_UPDATE = false;
+export const LIMIT_FREQUENT_UPDATE = true;
 
 export const CHANNEL_ID = "STATUS_CHANNEL";
 

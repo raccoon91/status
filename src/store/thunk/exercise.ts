@@ -72,7 +72,7 @@ export const postExercies = createAsyncThunk<
     Object.keys(exercises).forEach((exerciseName) => {
       if (exercises?.[exerciseName]?.value) {
         filteredExercises[exerciseName] = {
-          value: exercises[exerciseName].value,
+          value: String(Number(exercises[exerciseName].value)),
         };
       }
     });
