@@ -40,8 +40,22 @@ export const SettingScreen = () => {
         </Bold>
       </OpacityBox>
 
+      <OpacityBox
+        justify="flex-start"
+        h="50px"
+        p="12px 16px"
+        mt="10px"
+        bgColor="white"
+        onPress={navigateTo("PatchNotes")}
+      >
+        <Feather name="alert-triangle" color="black" size={24} />
+        <Bold size="sm" ml="20px">
+          Patch Notes
+        </Bold>
+      </OpacityBox>
+
       <OpacityBox justify="flex-start" h="50px" p="12px 16px" mt="10px" bgColor="white" onPress={navigateTo("Version")}>
-        <Feather name="info" color="black" size={24} />
+        <Feather name="sliders" color="black" size={24} />
         <Bold size="sm" ml="20px">
           Version
         </Bold>

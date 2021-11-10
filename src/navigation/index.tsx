@@ -12,6 +12,7 @@ import {
   ProfileScreen,
   AlarmScreen,
   PrivacyPolicyScreen,
+  PatchNotesScreen,
   VersionScreen,
 } from "@src/components/screens";
 import { headerStyle } from "@src/configs";
@@ -58,7 +59,7 @@ export const Navigations = () => {
             component={MainNavigation}
           />
           <Stack.Screen name="Exercise" options={headerStyle("Exercise", "dark")} component={ExerciseScreen} />
-          <Stack.Screen name="StatusInfo" options={headerStyle("StatusInfo", "dark")} component={StatusInfoScreen} />
+          <Stack.Screen name="StatusInfo" options={headerStyle("Status Info", "dark")} component={StatusInfoScreen} />
           <Stack.Screen name="Profile" options={headerStyle("Profile", "light")} component={ProfileScreen} />
           <Stack.Screen name="Alarm" options={headerStyle("Alarm", "light")} component={AlarmScreen} />
           <Stack.Screen
@@ -66,6 +67,7 @@ export const Navigations = () => {
             options={headerStyle("PrivacyPolicy", "light")}
             component={PrivacyPolicyScreen}
           />
+          <Stack.Screen name="PatchNotes" options={headerStyle("Patch Notes", "light")} component={PatchNotesScreen} />
           <Stack.Screen name="Version" options={headerStyle("Version", "light")} component={VersionScreen} />
         </>
       )}
