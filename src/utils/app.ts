@@ -13,8 +13,8 @@ export const appVersionCheck = async () => {
 
   const userVersion = storageUser.version;
 
-  if (semver.eq(appVersion, "0.1.1") && semver.gt(userVersion, "0.1.1")) {
-    storageUser.version = "0.1.1";
+  if (semver.eq(appVersion, "0.1.2") && semver.gt(userVersion, "0.1.2")) {
+    storageUser.version = "0.1.2";
 
     await storage.setItem("@user", storageUser);
   }
