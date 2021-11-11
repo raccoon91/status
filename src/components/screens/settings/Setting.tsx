@@ -34,7 +34,7 @@ export const SettingScreen = () => {
         bgColor="white"
         onPress={navigateTo("PrivacyPolicy")}
       >
-        <Feather name="book" color="black" size={24} />
+        <Feather name="alert-triangle" color="black" size={24} />
         <Bold size="sm" ml="20px">
           Privacy Policy
         </Bold>
@@ -48,14 +48,14 @@ export const SettingScreen = () => {
         bgColor="white"
         onPress={navigateTo("PatchNotes")}
       >
-        <Feather name="alert-triangle" color="black" size={24} />
+        <Feather name="book" color="black" size={24} />
         <Bold size="sm" ml="20px">
           Patch Notes
         </Bold>
       </OpacityBox>
 
       <OpacityBox justify="flex-start" h="50px" p="12px 16px" mt="10px" bgColor="white" onPress={navigateTo("Version")}>
-        <Feather name="sliders" color="black" size={24} />
+        <Feather name="info" color="black" size={24} />
         <Bold size="sm" ml="20px">
           Version
         </Bold>
