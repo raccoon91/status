@@ -1,6 +1,6 @@
 {
   "name": "status",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "private": true,
   "scripts": {
     "ios": "react-native run-ios",
@@ -10,7 +10,7 @@
     "android-bundle": "rimraf android/app/src/main/assets/index.android.bundle && react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
     "remove-drawable": "rimraf android/app/src/main/res/drawable-* android/app/src/main/res/raw",
     "build-android:debug": "npm run android-bundle && cd android && gradlew assembleDebug",
-    "build-android:release": "npm run android-bundle && npm run remove-drawable && cd android && gradlew bundleRelease",
+    "build-android:release": "npm run android-bundle && npm run remove-drawable && cd android && gradlew cleanBuildCache && gradlew bundleRelease",
     "format": "prettier --write ./src ./App.tsx ./@types",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
