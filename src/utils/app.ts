@@ -2,8 +2,6 @@ import semver from "semver";
 import { storage } from "@src/utils";
 import type { USER } from "@src/configs";
 
-const { version: appVersion } = require("../../package.json");
-
 export const appVersionCheck = async () => {
   const storageUser = await storage.getItem<typeof USER | null>("@user", null);
 
@@ -13,8 +11,8 @@ export const appVersionCheck = async () => {
 
   const userVersion = storageUser.version;
 
-  if (semver.eq(appVersion, "0.1.4") && semver.gt(userVersion, "0.1.4")) {
-    storageUser.version = "0.1.4";
+  if (!semver.eq(userVersion, "0.1.5")) {
+    storageUser.version = "0.1.5";
 
     await storage.setItem("@user", storageUser);
   }
