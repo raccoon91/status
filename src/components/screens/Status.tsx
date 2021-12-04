@@ -21,7 +21,7 @@ export const StatusScreen = () => {
   const { name, level, experience } = useAppSelector((state) => state.user);
   const { isLoad, status } = useAppSelector((state) => state.status);
 
-  const goToStatusInfo = () => {
+  const navigateToStatusInfo = () => {
     navigation.navigate("StatusInfo");
   };
 
@@ -50,10 +50,10 @@ export const StatusScreen = () => {
         <ProgressBar progress={Math.floor((experience / 1000) * 100)} />
       </Box>
 
-      <Box d="row" justify="flex-end" m="36px 0 24px">
-        <Button variant="black" h="28px" px="8px" onPress={goToStatusInfo}>
-          <Feather name="info" color="white" size={16} />
-          <Text size="xs" color="white" ml="6px">
+      <Box d="row" justify="flex-end" m="48px 0 24px">
+        <Button variant="black" h="32px" px="8px" onPress={navigateToStatusInfo}>
+          <Feather name="info" color="white" size={18} />
+          <Text size="sm" color="white" ml="6px">
             Status Info
           </Text>
         </Button>
