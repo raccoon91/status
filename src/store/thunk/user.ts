@@ -82,13 +82,14 @@ export const userExtraReducers = (builder: ActionReducerMapBuilder<IUserState>) 
       state.isFetch = true;
     })
     .addCase(getUser.fulfilled, (state, action) => {
-      const { name, level, experience, requiredExperience, totalExperience } = action.payload;
+      const { name, level, experience, requiredExperience, totalExperience, version } = action.payload;
 
       state.name = name;
       state.level = level;
       state.experience = experience;
       state.requiredExperience = requiredExperience;
       state.totalExperience = totalExperience;
+      state.version = version;
       state.isLoad = false;
     })
     .addCase(getUser.rejected, (_, action) => {

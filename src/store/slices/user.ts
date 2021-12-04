@@ -12,6 +12,7 @@ const initialUserState: IUserState = {
   requiredExperience: 1000,
   totalExperience: 0,
   experienceProgress: 0,
+  version: "",
 };
 
 export const userSlice = createSlice({

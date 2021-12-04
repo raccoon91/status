@@ -1,9 +1,11 @@
 import React from "react";
+import { useAppSelector } from "@src/hooks";
 import { Box, Bold, Link } from "@src/components/atoms";
 import { ScrollScreenTemplate } from "@src/components/templates";
-const { version } = require("../../../../package.json");
 
 export const VersionScreen = () => {
+  const { version } = useAppSelector((state) => state.user);
+
   return (
     <ScrollScreenTemplate w="70%" p="30px 10px">
       <Box d="row" justify="space-between">

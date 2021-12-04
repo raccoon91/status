@@ -1,5 +1,6 @@
 import { EXERCISES } from "./exercises";
-const { version } = require("../../package.json");
+
+export const APP_VERSION = "0.2.0";
 
 export const LIMIT_FREQUENT_UPDATE = true;
 
@@ -29,12 +30,12 @@ export const WEEKS_NAMES = Object.keys(WEEKS);
 export const MAX_UPDATE_EXPERIENCE_VALUE = 1000;
 
 export const USER = {
-  version,
   name: "",
   level: 1,
   experience: 0,
   requiredExperience: 1000,
   totalExperience: 0,
+  version: APP_VERSION,
 };
 
 export const MAX_UPDATE_STATUS_VALUE = 50;

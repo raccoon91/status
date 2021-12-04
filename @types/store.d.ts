@@ -37,6 +37,7 @@ interface IUserState {
   requiredExperience: number;
   totalExperience: number;
   experienceProgress: number;
+  version: string;
 }
 
 interface IStatusState {
