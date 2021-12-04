@@ -5,11 +5,8 @@ export const appVersionCheck = async () => {
   const storageUser = await getStorageUser();
   const userVersion = storageUser.version;
 
-  if (semver.lt(userVersion, "0.2.0")) {
-    await removeStorage();
-  }
-
   if (semver.lt(userVersion, "0.2.1")) {
+    await removeStorage(["@status", "@statistics", "@schdule"]);
     await setStorageUser({
       ...storageUser,
       version: "0.2.1",
