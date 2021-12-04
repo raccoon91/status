@@ -1,14 +1,14 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import Toast from "react-native-toast-message";
 import { USER } from "@src/configs";
-import { storage, calculateUserLevel } from "@src/utils";
+import { getStorageUser, setStorageUser, calculateUserLevel } from "@src/utils";
 import type { ActionReducerMapBuilder } from "@reduxjs/toolkit";
 
 export const getUser = createAsyncThunk<typeof USER, void, IRejectValue>(
   "user/getUser",
   async (_, { rejectWithValue }) => {
     try {
-      const storageUser = await storage.getItem("@user", USER);
+      const storageUser = await getStorageUser();
 
       return storageUser;
     } catch (err) {
@@ -23,7 +23,7 @@ export const postUser = createAsyncThunk<typeof USER, void, IRejectValue>(
   "user/postUser",
   async (_, { getState, rejectWithValue }) => {
     try {
-      const storageUser = await storage.getItem("@user", USER);
+      const storageUser = await getStorageUser();
       const state = getState() as IRootState;
       const { newName } = state.user;
 
@@ -33,7 +33,7 @@ export const postUser = createAsyncThunk<typeof USER, void, IRejectValue>(
 
       storageUser.name = newName;
 
-      storage.setItem("@user", storageUser);
+      setStorageUser(storageUser);
 
       return storageUser;
     } catch (err) {
@@ -57,14 +57,14 @@ export const putUser = createAsyncThunk<typeof USER, number, IRejectValue>(
         requiredExperience,
       );
 
-      const storageUser = await storage.getItem("@user", USER);
+      const storageUser = await getStorageUser();
 
       storageUser.level = newLevel;
       storageUser.experience = newExperience;
       storageUser.requiredExperience = newRequiredExperience;
       storageUser.totalExperience = totalExperience + updateExperience;
 
-      storage.setItem("@user", storageUser);
+      setStorageUser(storageUser);
 
       return storageUser;
     } catch (err) {

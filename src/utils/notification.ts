@@ -1,11 +1,11 @@
 import { AppState, Platform, PushNotificationIOS } from "react-native";
 import PushNotification from "react-native-push-notification";
 import dayjs from "dayjs";
-import { storage } from "./storage";
-import { NOTIFICATION_SCHEDULE, CHANNEL_ID } from "@src/configs";
+import { getStorageSchedule } from "./storage";
+import { CHANNEL_ID, PRINT_DEV_NOTIFICATION_SCHEDULE } from "@src/configs";
 
 export const getNotificationSchedule = async () => {
-  const storageSchedule = await storage.getItem("@schedule", NOTIFICATION_SCHEDULE);
+  const storageSchedule = await getStorageSchedule();
 
   return storageSchedule;
 };
@@ -42,21 +42,21 @@ const checkOrCreateChannel = () => {
           channelId: CHANNEL_ID,
           channelName: CHANNEL_ID,
         },
-        (created) => console.log(`createChannel returned '${created}'`),
+        (created) => console.info(`createChannel returned '${created}'`),
       );
     }
   });
 };
 
-// const getNotificationList = () => {
-//   PushNotification.getScheduledLocalNotifications((notifications) => {
-//     console.log("=========== Notifications ===========");
-//     console.log("\n", "count", notifications.length);
-//     notifications.forEach((notification) => {
-//       console.log("\n", notification.date);
-//     });
-//   });
-// };
+const getNotificationList = () => {
+  PushNotification.getScheduledLocalNotifications((notifications) => {
+    console.info("=========== Notifications ===========");
+    console.info("\n", "count", notifications.length);
+    notifications.forEach((notification) => {
+      console.info("\n", notification.date);
+    });
+  });
+};
 
 export const registerLocalNotification = async () => {
   PushNotification.setApplicationIconBadgeNumber(0);
@@ -87,13 +87,17 @@ export const registerLocalNotification = async () => {
     });
   });
 
-  // getNotificationList();
+  if (__DEV__ && PRINT_DEV_NOTIFICATION_SCHEDULE) {
+    getNotificationList();
+  }
 };
 
 export const unregisterLocalNotification = () => {
   PushNotification.cancelAllLocalNotifications();
 
-  // getNotificationList();
+  if (__DEV__ && PRINT_DEV_NOTIFICATION_SCHEDULE) {
+    getNotificationList();
+  }
 };
 
 const handleAppStateChange = (nextAppState: string) => {

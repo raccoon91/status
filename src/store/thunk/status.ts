@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import Toast from "react-native-toast-message";
-import { storage, exerciseToStatus } from "@src/utils";
+import { getStorageStatus, setStorageStatus, exerciseToStatus } from "@src/utils";
 import { STATUS } from "@src/configs";
 import type { ActionReducerMapBuilder } from "@reduxjs/toolkit";
 
@@ -8,7 +8,7 @@ export const getStatus = createAsyncThunk<typeof STATUS, void, IRejectValue>(
   "status/getStatus",
   async (_, { rejectWithValue }) => {
     try {
-      const storageStatus = await storage.getItem("@status", STATUS);
+      const storageStatus = await getStorageStatus();
 
       return storageStatus;
     } catch (err) {
@@ -23,14 +23,14 @@ export const postStatus = createAsyncThunk<IStatus[], IExercises, IRejectValue>(
   "status/postStatus",
   async (newExercises, { rejectWithValue }) => {
     try {
-      const storageStatus = await storage.getItem("@status", STATUS);
+      const storageStatus = await getStorageStatus();
       const updateStatus = exerciseToStatus(newExercises);
       const newStatus = storageStatus.map((status, index) => ({
         name: status.name,
         value: status.value + (updateStatus?.[index]?.value || 0),
       }));
 
-      storage.setItem("@status", newStatus);
+      setStorageStatus(newStatus);
 
       return newStatus;
     } catch (err) {

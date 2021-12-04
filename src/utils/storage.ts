@@ -1,33 +1,99 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import dayjs from "dayjs";
+import { USER, STATUS, NOTIFICATION_SCHEDULE } from "@src/configs";
 
-const getItem = async <T>(storageName: string, defaultValue: T) => {
-  const storageItem = await AsyncStorage.getItem(storageName);
+export const removeStorage = async (targets?: string[]) => {
+  if (!targets) {
+    const keys = await AsyncStorage.getAllKeys();
 
-  if (storageItem) {
-    return JSON.parse(storageItem) as T;
+    for (const key of keys) {
+      await AsyncStorage.removeItem(key);
+    }
   } else {
-    AsyncStorage.setItem(storageName, JSON.stringify(defaultValue));
-
-    return defaultValue;
+    for (const key of targets) {
+      await AsyncStorage.removeItem(key);
+    }
   }
 };
 
-const getItemOrNull = async <T>(storageName: string, defaultValue?: T) => {
-  const storageItem = await AsyncStorage.getItem(storageName);
+export const getStorageUser = async () => {
+  let user = USER;
 
-  if (storageItem) {
-    return JSON.parse(storageItem) as T;
+  const storageUser = await AsyncStorage.getItem("@user");
+
+  if (storageUser) {
+    user = JSON.parse(storageUser);
+  } else {
+    AsyncStorage.setItem("@user", JSON.stringify(USER));
   }
 
-  return defaultValue || null;
+  return user;
 };
 
-const setItem = async <T>(storageName: string, value: T) => {
-  await AsyncStorage.setItem(storageName, JSON.stringify(value));
+export const setStorageUser = async (newUser: typeof USER) => {
+  await AsyncStorage.setItem("@user", JSON.stringify(newUser));
 };
 
-export const storage = {
-  getItem,
-  getItemOrNull,
-  setItem,
+export const getStorageStatus = async () => {
+  let status = STATUS;
+
+  const storageStatus = await AsyncStorage.getItem("@status");
+
+  if (storageStatus) {
+    status = JSON.parse(storageStatus);
+  } else {
+    AsyncStorage.setItem("@status", JSON.stringify(STATUS));
+  }
+
+  return status;
+};
+
+export const setStorageStatus = async (newStatus: IStatus[]) => {
+  await AsyncStorage.setItem("@status", JSON.stringify(newStatus));
+};
+
+export const getStorageStatistics = async () => {
+  let statistics: IStatistics[] = [];
+  let year = dayjs().year();
+
+  const currentYearStorageStatistics = await AsyncStorage.getItem(`@${year}-statistics`);
+
+  if (currentYearStorageStatistics) {
+    statistics = statistics.concat(JSON.parse(currentYearStorageStatistics));
+  }
+
+  if (statistics.length < 7) {
+    year = dayjs().subtract(1, "year").year();
+    const lastYearStorageStatistics = await AsyncStorage.getItem(`@${year}-statistics`);
+
+    if (lastYearStorageStatistics) {
+      statistics = statistics.concat(JSON.parse(lastYearStorageStatistics));
+    }
+  }
+
+  return statistics;
+};
+
+export const setStorageStatistics = async (newStatistics: IStatistics[]) => {
+  const year = dayjs().year();
+
+  await AsyncStorage.setItem(`@${year}-statistics`, JSON.stringify(newStatistics));
+};
+
+export const getStorageSchedule = async () => {
+  let schedule = NOTIFICATION_SCHEDULE;
+
+  const storageSchedule = await AsyncStorage.getItem("@schedule");
+
+  if (storageSchedule) {
+    schedule = JSON.parse(storageSchedule);
+  } else {
+    AsyncStorage.setItem("@schedule", JSON.stringify(NOTIFICATION_SCHEDULE));
+  }
+
+  return schedule;
+};
+
+export const setStorageSchedule = async (newSchdule: typeof NOTIFICATION_SCHEDULE) => {
+  await AsyncStorage.setItem("@schedule", JSON.stringify(newSchdule));
 };

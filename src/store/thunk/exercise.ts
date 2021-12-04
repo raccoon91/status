@@ -1,7 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import Toast from "react-native-toast-message";
 import dayjs from "dayjs";
-import { storage, calculateNextUpdateHour, validateExerciseHour, calculateExperience } from "@src/utils";
+import {
+  getStorageStatistics,
+  setStorageStatistics,
+  calculateNextUpdateHour,
+  validateExerciseHour,
+  calculateExperience,
+} from "@src/utils";
 import { LIMIT_FREQUENT_UPDATE } from "@src/configs";
 import { putUser } from "./user";
 import { postStatus } from "./status";
@@ -18,9 +24,9 @@ export const getExercises = createAsyncThunk<
   IRejectValue
 >("exercise/getExercises", async (_, { rejectWithValue }) => {
   try {
-    const storageStatistics = await storage.getItemOrNull<IStatistics[]>("@statistics");
+    const storageStatistics = await getStorageStatistics();
 
-    if (storageStatistics) {
+    if (storageStatistics.length) {
       const exercises: IExercises = {};
       const weekStatistics = storageStatistics.slice(-7);
       const lastStatistics = weekStatistics[weekStatistics.length - 1] || [];
@@ -77,9 +83,9 @@ export const postExercies = createAsyncThunk<
       }
     });
 
-    const storageStatistics = await storage.getItem<IStatistics[]>("@statistics", []);
+    const storageStatistics = await getStorageStatistics();
     storageStatistics.push({ exercises: filteredExercises, updated: currentDate });
-    storage.setItem("@statistics", storageStatistics);
+    setStorageStatistics(storageStatistics);
 
     const experience = calculateExperience(filteredExercises);
     const weekStatistics = storageStatistics.slice(-7);

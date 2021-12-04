@@ -3,6 +3,8 @@ const { version } = require("../../package.json");
 
 export const LIMIT_FREQUENT_UPDATE = true;
 
+export const PRINT_DEV_NOTIFICATION_SCHEDULE = false;
+
 export const CHANNEL_ID = "STATUS_CHANNEL";
 
 export const NOTIFICATION_SCHEDULE = {

@@ -5,15 +5,20 @@ import dayjs from "dayjs";
 import { Box, Bold, Button, Feather } from "@src/components/atoms";
 import { DateTimePicker } from "@src/components/organisms";
 import { ScrollScreenTemplate } from "@src/components/templates";
-import { WEEKS, WEEKS_NAMES } from "@src/configs";
-import { getNotificationSchedule, registerLocalNotification, unregisterLocalNotification, storage } from "@src/utils";
+import { WEEKS, WEEKS_NAMES, NOTIFICATION_SCHEDULE } from "@src/configs";
+import {
+  getNotificationSchedule,
+  registerLocalNotification,
+  unregisterLocalNotification,
+  setStorageSchedule,
+} from "@src/utils";
 import type { Event } from "@react-native-community/datetimepicker";
 
 const appWidth = Dimensions.get("window").width;
 
 export const AlarmScreen = () => {
   const navigation = useNavigation();
-  const [schedule, setSchedule] = useState({});
+  const [schedule, setSchedule] = useState<typeof NOTIFICATION_SCHEDULE>(NOTIFICATION_SCHEDULE);
   const [alarmEnabled, setAlarmEnabled] = useState(true);
   const [weeks, setWeeks] = useState<{ name: string; selected: boolean }[]>([]);
   const [schduleDate, setScheduleDate] = useState<Date | null>(null);
@@ -75,7 +80,7 @@ export const AlarmScreen = () => {
 
   const handleSaveAlarm = async () => {
     if (!alarmEnabled) {
-      await storage.setItem("@schedule", { ...schedule, alarm: "OFF" });
+      await setStorageSchedule({ ...schedule, alarm: "OFF" });
 
       unregisterLocalNotification();
 
@@ -92,7 +97,7 @@ export const AlarmScreen = () => {
         }
       });
 
-      await storage.setItem("@schedule", {
+      await setStorageSchedule({
         alarm: "ON",
         weeks: selectedWeeks,
         hour: selectedHour,
