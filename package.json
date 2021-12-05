@@ -10,7 +10,7 @@
     "android-bundle": "rimraf android/app/src/main/assets/index.android.bundle && react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
     "android-prebuild": "rimraf android/app/src/main/res/drawable-* android/app/src/main/res/raw",
     "build-android:debug": "npm run android-bundle && cd android && gradlew assembleDebug",
-    "build-android:release": "npm run android-bundle && npm run android-prebuild && cd android && gradlew cleanBuildCache && gradlew bundleRelease",
+    "build-android:release": "npm run android-bundle && npm run android-prebuild && cd android && gradlew bundleRelease",
     "format": "prettier --write ./src ./App.tsx ./@types",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
