@@ -1,6 +1,6 @@
 import semver from "semver";
 import Toast from "react-native-toast-message";
-import { removeStorage, getStorageUser, setStorageUser } from "@src/utils";
+import { getStorageUser, setStorageUser } from "@src/utils";
 import { APP_VERSION } from "@src/configs";
 
 export const appVersionCheck = async () => {
@@ -8,13 +8,7 @@ export const appVersionCheck = async () => {
     const storageUser = await getStorageUser();
     const userVersion = storageUser.version;
 
-    if (semver.lt(userVersion, "0.2.1")) {
-      await removeStorage(["@status", "@statistics", "@schdule"]);
-      await setStorageUser({
-        ...storageUser,
-        version: APP_VERSION,
-      });
-    } else if (semver.lt(userVersion, APP_VERSION)) {
+    if (semver.lt(userVersion, APP_VERSION)) {
       await setStorageUser({
         ...storageUser,
         version: APP_VERSION,
