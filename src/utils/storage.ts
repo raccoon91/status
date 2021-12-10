@@ -59,7 +59,7 @@ export const getStorageStatistics = async () => {
   const currentYearStorageStatistics = await AsyncStorage.getItem(`@${year}-statistics`);
 
   if (currentYearStorageStatistics) {
-    statistics = statistics.concat(JSON.parse(currentYearStorageStatistics));
+    statistics = JSON.parse(currentYearStorageStatistics);
   }
 
   if (statistics.length < 7) {
@@ -67,17 +67,28 @@ export const getStorageStatistics = async () => {
     const lastYearStorageStatistics = await AsyncStorage.getItem(`@${year}-statistics`);
 
     if (lastYearStorageStatistics) {
-      statistics = statistics.concat(JSON.parse(lastYearStorageStatistics));
+      const lastStatistics = JSON.parse(lastYearStorageStatistics);
+
+      if (lastStatistics.length > 0) {
+        statistics = lastStatistics.slice(`-${7 - statistics.length}`).concat(statistics);
+      }
     }
+  } else {
+    statistics = statistics.slice(-7);
   }
 
   return statistics;
 };
 
-export const setStorageStatistics = async (newStatistics: IStatistics[]) => {
+export const setStorageStatistics = async (newStatistics: IStatistics) => {
   const year = dayjs().year();
 
-  await AsyncStorage.setItem(`@${year}-statistics`, JSON.stringify(newStatistics));
+  const storageStatistics = await AsyncStorage.getItem(`@${year}-statistics`);
+
+  const statistics = storageStatistics ? JSON.parse(storageStatistics) : [];
+  statistics.push(newStatistics);
+
+  await AsyncStorage.setItem(`@${year}-statistics`, JSON.stringify(statistics));
 };
 
 export const getStorageSchedule = async () => {

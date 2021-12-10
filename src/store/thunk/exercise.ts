@@ -85,7 +85,7 @@ export const postExercies = createAsyncThunk<
 
     const storageStatistics = await getStorageStatistics();
     storageStatistics.push({ exercises: filteredExercises, updated: currentDate });
-    setStorageStatistics(storageStatistics);
+    setStorageStatistics({ exercises: filteredExercises, updated: currentDate });
 
     const experience = calculateExperience(filteredExercises);
     const weekStatistics = storageStatistics.slice(-7);
