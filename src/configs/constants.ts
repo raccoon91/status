@@ -1,6 +1,6 @@
 import { EXERCISES } from "./exercises";
 
-export const APP_VERSION = "0.2.5";
+export const APP_VERSION = "0.2.6";
 
 export const LIMIT_FREQUENT_UPDATE = true;
 
