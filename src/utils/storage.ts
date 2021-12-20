@@ -16,6 +16,20 @@ export const removeStorage = async (targets?: string[]) => {
   }
 };
 
+export const getAllStorage = async () => {
+  const keys = await AsyncStorage.getAllKeys();
+  const result = [];
+
+  for (const key of keys) {
+    const dataList: any = await AsyncStorage.getItem(key);
+    const parsedDataList = JSON.parse(dataList);
+
+    result.push({ key, data: parsedDataList });
+  }
+
+  return result;
+};
+
 export const getStorageUser = async () => {
   let user = USER;
 
