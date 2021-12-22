@@ -18,13 +18,13 @@ export const removeStorage = async (targets?: string[]) => {
 
 export const getAllStorage = async () => {
   const keys = await AsyncStorage.getAllKeys();
-  const result = [];
+  const result: { [key: string]: any } = {};
 
   for (const key of keys) {
     const dataList: any = await AsyncStorage.getItem(key);
     const parsedDataList = JSON.parse(dataList);
 
-    result.push({ key, data: parsedDataList });
+    result[key.slice(1)] = parsedDataList;
   }
 
   return result;
